@@ -2,7 +2,7 @@
 namespace Earthin\WPSuite;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 final class Admin {
-	private $defaults = array( 'seo_enabled' => 1, 'social_preview_enabled' => 1, 'security_enabled' => 0, 'redirects_enabled' => 0, 'rss_enabled' => 0 );
+	private $defaults = array( 'seo_enabled' => 1, 'social_preview_enabled' => 1, 'security_enabled' => 0, 'redirects_enabled' => 0, 'rss_enabled' => 0, 'schema_enabled' => 0, 'sitemap_enabled' => 0, 'forms_enabled' => 0 );
 	public function boot() {
 		add_action( 'admin_menu', array( $this, 'menu' ) );
 		add_action( 'admin_init', array( $this, 'settings' ) );
@@ -29,6 +29,9 @@ final class Admin {
 			'security_enabled' => __( 'Security headers and XML-RPC disable', 'earthin-wp-suite' ),
 			'redirects_enabled' => __( 'Exact-path redirects (rules must be added by an administrator)', 'earthin-wp-suite' ),
 			'rss_enabled' => __( 'RSS import to draft review queue', 'earthin-wp-suite' ),
+			'schema_enabled' => __( 'Basic structured data', 'earthin-wp-suite' ),
+			'sitemap_enabled' => __( 'WordPress core XML sitemap', 'earthin-wp-suite' ),
+			'forms_enabled' => __( 'Basic contact form shortcode', 'earthin-wp-suite' ),
 		);
 		?>
 		<div class="wrap">
