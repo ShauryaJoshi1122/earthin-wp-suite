@@ -6,6 +6,9 @@ require_once EWS_PATH . 'includes/class-ews-module-manager.php';
 require_once EWS_PATH . 'includes/class-ews-admin.php';
 require_once EWS_PATH . 'modules/seo/class-ews-seo-module.php';
 require_once EWS_PATH . 'modules/social-preview/class-ews-social-preview-module.php';
+require_once EWS_PATH . 'modules/security/class-ews-security-module.php';
+require_once EWS_PATH . 'modules/redirects/class-ews-redirects-module.php';
+require_once EWS_PATH . 'modules/rss/class-ews-rss-module.php';
 final class Plugin {
 	private static $instance;
 	private $modules;
@@ -17,6 +20,9 @@ final class Plugin {
 	public function boot() {
 		$this->modules->register( new SEO_Module() );
 		$this->modules->register( new Social_Preview_Module() );
+		$this->modules->register( new Security_Module() );
+		$this->modules->register( new Redirects_Module() );
+		$this->modules->register( new RSS_Module() );
 		$this->modules->boot_enabled();
 		if ( is_admin() ) { ( new Admin() )->boot(); }
 	}
