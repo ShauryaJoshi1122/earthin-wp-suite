@@ -2,13 +2,17 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Check, ShieldCheck, QrCode, CreditCard, Sparkles } from 'lucide-react';
+import { Check, ShieldCheck, QrCode, CreditCard, Sparkles, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { db } from '@/lib/db';
 
 export default function PricingPage() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [utrNumber, setUtrNumber] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const paymentSettings = db.getPaymentSettings();
 
   const plans = [
     {
@@ -18,6 +22,7 @@ export default function PricingPage() {
       badgeVariant: 'emerald' as const,
       priceUSD: '$0',
       priceINR: '₹0',
+      inrAmount: 0,
       period: 'forever',
       description: 'Production-ready essential WordPress tools with zero cost and no artificial limits.',
       features: [
@@ -41,6 +46,7 @@ export default function PricingPage() {
       badgeVariant: 'indigo' as const,
       priceUSD: '$49',
       priceINR: '₹3,999',
+      inrAmount: 3999,
       period: '/ site / year',
       description: 'Power automation, visual design blocks, and premium compliance for business websites.',
       features: [
@@ -63,6 +69,7 @@ export default function PricingPage() {
       badgeVariant: 'amber' as const,
       priceUSD: '$149',
       priceINR: '₹11,999',
+      inrAmount: 11999,
       period: '/ unlimited sites',
       description: 'Centralized licensing, multi-site network controls, and priority engineering support.',
       features: [
@@ -78,6 +85,27 @@ export default function PricingPage() {
       ctaVariant: 'secondary' as const,
     },
   ];
+
+  const selectedPlanData = plans.find((p) => p.id === selectedPlan);
+  const planAmount = selectedPlanData ? selectedPlanData.inrAmount : 3999;
+  const planName = selectedPlanData ? selectedPlanData.name : 'Earthin License';
+
+  const upiUri = `upi://pay?pa=${encodeURIComponent(paymentSettings.upiId)}&pn=${encodeURIComponent(paymentSettings.upiDisplayName)}&am=${planAmount}&cu=INR&tn=${encodeURIComponent(`${planName} Order`)}`;
+  const dynamicQrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(upiUri)}`;
+
+  const handleSubmitUtr = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (utrNumber.trim().length >= 8) {
+      db.createOrder('customer@earthin.online', selectedPlan || 'pro-single', planAmount);
+      setSubmitted(true);
+      setTimeout(() => {
+        setSelectedPlan(null);
+        setSubmitted(false);
+        setUtrNumber('');
+        alert('Thank you! Your payment verification request has been queued. You can view your license status in your Account portal.');
+      }, 1500);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 space-y-16">
@@ -144,15 +172,15 @@ export default function PricingPage() {
         ))}
       </div>
 
-      {/* UPI Payment Modal / Details */}
+      {/* Dynamic UPI Payment Modal */}
       {selectedPlan && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-8 shadow-2xl border border-slate-200 space-y-6">
             <div className="flex justify-between items-start">
               <div>
-                <Badge variant="indigo">INSTANT UPI CHECKOUT</Badge>
+                <Badge variant="indigo">DYNAMIC PRICE UPI QR</Badge>
                 <h3 className="text-xl font-bold text-slate-900 mt-2">
-                  Order: {selectedPlan === 'pro' ? 'Earthin Pro Single Site ($49 / ₹3,999)' : 'Earthin Agency Multi-Site ($149 / ₹11,999)'}
+                  Order: {selectedPlanData?.name} ({selectedPlanData?.priceUSD} / {selectedPlanData?.priceINR})
                 </h3>
               </div>
               <button
@@ -164,50 +192,62 @@ export default function PricingPage() {
               </button>
             </div>
 
-            <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 text-center space-y-3">
-              <div className="inline-block p-3 bg-white rounded-lg shadow-sm border border-slate-200">
-                <QrCode className="h-28 w-28 text-slate-800 mx-auto" />
+            {/* Dynamic Scannable Price QR */}
+            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center space-y-3">
+              <div className="inline-block p-4 bg-white rounded-xl shadow-sm border border-slate-200">
+                <img
+                  src={dynamicQrCodeUrl}
+                  alt={`UPI QR Code for ${planAmount} INR`}
+                  className="h-48 w-48 mx-auto object-contain"
+                />
               </div>
+
               <div>
-                <div className="text-xs text-slate-500 font-medium">Official Earthin UPI VPA</div>
-                <div className="text-sm font-mono font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-md inline-block mt-1">
-                  pay@earthin.online
+                <div className="text-xs text-slate-500 uppercase font-semibold">Exact Amount Encoded in QR</div>
+                <div className="text-3xl font-black text-emerald-700">₹{planAmount.toLocaleString('en-IN')}</div>
+                <div className="text-xs font-mono font-bold text-slate-700 mt-1 bg-white px-3 py-1 rounded-md inline-block border border-slate-200">
+                  {paymentSettings.upiId}
                 </div>
               </div>
-              <p className="text-xs text-slate-600">
-                Scan using Google Pay, PhonePe, Paytm, or any BHIM UPI application.
+
+              <p className="text-xs text-slate-500">
+                Scan with Google Pay, PhonePe, Paytm, or BHIM. The amount ₹{planAmount} is already encoded!
               </p>
+
+              <a href={upiUri} className="block mt-2">
+                <Button size="sm" variant="outline" className="w-full text-xs flex items-center justify-center gap-1.5">
+                  <Smartphone className="h-3.5 w-3.5" />
+                  Open in UPI App on Mobile
+                </Button>
+              </a>
             </div>
 
-            <div className="space-y-3">
+            {/* UTR Reference Form */}
+            <form onSubmit={handleSubmitUtr} className="space-y-3">
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wide">
                 Submit Your 12-Digit UTR / Transaction Reference
               </label>
               <input
                 type="text"
+                required
                 placeholder="e.g. 431289123456"
+                value={utrNumber}
+                onChange={(e) => setUtrNumber(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
               />
               <p className="text-[11px] text-slate-500">
                 Once submitted, your order is verified and your license key will be automatically issued in your <Link href="/account" className="text-emerald-600 underline font-semibold">Account Portal</Link>.
               </p>
-            </div>
 
-            <div className="flex gap-3">
-              <Button variant="outline" className="flex-1" onClick={() => setSelectedPlan(null)}>
-                Cancel
-              </Button>
-              <Button
-                variant="primary"
-                className="flex-1"
-                onClick={() => {
-                  alert('Thank you! Your payment verification request has been queued. You can view your license status in your Account portal.');
-                  setSelectedPlan(null);
-                }}
-              >
-                Submit Verification
-              </Button>
-            </div>
+              <div className="flex gap-3 pt-2">
+                <Button type="button" variant="outline" className="flex-1" onClick={() => setSelectedPlan(null)}>
+                  Cancel
+                </Button>
+                <Button type="submit" variant="primary" className="flex-1">
+                  {submitted ? 'Submitted!' : 'Submit Verification'}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       )}

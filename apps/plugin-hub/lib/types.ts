@@ -43,4 +43,10 @@ export interface PluginItem {
   author?: string;
   authorUri?: string;
   activeInstalls?: string;
+  // Admin download management & pricing
+  allowDownload?: boolean;
+  downloadUrl?: string;
+  downloadAccess?: 'public' | 'registered' | 'licensed';
+  downloadsCount?: number;
+  inrPrice?: number;
 }

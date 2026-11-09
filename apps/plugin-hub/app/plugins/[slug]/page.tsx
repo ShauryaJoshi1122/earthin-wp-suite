@@ -18,6 +18,7 @@ import { getPluginBySlug, PLUGINS } from '@/lib/catalog';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/Card';
+import { PluginActions } from '@/components/plugins/PluginActions';
 
 export function generateStaticParams() {
   return PLUGINS.map((p) => ({
@@ -71,35 +72,13 @@ export default function PluginProductPage({ params }: { params: { slug: string }
             {plugin.description}
           </p>
 
-          <div className="flex flex-wrap items-center gap-3 pt-2">
-            <a
-              href="https://github.com/ShauryaJoshi1122/earthin-wp-suite/archive/refs/heads/main.zip"
-              className="inline-block"
-              download
-            >
-              <Button size="md" variant="primary">
-                <Download className="mr-2 h-4 w-4" />
-                Download Free Release
-              </Button>
-            </a>
-            <a
-              href="https://github.com/ShauryaJoshi1122/earthin-wp-suite"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block"
-            >
-              <Button size="md" variant="outline">
-                <ExternalLink className="mr-2 h-4 w-4" />
-                GitHub Repository
-              </Button>
-            </a>
-            <Link href="/docs">
-              <Button size="md" variant="ghost">
-                <BookOpen className="mr-2 h-4 w-4" />
-                Documentation
-              </Button>
-            </Link>
-          </div>
+          <PluginActions
+            slug={plugin.slug}
+            name={plugin.name}
+            pricingModel={plugin.pricingModel}
+            allowDownload={plugin.allowDownload}
+            inrPrice={plugin.inrPrice}
+          />
         </div>
 
         {/* Sidebar Specifications */}

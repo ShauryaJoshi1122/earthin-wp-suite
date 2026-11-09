@@ -12,6 +12,7 @@ export interface PaymentSettingsRecord {
   instructions: string;
   currency: string;
   isEnabled: boolean;
+  defaultPrice: number;
 }
 
 export interface LicenseRecord {
@@ -50,15 +51,25 @@ export interface ActivityLogRecord {
 
 // In-memory persistent state (simulating live database storage with transactional safety)
 class DatabaseService {
-  private plugins: PluginItem[] = [...INITIAL_PLUGINS];
+  private plugins: PluginItem[] = INITIAL_PLUGINS.map((p, idx) => ({
+    ...p,
+    allowDownload: true,
+    downloadUrl: `https://github.com/ShauryaJoshi1122/earthin-wp-suite/archive/refs/heads/main.zip`,
+    downloadAccess: p.pricingModel === 'premium' ? ('licensed' as const) : ('public' as const),
+    downloadsCount: 10 + (idx * 7) + 5,
+    inrPrice: p.pricingModel === 'premium' ? 3999 : p.pricingModel === 'freemium' ? 1499 : 0,
+  }));
+
   private categories: PluginCategory[] = [...INITIAL_CATEGORIES];
+
   private paymentSettings: PaymentSettingsRecord = {
     upiId: 'earthin@upi',
     upiDisplayName: 'Shaurya Joshi (Earthin)',
-    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=earthin@upi&pn=Shaurya%20Joshi&cu=INR',
-    instructions: 'Scan the UPI QR code or enter UPI ID `earthin@upi` in Google Pay, PhonePe, Paytm, or BHIM. Enter your 12-digit UTR reference number below to verify.',
+    qrCodeUrl: 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=upi%3A%2F%2Fpay%3Fpa%3Dearthin%40upi%26pn%3DShaurya%2520Joshi%26am%3D1499%26cu%3DINR%26tn%3DEarthin%2520Plugin',
+    instructions: 'Scan this dynamic UPI QR code or pay to the UPI ID in Google Pay, PhonePe, Paytm, or BHIM. The exact price is automatically encoded in the QR code! Enter your 12-digit UTR reference below to verify.',
     currency: 'INR',
     isEnabled: true,
+    defaultPrice: 1499,
   };
 
   private orders: OrderRecord[] = [
@@ -78,9 +89,9 @@ class DatabaseService {
       id: 'ord-1002',
       orderNumber: 'EWS-2026-1002',
       customerEmail: 'client@agency.com',
-      pluginName: 'Earthin Image Optimizer',
-      pluginSlug: 'earthin-image-optimizer',
-      amount: 999,
+      pluginName: 'Earthin Page Builder Pro',
+      pluginSlug: 'earthin-page-builder-pro',
+      amount: 3999,
       currency: 'INR',
       status: 'SUBMITTED',
       utrNumber: '543210987654',
@@ -108,7 +119,7 @@ class DatabaseService {
     {
       id: 'log-1',
       action: 'SYSTEM_BOOT',
-      details: 'Earthin Plugin Hub ecosystem initialized with 11 plugins.',
+      details: 'Earthin Plugin Hub ecosystem initialized with 20 plugins.',
       timestamp: '2026-11-09T12:00:00Z',
     },
     {
@@ -119,7 +130,26 @@ class DatabaseService {
     },
   ];
 
-  // Plugin queries
+  // UPI Helper methods
+  public static generateUpiUrl(upiId: string, payeeName: string, amount?: number, note?: string): string {
+    const cleanId = upiId.trim();
+    const cleanName = payeeName.trim();
+    let url = `upi://pay?pa=${encodeURIComponent(cleanId)}&pn=${encodeURIComponent(cleanName)}&cu=INR`;
+    if (amount !== undefined && amount > 0) {
+      url += `&am=${amount}`;
+    }
+    if (note) {
+      url += `&tn=${encodeURIComponent(note)}`;
+    }
+    return url;
+  }
+
+  public static generateUpiQrCodeUrl(upiId: string, payeeName: string, amount?: number, note?: string): string {
+    const upiUri = DatabaseService.generateUpiUrl(upiId, payeeName, amount, note);
+    return `https://api.qrserver.com/v1/create-qr-code/?size=300x300&margin=10&data=${encodeURIComponent(upiUri)}`;
+  }
+
+  // Plugin queries & toggles
   public getAllPlugins(): PluginItem[] {
     return this.plugins;
   }
@@ -140,6 +170,38 @@ class DatabaseService {
     return true;
   }
 
+  public togglePluginDownload(slug: string): boolean {
+    const plugin = this.plugins.find((p) => p.slug === slug);
+    if (!plugin) return false;
+    plugin.allowDownload = !plugin.allowDownload;
+    this.logActivity('DOWNLOAD_TOGGLE', `Toggled download permission for ${plugin.name} to ${plugin.allowDownload}`);
+    return true;
+  }
+
+  public updatePluginDownloadConfig(slug: string, config: {
+    allowDownload: boolean;
+    downloadUrl?: string;
+    downloadAccess?: 'public' | 'registered' | 'licensed';
+    inrPrice?: number;
+  }): boolean {
+    const plugin = this.plugins.find((p) => p.slug === slug);
+    if (!plugin) return false;
+    plugin.allowDownload = config.allowDownload;
+    if (config.downloadUrl !== undefined) plugin.downloadUrl = config.downloadUrl;
+    if (config.downloadAccess !== undefined) plugin.downloadAccess = config.downloadAccess;
+    if (config.inrPrice !== undefined) plugin.inrPrice = config.inrPrice;
+    this.logActivity('DOWNLOAD_CONFIG_UPDATE', `Updated download settings for ${plugin.name}`);
+    return true;
+  }
+
+  public incrementDownloadCount(slug: string): number {
+    const plugin = this.plugins.find((p) => p.slug === slug);
+    if (!plugin) return 0;
+    plugin.downloadsCount = (plugin.downloadsCount || 0) + 1;
+    this.logActivity('PLUGIN_DOWNLOAD', `User downloaded ${plugin.name}`);
+    return plugin.downloadsCount;
+  }
+
   // Categories
   public getCategories(): PluginCategory[] {
     return this.categories;
@@ -152,13 +214,41 @@ class DatabaseService {
 
   public updatePaymentSettings(settings: Partial<PaymentSettingsRecord>): PaymentSettingsRecord {
     this.paymentSettings = { ...this.paymentSettings, ...settings };
-    this.logActivity('PAYMENT_SETTINGS_UPDATE', 'Updated UPI payment instructions and credentials.');
+    
+    // Automatically recalculate dynamic QR code if upiId or upiDisplayName changed
+    if (settings.upiId || settings.upiDisplayName || settings.defaultPrice !== undefined) {
+      const upiId = this.paymentSettings.upiId;
+      const name = this.paymentSettings.upiDisplayName;
+      const price = this.paymentSettings.defaultPrice;
+      this.paymentSettings.qrCodeUrl = DatabaseService.generateUpiQrCodeUrl(upiId, name, price, 'Earthin Plugin Order');
+    }
+
+    this.logActivity('PAYMENT_SETTINGS_UPDATE', `Updated UPI payment settings: ${this.paymentSettings.upiId} with automatic dynamic QR.`);
     return this.paymentSettings;
   }
 
   // Orders
   public getOrders(): OrderRecord[] {
     return this.orders;
+  }
+
+  public createOrder(customerEmail: string, pluginSlug: string, amount: number): OrderRecord {
+    const plugin = this.getPluginBySlug(pluginSlug);
+    const pluginName = plugin ? plugin.name : pluginSlug;
+    const newOrder: OrderRecord = {
+      id: `ord-${Date.now()}`,
+      orderNumber: `EWS-${new Date().getFullYear()}-${Math.floor(1000 + Math.random() * 9000)}`,
+      customerEmail,
+      pluginName,
+      pluginSlug,
+      amount,
+      currency: 'INR',
+      status: 'SUBMITTED',
+      createdAt: new Date().toISOString(),
+    };
+    this.orders.unshift(newOrder);
+    this.logActivity('ORDER_CREATED', `New order created for ${pluginName} by ${customerEmail}`);
+    return newOrder;
   }
 
   public submitOrderPayment(orderNumber: string, utrNumber: string): boolean {
