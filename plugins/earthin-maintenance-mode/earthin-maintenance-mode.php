@@ -326,112 +326,178 @@ final class Plugin {
 
 		$settings = $this->get_settings();
 		$preview_url = add_query_arg( 'emm_preview', '1', home_url( '/' ) );
+		$is_active = ! empty( $settings['enabled'] );
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Earthin Maintenance Mode', 'earthin-maintenance-mode' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'Display a clean, responsive maintenance screen to visitors while administrators continue working on the site.', 'earthin-maintenance-mode' ); ?>
-			</p>
-
-			<?php if ( ! empty( $settings['enabled'] ) ) : ?>
-				<div class="notice notice-warning inline" style="margin-top:16px;">
-					<p><strong><?php esc_html_e( 'Notice:', 'earthin-maintenance-mode' ); ?></strong> <?php esc_html_e( 'Maintenance Mode is currently ACTIVE on the frontend for non-administrators.', 'earthin-maintenance-mode' ); ?></p>
+		<div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+			<!-- Header Banner -->
+			<div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+				<div style="display:flex; align-items:center; gap:16px;">
+					<div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">🚧</div>
+					<div>
+						<h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e( 'Earthin Maintenance Mode', 'earthin-maintenance-mode' ); ?></h1>
+						<p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e( 'Clean, responsive splash screen with 503 SEO preserving headers and admin bypass', 'earthin-maintenance-mode' ); ?></p>
+					</div>
 				</div>
-			<?php endif; ?>
-
-			<form method="post" action="options.php" style="margin-top:20px;">
-				<?php
-				settings_fields( 'emm_settings_group' );
-				?>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Enable Maintenance Mode', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[enabled]" value="1" <?php checked( 1, $settings['enabled'] ); ?>>
-								<?php esc_html_e( 'Activate maintenance mode for all visitors', 'earthin-maintenance-mode' ); ?>
-							</label>
-							<p class="description"><?php esc_html_e( 'Administrators with manage_options capability will always bypass the maintenance screen and view the live website.', 'earthin-maintenance-mode' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Search Engine Status Code', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<select name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[status_code]">
-								<option value="503" <?php selected( 503, $settings['status_code'] ); ?>><?php esc_html_e( '503 Service Unavailable (Recommended for SEO)', 'earthin-maintenance-mode' ); ?></option>
-								<option value="200" <?php selected( 200, $settings['status_code'] ); ?>><?php esc_html_e( '200 OK (Preview / Coming Soon)', 'earthin-maintenance-mode' ); ?></option>
-							</select>
-							<p class="description"><?php esc_html_e( 'HTTP 503 tells search engines the downtime is temporary and preserves search rankings.', 'earthin-maintenance-mode' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Retry-After (Seconds)', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="number" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[retry_after]" value="<?php echo esc_attr( $settings['retry_after'] ); ?>" min="300" max="86400" step="300" class="small-text">
-							<p class="description"><?php esc_html_e( 'Number of seconds search engines should wait before re-crawling (default 3600 = 1 hour).', 'earthin-maintenance-mode' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Page Browser Title', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[page_title]" value="<?php echo esc_attr( $settings['page_title'] ); ?>" class="regular-text">
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Headline', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[headline]" value="<?php echo esc_attr( $settings['headline'] ); ?>" class="large-text">
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Message', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<?php
-							wp_editor(
-								$settings['message'],
-								'emmmessage',
-								array(
-									'textarea_name' => esc_attr( EMM_OPTION_KEY ) . '[message]',
-									'textarea_rows' => 5,
-									'media_buttons' => false,
-									'teeny'         => true,
-								)
-							);
-							?>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Logo Image URL', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="url" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[logo_url]" value="<?php echo esc_attr( $settings['logo_url'] ); ?>" class="large-text" placeholder="https://example.com/logo.png">
-							<p class="description"><?php esc_html_e( 'Optional URL to an image file or logo hosted on your site.', 'earthin-maintenance-mode' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Background Color', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[bg_color]" value="<?php echo esc_attr( $settings['bg_color'] ); ?>" class="small-text" placeholder="#0f172a">
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Accent Color', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[accent_color]" value="<?php echo esc_attr( $settings['accent_color'] ); ?>" class="small-text" placeholder="#10b981">
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Text Color', 'earthin-maintenance-mode' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[text_color]" value="<?php echo esc_attr( $settings['text_color'] ); ?>" class="small-text" placeholder="#f8fafc">
-						</td>
-					</tr>
-				</table>
-
-				<div style="margin-top:20px; display:flex; gap:12px; align-items:center;">
-					<?php submit_button( __( 'Save Settings', 'earthin-maintenance-mode' ), 'primary', 'submit', false ); ?>
-					<a href="<?php echo esc_url( $preview_url ); ?>" target="_blank" class="button button-secondary">
-						<?php esc_html_e( 'Preview Maintenance Screen ↗', 'earthin-maintenance-mode' ); ?>
+				<div style="display:flex; align-items:center; gap:10px;">
+					<span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html( EMM_VERSION ); ?></span>
+					<a href="<?php echo esc_url( $preview_url ); ?>" target="_blank" class="button" style="background:#fff; color:#047857; border:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:5px; height:auto; line-height:1.4;">
+						<?php esc_html_e( 'Preview Splash Screen ↗', 'earthin-maintenance-mode' ); ?>
 					</a>
+				</div>
+			</div>
+
+			<!-- Quick Stat Cards -->
+			<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'Mode Status', 'earthin-maintenance-mode' ); ?></div>
+					<div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo $is_active ? '#f59e0b' : '#059669'; ?>;">
+						<?php echo $is_active ? '● Maintenance Active' : '○ Live Mode (Off)'; ?>
+					</div>
+					<div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+						<?php echo $is_active ? esc_html__( 'Visitors see splash screen', 'earthin-maintenance-mode' ) : esc_html__( 'Site open to all visitors', 'earthin-maintenance-mode' ); ?>
+					</div>
+				</div>
+
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'SEO Protocol', 'earthin-maintenance-mode' ); ?></div>
+					<div style="font-size:20px; font-weight:700; color:#0f172a; margin-top:4px;">
+						HTTP <?php echo esc_html( $settings['status_code'] ); ?>
+					</div>
+					<div style="font-size:12px; color:#10b981; margin-top:2px; font-weight:500;">
+						<?php echo 503 === (int) $settings['status_code'] ? '✓ Safe for Google & Rankings' : 'Preview 200 OK Mode'; ?>
+					</div>
+				</div>
+
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'Admin Bypass', 'earthin-maintenance-mode' ); ?></div>
+					<div style="font-size:20px; font-weight:700; color:#059669; margin-top:4px;">✓ Automatic</div>
+					<div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e( 'Logged-in admins see normal site', 'earthin-maintenance-mode' ); ?></div>
+				</div>
+			</div>
+
+			<form method="post" action="options.php">
+				<?php settings_fields( 'emm_settings_group' ); ?>
+
+				<div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+					<!-- Main Form Columns -->
+					<div>
+						<!-- Mode & SEO Card -->
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+							<h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+								<span>⚙️</span> <?php esc_html_e( 'Status & SEO Configuration', 'earthin-maintenance-mode' ); ?>
+							</h2>
+
+							<label style="display:flex; align-items:flex-start; gap:12px; padding:16px; border:1px solid <?php echo $is_active ? '#f59e0b' : '#cbd5e1'; ?>; background:<?php echo $is_active ? '#fffbeb' : '#f8fafc'; ?>; border-radius:8px; cursor:pointer; margin-bottom:16px;">
+								<input type="checkbox" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[enabled]" value="1" <?php checked( 1, $settings['enabled'] ); ?> style="margin-top:3px;">
+								<div>
+									<strong style="font-size:14px; color:#0f172a; display:block;"><?php esc_html_e( 'Enable Maintenance Mode', 'earthin-maintenance-mode' ); ?></strong>
+									<span style="font-size:12px; color:#64748b; line-height:1.4; display:block; margin-top:2px;">
+										<?php esc_html_e( 'Activate maintenance mode for all visitors. Administrators will always bypass this screen and see the regular live website.', 'earthin-maintenance-mode' ); ?>
+									</span>
+								</div>
+							</label>
+
+							<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+								<div>
+									<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'HTTP Status Code', 'earthin-maintenance-mode' ); ?></label>
+									<select name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[status_code]" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+										<option value="503" <?php selected( 503, $settings['status_code'] ); ?>><?php esc_html_e( '503 Service Unavailable (SEO Safe)', 'earthin-maintenance-mode' ); ?></option>
+										<option value="200" <?php selected( 200, $settings['status_code'] ); ?>><?php esc_html_e( '200 OK (Preview / Coming Soon)', 'earthin-maintenance-mode' ); ?></option>
+									</select>
+								</div>
+								<div>
+									<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Retry-After (Seconds)', 'earthin-maintenance-mode' ); ?></label>
+									<input type="number" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[retry_after]" value="<?php echo esc_attr( $settings['retry_after'] ); ?>" min="300" max="86400" step="300" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+								</div>
+							</div>
+						</div>
+
+						<!-- Content & Copy Card -->
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+							<h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+								<span>📝</span> <?php esc_html_e( 'Screen Copy & Branding', 'earthin-maintenance-mode' ); ?>
+							</h2>
+
+							<div style="margin-bottom:16px;">
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Browser Tab Title', 'earthin-maintenance-mode' ); ?></label>
+								<input type="text" class="large-text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[page_title]" value="<?php echo esc_attr( $settings['page_title'] ); ?>" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+							</div>
+
+							<div style="margin-bottom:16px;">
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Main Headline', 'earthin-maintenance-mode' ); ?></label>
+								<input type="text" class="large-text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[headline]" value="<?php echo esc_attr( $settings['headline'] ); ?>" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+							</div>
+
+							<div style="margin-bottom:16px;">
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Maintenance Message', 'earthin-maintenance-mode' ); ?></label>
+								<?php
+								wp_editor(
+									$settings['message'],
+									'emmmessage',
+									array(
+										'textarea_name' => esc_attr( EMM_OPTION_KEY ) . '[message]',
+										'textarea_rows' => 4,
+										'media_buttons' => false,
+										'teeny'         => true,
+									)
+								);
+								?>
+							</div>
+
+							<div>
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Custom Logo URL (Optional)', 'earthin-maintenance-mode' ); ?></label>
+								<input type="url" class="large-text" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[logo_url]" value="<?php echo esc_attr( $settings['logo_url'] ); ?>" placeholder="https://example.com/logo.png" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+							</div>
+						</div>
+
+						<!-- Design Colors Card -->
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+							<h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+								<span>🎨</span> <?php esc_html_e( 'Color Palette', 'earthin-maintenance-mode' ); ?>
+							</h2>
+
+							<div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+								<div>
+									<label style="font-size:12px; font-weight:600; color:#334155; display:block; margin-bottom:4px;"><?php esc_html_e( 'Background', 'earthin-maintenance-mode' ); ?></label>
+									<input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-family:monospace; font-size:13px;" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[bg_color]" value="<?php echo esc_attr( $settings['bg_color'] ); ?>" placeholder="#0f172a">
+								</div>
+								<div>
+									<label style="font-size:12px; font-weight:600; color:#334155; display:block; margin-bottom:4px;"><?php esc_html_e( 'Accent Badge', 'earthin-maintenance-mode' ); ?></label>
+									<input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-family:monospace; font-size:13px;" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[accent_color]" value="<?php echo esc_attr( $settings['accent_color'] ); ?>" placeholder="#10b981">
+								</div>
+								<div>
+									<label style="font-size:12px; font-weight:600; color:#334155; display:block; margin-bottom:4px;"><?php esc_html_e( 'Text Color', 'earthin-maintenance-mode' ); ?></label>
+									<input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-family:monospace; font-size:13px;" name="<?php echo esc_attr( EMM_OPTION_KEY ); ?>[text_color]" value="<?php echo esc_attr( $settings['text_color'] ); ?>" placeholder="#f8fafc">
+								</div>
+							</div>
+						</div>
+
+						<div style="display:flex; gap:12px; align-items:center;">
+							<button type="submit" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+								<?php esc_html_e( 'Save Maintenance Settings', 'earthin-maintenance-mode' ); ?>
+							</button>
+							<a href="<?php echo esc_url( $preview_url ); ?>" target="_blank" class="button" style="border:1px solid #cbd5e1; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; height:auto; line-height:1.4;">
+								<?php esc_html_e( 'Preview Splash Screen ↗', 'earthin-maintenance-mode' ); ?>
+							</a>
+						</div>
+					</div>
+
+					<!-- Sidebar Info -->
+					<div>
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:20px;">
+							<h3 style="font-size:14px; font-weight:700; color:#0f172a; margin:0 0 10px;"><?php esc_html_e( 'SEO Best Practices', 'earthin-maintenance-mode' ); ?></h3>
+							<p style="font-size:12px; color:#64748b; line-height:1.5; margin:0 0 8px;">
+								<?php esc_html_e( 'Never return a 200 OK code during technical downtime! Earthin automatically sends a 503 Service Unavailable header with Retry-After directives so Google never de-indexes your pages.', 'earthin-maintenance-mode' ); ?>
+							</p>
+						</div>
+
+						<div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:18px;">
+							<div style="font-size:13px; font-weight:700; color:#166534; margin-bottom:8px;">💡 <?php esc_html_e( 'Admin Bar Status Pill', 'earthin-maintenance-mode' ); ?></div>
+							<p style="font-size:12px; color:#15803d; line-height:1.5; margin:0;">
+								<?php esc_html_e( 'When maintenance mode is active, an amber warning pill appears in your top WordPress admin bar so you never accidentally leave maintenance mode on.', 'earthin-maintenance-mode' ); ?>
+							</p>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -441,8 +507,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-maintenance-mode')) . '">' . __('Settings', 'earthin-maintenance-mode') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-maintenance-mode')) . '">' . __('Settings', 'earthin-maintenance-mode') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

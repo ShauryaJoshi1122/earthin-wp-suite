@@ -222,43 +222,122 @@ class Earthin_Web_Push {
         }
 
         $settings = $this->get_settings();
+        $is_enabled = !empty($settings['enabled']);
+        $status_label = $is_enabled ? __('Push Service Active', 'earthin-push') : __('Push Service Inactive', 'earthin-push');
+        $status_badge_class = $is_enabled ? 'earthin-badge-success' : 'earthin-badge-warning';
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Web Push Dashboard', 'earthin-push'); ?></h1>
-            <p><?php esc_html_e('Self-hosted web push notifications without 3rd-party vendor tracking.', 'earthin-push'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1200px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+                @media(max-width: 900px) { .earthin-grid { grid-template-columns: 1fr; } }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-stat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+                .earthin-stat-num { font-size: 26px; font-weight: 800; color: #059669; line-height: 1.1; }
+                .earthin-stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; margin-top: 4px; }
+                .earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+                .earthin-btn-primary:hover { background: #047857 !important; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-badge-warning { background: #fffbeb; color: #d97706; }
+                .earthin-input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 14px; width: 100%; box-sizing: border-box; }
+                .earthin-input:focus { border-color: #059669; outline: none; box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+            </style>
 
-            <div style="background:#fff; border:1px solid #ccd0d4; padding:20px; border-radius:8px; margin:20px 0; max-width:400px;">
-                <div style="font-size:13px; color:#64748b; font-weight:600; text-transform:uppercase;"><?php esc_html_e('Active Push Subscribers', 'earthin-push'); ?></div>
-                <div style="font-size:36px; font-weight:700; color:#0f172a; margin-top:8px;"><?php echo number_format_i18n($sub_count); ?></div>
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php esc_html_e('Earthin Web Push Dashboard', 'earthin-push'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill <?php echo esc_attr($status_badge_class); ?>"><?php echo esc_html($status_label); ?></span>
+                        </h1>
+                        <p><?php esc_html_e('Self-hosted, vendor-free web push notifications with open VAPID protocol by Shaurya Joshi.', 'earthin-push'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-push'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-push'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-push'); ?></a>
+                </div>
+            </header>
+
+            <div class="earthin-grid">
+                <div class="earthin-card">
+                    <div class="earthin-card-header">
+                        <h2 class="earthin-card-title"><?php esc_html_e('VAPID Open Protocol Configuration', 'earthin-push'); ?></h2>
+                    </div>
+
+                    <form method="post">
+                        <?php wp_nonce_field('earthin_push_keys_nonce'); ?>
+                        <table class="form-table" role="presentation">
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Enable Push Bell Prompt', 'earthin-push'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="enabled" value="1" <?php checked($settings['enabled'], 1); ?> />
+                                        <strong><?php esc_html_e('Render subscription prompt button on frontend', 'earthin-push'); ?></strong>
+                                    </label>
+                                    <p class="description"><?php esc_html_e('Allows visitors to subscribe to real-time browser alerts with 1 click.', 'earthin-push'); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('VAPID Public Key', 'earthin-push'); ?></th>
+                                <td>
+                                    <input type="text" class="earthin-input" name="vapid_public_key" value="<?php echo esc_attr($settings['vapid_public_key']); ?>" placeholder="BEl62iUYgU..." style="font-family:monospace; font-size:12px;" />
+                                    <p class="description"><?php esc_html_e('Application server public key sent to browser push managers.', 'earthin-push'); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('VAPID Private Key', 'earthin-push'); ?></th>
+                                <td>
+                                    <input type="password" class="earthin-input" name="vapid_private_key" value="<?php echo esc_attr($settings['vapid_private_key']); ?>" style="font-family:monospace; font-size:12px;" />
+                                    <p class="description"><?php esc_html_e('Secret key used to cryptographically sign outbound push payloads.', 'earthin-push'); ?></p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p class="submit" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+                            <input type="submit" name="earthin_save_keys" class="button earthin-btn-primary" value="<?php esc_attr_e('Save Configuration', 'earthin-push'); ?>" />
+                        </p>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Audience Reach', 'earthin-push'); ?></h2>
+                        </div>
+
+                        <div class="earthin-stat-box">
+                            <div class="earthin-stat-num"><?php echo number_format_i18n($sub_count); ?></div>
+                            <div class="earthin-stat-label"><?php esc_html_e('Active Push Subscribers', 'earthin-push'); ?></div>
+                        </div>
+
+                        <div style="margin-top:16px;">
+                            <strong style="font-size:13px; color:#334155; display:block; margin-bottom:8px;"><?php esc_html_e('Supported Browsers:', 'earthin-push'); ?></strong>
+                            <div style="font-size:12px; color:#64748b; line-height:1.6;">
+                                ✔ Chrome, Chromium & Brave<br>
+                                ✔ Mozilla Firefox (Desktop & Android)<br>
+                                ✔ Microsoft Edge<br>
+                                ✔ Apple Safari 16+ (macOS & iOS PWA)
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            <form method="post">
-                <?php wp_nonce_field('earthin_push_keys_nonce'); ?>
-                <h2><?php esc_html_e('VAPID Open Protocol Configuration', 'earthin-push'); ?></h2>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Enable Push Bell', 'earthin-push'); ?></th>
-                        <td>
-                            <label><input type="checkbox" name="enabled" value="1" <?php checked($settings['enabled'], 1); ?> /> <?php esc_html_e('Display subscribe prompt button on front-end', 'earthin-push'); ?></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('VAPID Public Key', 'earthin-push'); ?></th>
-                        <td>
-                            <input type="text" class="large-text code" name="vapid_public_key" value="<?php echo esc_attr($settings['vapid_public_key']); ?>" placeholder="BBb..." />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('VAPID Private Key', 'earthin-push'); ?></th>
-                        <td>
-                            <input type="password" class="large-text code" name="vapid_private_key" value="<?php echo esc_attr($settings['vapid_private_key']); ?>" />
-                        </td>
-                    </tr>
-                </table>
-                <p class="submit">
-                    <input type="submit" name="earthin_save_keys" class="button button-primary" value="<?php esc_attr_e('Save Configuration', 'earthin-push'); ?>" />
-                </p>
-            </form>
         </div>
         <?php
     }
@@ -266,8 +345,8 @@ class Earthin_Web_Push {
 
 add_action('plugins_loaded', ['Earthin_Web_Push', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-push')) . '">' . __('Settings', 'earthin-push') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=earthin-push')) . '">' . __('Settings', 'earthin-push') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

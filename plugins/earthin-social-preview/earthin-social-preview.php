@@ -291,47 +291,137 @@ class Earthin_Social_Preview {
             wp_die(__('Unauthorized', 'earthin-social-preview'));
         }
         $settings = $this->get_settings();
+        $has_fallback = !empty($settings['default_og_image']);
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Social Preview Settings', 'earthin-social-preview'); ?></h1>
-            <p><?php esc_html_e('Configure Open Graph and Twitter Card defaults for social sharing.', 'earthin-social-preview'); ?></p>
+        <div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+            <!-- Header Banner -->
+            <div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">🖼️</div>
+                    <div>
+                        <h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e('Earthin Social Preview', 'earthin-social-preview'); ?></h1>
+                        <p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e('Automatic Open Graph and Twitter / X Card metadata generator with live post previews', 'earthin-social-preview'); ?></p>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html(EARTHIN_SOCIAL_PREVIEW_VERSION); ?></span>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" style="background:#fff; color:#047857; text-decoration:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600;">Documentation</a>
+                </div>
+            </div>
+
+            <!-- Quick Stat Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Open Graph Engine', 'earthin-social-preview'); ?></div>
+                    <div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo !empty($settings['enable_og']) ? '#059669' : '#94a3b8'; ?>;">
+                        <?php echo !empty($settings['enable_og']) ? '✓ Active (Facebook/LinkedIn)' : '○ Disabled'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Standard og:title & og:image tags', 'earthin-social-preview'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Twitter / X Cards', 'earthin-social-preview'); ?></div>
+                    <div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo !empty($settings['enable_twitter']) ? '#059669' : '#94a3b8'; ?>;">
+                        <?php echo !empty($settings['enable_twitter']) ? '✓ Large Image Cards' : '○ Disabled'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Optimized summary_large_image', 'earthin-social-preview'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Default Fallback Image', 'earthin-social-preview'); ?></div>
+                    <div style="font-size:18px; font-weight:700; color:#0f172a; margin-top:6px;">
+                        <?php echo $has_fallback ? '<span style="color:#10b981;">✓ Configured</span>' : '<span style="color:#f59e0b;">Not Set</span>'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Applied when no featured image exists', 'earthin-social-preview'); ?></div>
+                </div>
+            </div>
 
             <form method="post" action="options.php">
                 <?php settings_fields('earthin_social_preview_group'); ?>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Enable Open Graph', 'earthin-social-preview'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_og]" value="1" <?php checked($settings['enable_og'], 1); ?> />
-                                <?php esc_html_e('Generate Facebook, LinkedIn, WhatsApp Open Graph tags', 'earthin-social-preview'); ?>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Enable Twitter Cards', 'earthin-social-preview'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_twitter]" value="1" <?php checked($settings['enable_twitter'], 1); ?> />
-                                <?php esc_html_e('Generate Twitter / X Cards meta tags', 'earthin-social-preview'); ?>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Default Sharing Image URL', 'earthin-social-preview'); ?></th>
-                        <td>
-                            <input type="url" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[default_og_image]" value="<?php echo esc_attr($settings['default_og_image']); ?>" placeholder="https://example.com/default-share-image.jpg" />
-                            <p class="description"><?php esc_html_e('Used as fallback when a post does not have a featured image or custom social image. Recommended size: 1200x630.', 'earthin-social-preview'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Twitter / X Handle', 'earthin-social-preview'); ?></th>
-                        <td>
-                            <input type="text" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[twitter_site_handle]" value="<?php echo esc_attr($settings['twitter_site_handle']); ?>" placeholder="earthin_online" />
-                        </td>
-                    </tr>
-                </table>
-                <?php submit_button(); ?>
+
+                <div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+                    <!-- Main Form Fields -->
+                    <div>
+                        <!-- Protocols Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>🌐</span> <?php esc_html_e('Social Protocols', 'earthin-social-preview'); ?>
+                            </h2>
+
+                            <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                                <label style="display:flex; align-items:flex-start; gap:12px; padding:14px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_og]" value="1" <?php checked($settings['enable_og'], 1); ?> style="margin-top:3px;" />
+                                    <div>
+                                        <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Enable Open Graph (Facebook, WhatsApp, LinkedIn, Pinterest)', 'earthin-social-preview'); ?></strong>
+                                        <span style="font-size:12px; color:#64748b;">Injects og:title, og:description, og:image, og:url, and og:site_name into the page head.</span>
+                                    </div>
+                                </label>
+
+                                <label style="display:flex; align-items:flex-start; gap:12px; padding:14px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_twitter]" value="1" <?php checked($settings['enable_twitter'], 1); ?> style="margin-top:3px;" />
+                                    <div>
+                                        <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Enable Twitter / X Cards', 'earthin-social-preview'); ?></strong>
+                                        <span style="font-size:12px; color:#64748b;">Injects twitter:card (summary_large_image), twitter:title, twitter:description, and twitter:site.</span>
+                                    </div>
+                                </label>
+                            </div>
+
+                            <div>
+                                <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Twitter / X Site Handle (without @)', 'earthin-social-preview'); ?></label>
+                                <div style="display:flex; align-items:center;">
+                                    <span style="background:#f1f5f9; border:1px solid #cbd5e1; border-right:none; padding:8px 12px; border-radius:6px 0 0 6px; font-size:13px; color:#64748b;">@</span>
+                                    <input type="text" style="width:100%; max-width:320px; padding:8px 12px; border-radius:0 6px 6px 0; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[twitter_site_handle]" value="<?php echo esc_attr($settings['twitter_site_handle']); ?>" placeholder="earthin_online" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fallback Sharing Image Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>🖼️</span> <?php esc_html_e('Fallback Sharing Image', 'earthin-social-preview'); ?>
+                            </h2>
+
+                            <div style="margin-bottom:12px;">
+                                <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Default Image URL', 'earthin-social-preview'); ?></label>
+                                <input type="url" class="large-text" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[default_og_image]" value="<?php echo esc_attr($settings['default_og_image']); ?>" placeholder="https://example.com/wp-content/uploads/default-share.jpg" />
+                                <p style="font-size:12px; color:#64748b; margin-top:6px;">
+                                    <?php esc_html_e('Used whenever a shared post or page has neither a custom social image nor a featured post thumbnail. Recommended resolution: 1200 x 630 pixels.', 'earthin-social-preview'); ?>
+                                </p>
+                            </div>
+
+                            <?php if ($has_fallback): ?>
+                                <div style="margin-top:14px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px;">
+                                    <div style="font-size:11px; font-weight:600; color:#64748b; text-transform:uppercase; margin-bottom:8px;"><?php esc_html_e('Current Fallback Preview:', 'earthin-social-preview'); ?></div>
+                                    <img src="<?php echo esc_url($settings['default_og_image']); ?>" alt="Fallback Preview" style="max-height:160px; max-width:100%; border-radius:6px; display:block; object-fit:cover;" />
+                                </div>
+                            <?php endif; ?>
+                        </div>
+
+                        <button type="submit" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+                            <?php esc_html_e('Save Social Preview Settings', 'earthin-social-preview'); ?>
+                        </button>
+                    </div>
+
+                    <!-- Sidebar Info & Post Editor Tip -->
+                    <div>
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:20px;">
+                            <h3 style="font-size:14px; font-weight:700; color:#0f172a; margin:0 0 10px;"><?php esc_html_e('Per-Post Meta Box', 'earthin-social-preview'); ?></h3>
+                            <p style="font-size:12px; color:#64748b; line-height:1.5; margin:0 0 10px;">
+                                <?php esc_html_e('An interactive Social Card Preview box is automatically injected into the post editor for all posts, pages, and custom post types.', 'earthin-social-preview'); ?>
+                            </p>
+                            <p style="font-size:12px; color:#64748b; line-height:1.5; margin:0;">
+                                <?php esc_html_e('You can customize the card title, teaser text, and image individually for each post.', 'earthin-social-preview'); ?>
+                            </p>
+                        </div>
+
+                        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:18px;">
+                            <div style="font-size:13px; font-weight:700; color:#166534; margin-bottom:8px;">💡 <?php esc_html_e('Testing Your Tags', 'earthin-social-preview'); ?></div>
+                            <p style="font-size:12px; color:#15803d; line-height:1.5; margin:0;">
+                                <?php esc_html_e('Use the official Facebook Sharing Debugger and Twitter Card Validator to preview how social platforms cache your URLs.', 'earthin-social-preview'); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <?php
@@ -340,8 +430,8 @@ class Earthin_Social_Preview {
 
 add_action('plugins_loaded', ['Earthin_Social_Preview', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-social-preview')) . '">' . __('Settings', 'earthin-social-preview') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-social-preview')) . '">' . __('Settings', 'earthin-social-preview') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

@@ -367,99 +367,163 @@ final class Plugin {
 		$has_webp = function_exists( 'imagewebp' );
 
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Earthin Image Optimizer', 'earthin-image-optimizer' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'Compress images locally on your server without sending sensitive media to external third-party cloud APIs.', 'earthin-image-optimizer' ); ?>
-			</p>
+		<div class="earthin-admin-wrap">
+			<style>
+				.earthin-admin-wrap { max-width: 1200px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+				.earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+				.earthin-header-left { display: flex; align-items: center; gap: 14px; }
+				.earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+				.earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+				.earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+				.earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+				.earthin-header-links { display: flex; gap: 10px; align-items: center; }
+				.earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+				.earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+				.earthin-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+				@media(max-width: 900px) { .earthin-grid { grid-template-columns: 1fr; } }
+				.earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+				.earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+				.earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+				.earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+				.earthin-btn-primary:hover { background: #047857 !important; }
+				.earthin-btn-secondary { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; color: #334155 !important; font-weight: 700 !important; padding: 8px 18px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; text-decoration: none; display: inline-block; }
+				.earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+				.earthin-badge-success { background: #ecfdf5; color: #059669; }
+				.earthin-badge-danger { background: #fef2f2; color: #ef4444; }
+				.earthin-input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 14px; }
+			</style>
+
+			<header class="earthin-header">
+				<div class="earthin-header-left">
+					<span class="earthin-logo-badge">🌱 Earthin</span>
+					<div class="earthin-title-group">
+						<h1>
+							<?php echo esc_html__( 'Earthin Image Optimizer', 'earthin-image-optimizer' ); ?>
+							<span class="earthin-version-tag">v1.0.0</span>
+							<span class="earthin-badge-pill earthin-badge-success"><?php echo $has_webp ? esc_html__( 'WebP Engine Ready', 'earthin-image-optimizer' ) : esc_html__( 'Standard GD Mode', 'earthin-image-optimizer' ); ?></span>
+						</h1>
+						<p><?php echo esc_html__( 'Zero-cloud local image compression & privacy-safe WebP conversion by Shaurya Joshi.', 'earthin-image-optimizer' ); ?></p>
+					</div>
+				</div>
+				<div class="earthin-header-links">
+					<a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Plugin Hub', 'earthin-image-optimizer' ); ?> &nearr;</a>
+					<a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Documentation', 'earthin-image-optimizer' ); ?></a>
+					<a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Support', 'earthin-image-optimizer' ); ?></a>
+				</div>
+			</header>
 
 			<!-- Server Capability Notice -->
 			<?php if ( ! $has_gd ) : ?>
-				<div class="notice notice-error inline" style="margin-top:16px;">
+				<div class="notice notice-error inline" style="margin-top:16px; border-radius:8px;">
 					<p><strong><?php esc_html_e( 'Requirement Missing:', 'earthin-image-optimizer' ); ?></strong> <?php esc_html_e( 'The PHP GD extension is required for local image compression but is not enabled on your server. Please contact your host to enable php-gd.', 'earthin-image-optimizer' ); ?></p>
 				</div>
 			<?php endif; ?>
 
 			<!-- Stats Cards -->
-			<div style="display:flex; gap:16px; margin:24px 0; flex-wrap:wrap;">
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#10b981;"><?php echo number_format_i18n( $stats['count'] ); ?></div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Images Compressed', 'earthin-image-optimizer' ); ?></div>
+			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin:24px 0;">
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#059669;"><?php echo number_format_i18n( $stats['count'] ); ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Images Compressed', 'earthin-image-optimizer' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#0f172a;"><?php echo esc_html( $stats['saved_formatted'] ?: '0 B' ); ?></div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Disk Space Reclaimed', 'earthin-image-optimizer' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#0f172a;"><?php echo esc_html( $stats['saved_formatted'] ?: '0 B' ); ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Storage Space Saved', 'earthin-image-optimizer' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#6366f1;"><?php echo $has_webp ? esc_html__( 'Supported', 'earthin-image-optimizer' ) : esc_html__( 'Unavailable', 'earthin-image-optimizer' ); ?></div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Server WebP Engine', 'earthin-image-optimizer' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#0284c7;"><?php echo $has_webp ? esc_html__( 'Hardware WebP', 'earthin-image-optimizer' ) : esc_html__( 'Standard GD', 'earthin-image-optimizer' ); ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Compression Engine', 'earthin-image-optimizer' ); ?></div>
 				</div>
 			</div>
 
-			<form method="post" action="options.php" style="margin-top:20px;">
-				<?php settings_fields( 'eio_settings_group' ); ?>
+			<div class="earthin-grid">
+				<div class="earthin-card">
+					<div class="earthin-card-header">
+						<h2 class="earthin-card-title"><?php esc_html_e( 'Compression & Format Settings', 'earthin-image-optimizer' ); ?></h2>
+					</div>
 
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Automatic Upload Compression', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[auto_optimize]" value="1" <?php checked( 1, $settings['auto_optimize'] ); ?>>
-								<?php esc_html_e( 'Automatically compress newly uploaded images', 'earthin-image-optimizer' ); ?>
-							</label>
-							<p class="description"><?php esc_html_e( 'When enabled, images added to the media library are optimized on upload.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Preserve Original Backups', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[backup_originals]" value="1" <?php checked( 1, $settings['backup_originals'] ); ?>>
-								<?php esc_html_e( 'Store full-quality original copies in protected backup storage', 'earthin-image-optimizer' ); ?>
-							</label>
-							<p class="description"><?php esc_html_e( 'Enables one-click "Restore Original" from the WordPress Media Library at any time.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'JPEG Compression Quality', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<input type="number" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[jpeg_quality]" value="<?php echo esc_attr( $settings['jpeg_quality'] ); ?>" min="50" max="100" class="small-text">
-							<p class="description"><?php esc_html_e( 'Recommended: 82 for the optimal balance between visual clarity and file size.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'PNG Compression Level', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<input type="number" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[png_level]" value="<?php echo esc_attr( $settings['png_level'] ); ?>" min="1" max="9" class="small-text">
-							<p class="description"><?php esc_html_e( 'Zlib compression level (1-9). Recommended: 6.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Generate Next-Gen WebP Copies', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[generate_webp]" value="1" <?php checked( 1, $settings['generate_webp'] ); ?> <?php disabled( ! $has_webp ); ?>>
-								<?php esc_html_e( 'Create next-gen WebP version alongside JPEG/PNG', 'earthin-image-optimizer' ); ?>
-							</label>
-							<p class="description"><?php echo $has_webp ? esc_html__( 'PHP GD WebP encoder detected and ready.', 'earthin-image-optimizer' ) : esc_html__( 'WebP generation requires imagewebp support in PHP GD.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Strip EXIF Camera Metadata', 'earthin-image-optimizer' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[strip_exif]" value="1" <?php checked( 1, $settings['strip_exif'] ); ?>>
-								<?php esc_html_e( 'Remove geolocation, camera model, and creation metadata from images', 'earthin-image-optimizer' ); ?>
-							</label>
-							<p class="description"><?php esc_html_e( 'Improves visitor privacy and reduces file weight without changing pixel data.', 'earthin-image-optimizer' ); ?></p>
-						</td>
-					</tr>
-				</table>
+					<form method="post" action="options.php">
+						<?php settings_fields( 'eio_settings_group' ); ?>
 
-				<div style="margin-top:20px;">
-					<?php submit_button( __( 'Save Optimizer Settings', 'earthin-image-optimizer' ) ); ?>
+						<table class="form-table" role="presentation">
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Automatic Upload Compression', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[auto_optimize]" value="1" <?php checked( 1, $settings['auto_optimize'] ); ?>>
+										<strong><?php esc_html_e( 'Automatically compress newly uploaded media', 'earthin-image-optimizer' ); ?></strong>
+									</label>
+									<p class="description"><?php esc_html_e( 'Runs silently on wp_handle_upload to ensure new media is always lean.', 'earthin-image-optimizer' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Preserve Original Backups', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[backup_originals]" value="1" <?php checked( 1, $settings['backup_originals'] ); ?>>
+										<?php esc_html_e( 'Store full-quality original copies in protected backup storage', 'earthin-image-optimizer' ); ?>
+									</label>
+									<p class="description"><?php esc_html_e( 'Enables one-click "Restore Original" from the Media Library at any time.', 'earthin-image-optimizer' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'JPEG Compression Quality', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<input type="number" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[jpeg_quality]" value="<?php echo esc_attr( $settings['jpeg_quality'] ); ?>" min="50" max="100" class="earthin-input" style="width:100px;">
+									<p class="description"><?php esc_html_e( 'Recommended: 82 for the optimal balance between visual crispness and bandwidth reduction.', 'earthin-image-optimizer' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'PNG Compression Level', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<input type="number" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[png_level]" value="<?php echo esc_attr( $settings['png_level'] ); ?>" min="1" max="9" class="earthin-input" style="width:100px;">
+									<p class="description"><?php esc_html_e( 'Zlib lossless compression level (1-9). Recommended: 6.', 'earthin-image-optimizer' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Generate Next-Gen WebP Copies', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[generate_webp]" value="1" <?php checked( 1, $settings['generate_webp'] ); ?> <?php disabled( ! $has_webp ); ?>>
+										<?php esc_html_e( 'Create modern WebP copies alongside standard JPEG/PNG', 'earthin-image-optimizer' ); ?>
+									</label>
+									<p class="description"><?php echo $has_webp ? esc_html__( 'PHP GD WebP encoder active.', 'earthin-image-optimizer' ) : esc_html__( 'WebP requires imagewebp support in PHP GD.', 'earthin-image-optimizer' ); ?></p>
+								</td>
+							</tr>
+							<tr>
+								<th scope="row"><?php esc_html_e( 'Strip EXIF Camera Metadata', 'earthin-image-optimizer' ); ?></th>
+								<td>
+									<label>
+										<input type="checkbox" name="<?php echo esc_attr( EIO_OPTION_KEY ); ?>[strip_exif]" value="1" <?php checked( 1, $settings['strip_exif'] ); ?>>
+										<?php esc_html_e( 'Remove geolocation, camera model, and creation metadata from images', 'earthin-image-optimizer' ); ?>
+									</label>
+								</td>
+							</tr>
+						</table>
+
+						<p class="submit" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+							<input type="submit" class="button earthin-btn-primary" value="<?php esc_attr_e( 'Save Optimizer Settings', 'earthin-image-optimizer' ); ?>" />
+						</p>
+					</form>
 				</div>
-			</form>
+
+				<div>
+					<div class="earthin-card">
+						<div class="earthin-card-header">
+							<h2 class="earthin-card-title"><?php esc_html_e( 'Privacy & Performance', 'earthin-image-optimizer' ); ?></h2>
+						</div>
+						<p style="font-size:13px; color:#475569; line-height:1.6;">
+							🔒 <strong><?php esc_html_e( '100% On-Server Privacy:', 'earthin-image-optimizer' ); ?></strong><br>
+							<?php esc_html_e( 'Unlike cloud-based services, your media is processed entirely on your web server and never transmitted to external APIs.', 'earthin-image-optimizer' ); ?>
+						</p>
+
+						<div style="margin-top:20px; padding-top:16px; border-top:1px solid #f1f5f9;">
+							<a href="<?php echo esc_url( admin_url( 'upload.php?mode=list' ) ); ?>" class="button earthin-btn-secondary">
+								<?php esc_html_e( 'View Media Library & Optimize', 'earthin-image-optimizer' ); ?> &rarr;
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<?php
 	}
@@ -467,8 +531,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('upload.php?page=earthin-image-optimizer')) . '">' . __('Settings', 'earthin-image-optimizer') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('upload.php?page=earthin-image-optimizer')) . '">' . __('Settings', 'earthin-image-optimizer') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

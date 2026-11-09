@@ -172,46 +172,104 @@ class Earthin_Form_Builder {
         }
 
         $entries = array_reverse(get_option('earthin_form_entries', []));
+        $entries_count = count($entries);
         ?>
-        <div class="wrap">
-            <h1><?php echo esc_html__('Earthin Form Builder & Entries', 'earthin-form-builder'); ?></h1>
-            <p><?php echo esc_html__('Embed responsive contact forms using shortcode: [earthin_form id="contact" title="Get in Touch"]', 'earthin-form-builder'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1240px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-btn-danger { background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important; font-weight: 700 !important; padding: 6px 14px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-badge-neutral { background: #f1f5f9; color: #64748b; }
+                .earthin-table { width: 100%; border-collapse: collapse; }
+                .earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+                .earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+                .earthin-table tr:hover td { background: #fafbfc; }
+            </style>
+
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php echo esc_html__('Earthin Form Builder & Entries', 'earthin-form-builder'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill earthin-badge-success"><?php echo sprintf(esc_html__('%d Submissions', 'earthin-form-builder'), $entries_count); ?></span>
+                        </h1>
+                        <p><?php echo esc_html__('Lightweight honeypot-protected inquiry capture engineered by Shaurya Joshi.', 'earthin-form-builder'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-form-builder'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-form-builder'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-form-builder'); ?></a>
+                </div>
+            </header>
+
             <?php settings_errors('earthin_forms'); ?>
 
-            <div style="background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;margin-top:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
-                    <h2><?php echo esc_html__('Form Inquiries & Submissions', 'earthin-form-builder'); ?> (<?php echo count($entries); ?>)</h2>
+            <div class="earthin-card" style="padding: 18px 24px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                    <div>
+                        <strong style="color:#0f172a; font-size:14px;"><?php echo esc_html__('Embed Shortcode:', 'earthin-form-builder'); ?></strong>
+                        <span style="font-size:13px; color:#64748b; margin-left:6px;"><?php echo esc_html__('Paste this shortcode anywhere on your site to render a responsive inquiry form:', 'earthin-form-builder'); ?></span>
+                    </div>
+                    <div>
+                        <code style="background:#ecfdf5; color:#047857; font-weight:700; padding:6px 14px; border-radius:8px; border:1px solid #a7f3d0; font-size:13px;">[earthin_form id="contact" title="Get in Touch"]</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="earthin-card" style="padding:0; overflow:hidden;">
+                <div style="padding: 20px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                    <h2 class="earthin-card-title"><?php echo esc_html__('Recorded Form Submissions', 'earthin-form-builder'); ?> (<?php echo esc_html((string)$entries_count); ?>)</h2>
                     <?php if (!empty($entries)) : ?>
-                        <form method="post" onsubmit="return confirm('Clear all saved form entries?');">
+                        <form method="post" onsubmit="return confirm('Clear all saved form inquiries?');">
                             <?php wp_nonce_field('earthin_clear_entries_nonce'); ?>
-                            <input type="submit" name="earthin_clear_entries" class="button button-secondary" style="color:#d63638;" value="<?php echo esc_attr__('Clear All Entries', 'earthin-form-builder'); ?>" />
+                            <input type="submit" name="earthin_clear_entries" class="button earthin-btn-danger" value="<?php echo esc_attr__('Clear All Entries', 'earthin-form-builder'); ?>" />
                         </form>
                     <?php endif; ?>
                 </div>
 
                 <?php if (empty($entries)) : ?>
-                    <p><?php echo esc_html__('No submissions recorded yet. Embed a shortcode into any post or page to begin capturing leads.', 'earthin-form-builder'); ?></p>
+                    <div style="padding: 40px; text-align: center; color: #64748b;">
+                        <p style="margin: 0; font-size: 14px;"><?php echo esc_html__('No inquiries logged yet. Embed the shortcode into any page to start capturing visitor messages.', 'earthin-form-builder'); ?></p>
+                    </div>
                 <?php else : ?>
-                    <table class="wp-list-table widefat fixed striped">
-                        <thead>
-                            <tr>
-                                <th style="width:160px;"><?php echo esc_html__('Date', 'earthin-form-builder'); ?></th>
-                                <th style="width:140px;"><?php echo esc_html__('Sender Name', 'earthin-form-builder'); ?></th>
-                                <th style="width:180px;"><?php echo esc_html__('Email', 'earthin-form-builder'); ?></th>
-                                <th><?php echo esc_html__('Message', 'earthin-form-builder'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($entries as $e) : ?>
+                    <div style="overflow-x: auto;">
+                        <table class="earthin-table">
+                            <thead>
                                 <tr>
-                                    <td><?php echo esc_html($e['created_at']); ?></td>
-                                    <td><strong><?php echo esc_html($e['name']); ?></strong></td>
-                                    <td><a href="mailto:<?php echo esc_attr($e['email']); ?>"><?php echo esc_html($e['email']); ?></a></td>
-                                    <td><?php echo nl2br(esc_html($e['message'])); ?></td>
+                                    <th style="width:160px;"><?php echo esc_html__('Timestamp', 'earthin-form-builder'); ?></th>
+                                    <th style="width:170px;"><?php echo esc_html__('Sender Name', 'earthin-form-builder'); ?></th>
+                                    <th style="width:220px;"><?php echo esc_html__('Email Address', 'earthin-form-builder'); ?></th>
+                                    <th><?php echo esc_html__('Message Inquiry', 'earthin-form-builder'); ?></th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($entries as $e) : ?>
+                                    <tr>
+                                        <td><span class="earthin-badge-pill earthin-badge-neutral"><?php echo esc_html($e['created_at']); ?></span></td>
+                                        <td><strong style="color:#0f172a;"><?php echo esc_html($e['name']); ?></strong></td>
+                                        <td><a href="mailto:<?php echo esc_attr($e['email']); ?>" style="color:#059669; font-weight:600; text-decoration:none;"><?php echo esc_html($e['email']); ?></a></td>
+                                        <td><div style="max-height: 80px; overflow-y: auto; color:#334155; line-height:1.5;"><?php echo nl2br(esc_html($e['message'])); ?></div></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -221,8 +279,8 @@ class Earthin_Form_Builder {
 
 add_action('plugins_loaded', ['Earthin_Form_Builder', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-form-builder')) . '">' . __('Settings', 'earthin-form-builder') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=earthin-form-builder')) . '">' . __('Settings', 'earthin-form-builder') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

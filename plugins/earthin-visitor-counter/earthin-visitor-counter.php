@@ -222,76 +222,149 @@ class Earthin_Visitor_Counter {
         }
 
         $total_views = (int) get_option('earthin_vc_total_views', 0);
+        $fourteen_day_visitors = 0;
+        $fourteen_day_views = 0;
+        foreach ($daily_stats as $d) {
+            $fourteen_day_visitors += (int) $d['unique_visitors'];
+            $fourteen_day_views += (int) $d['pageviews'];
+        }
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Visitor Counter & Traffic Analytics', 'earthin-visitor-counter'); ?></h1>
-            <p><?php esc_html_e('Self-hosted, 100% GDPR-compliant web statistics stored on your own database.', 'earthin-visitor-counter'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1240px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-grid { display: grid; grid-template-columns: 1.8fr 1.2fr; gap: 24px; }
+                @media(max-width: 960px) { .earthin-grid { grid-template-columns: 1fr; } }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-badge-neutral { background: #f1f5f9; color: #64748b; }
+                .earthin-table { width: 100%; border-collapse: collapse; }
+                .earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+                .earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+                .earthin-table tr:hover td { background: #fafbfc; }
+            </style>
 
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 20px 0;">
-                <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ccd0d4; box-shadow: 0 1px 1px rgba(0,0,0,.04);">
-                    <div style="font-size: 13px; color: #64748b; font-weight: 600; text-transform: uppercase;"><?php esc_html_e('All-Time Pageviews', 'earthin-visitor-counter'); ?></div>
-                    <div style="font-size: 32px; font-weight: 700; color: #0f172a; margin-top: 8px;"><?php echo number_format_i18n($total_views); ?></div>
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php esc_html_e('Earthin Visitor Counter & Traffic Analytics', 'earthin-visitor-counter'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill earthin-badge-success"><?php echo esc_html__('100% GDPR Private', 'earthin-visitor-counter'); ?></span>
+                        </h1>
+                        <p><?php esc_html_e('Self-hosted, cookie-free web metrics stored privately in your database by Shaurya Joshi.', 'earthin-visitor-counter'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-visitor-counter'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-visitor-counter'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-visitor-counter'); ?></a>
+                </div>
+            </header>
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:24px 0;">
+                <div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+                    <div style="font-size:28px; font-weight:800; color:#059669;"><?php echo number_format_i18n($total_views); ?></div>
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e('All-Time Pageviews', 'earthin-visitor-counter'); ?></div>
+                </div>
+                <div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+                    <div style="font-size:28px; font-weight:800; color:#0284c7;"><?php echo number_format_i18n($fourteen_day_visitors); ?></div>
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e('14-Day Unique Visitors', 'earthin-visitor-counter'); ?></div>
+                </div>
+                <div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+                    <div style="font-size:28px; font-weight:800; color:#6366f1;"><?php echo number_format_i18n($fourteen_day_views); ?></div>
+                    <div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e('14-Day Total Pageviews', 'earthin-visitor-counter'); ?></div>
                 </div>
             </div>
 
-            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px;">
-                <div>
-                    <h2><?php esc_html_e('Past 14 Days Activity', 'earthin-visitor-counter'); ?></h2>
-                    <table class="widefat striped">
-                        <thead>
-                            <tr>
-                                <th><?php esc_html_e('Date', 'earthin-visitor-counter'); ?></th>
-                                <th><?php esc_html_e('Unique Visitors', 'earthin-visitor-counter'); ?></th>
-                                <th><?php esc_html_e('Total Pageviews', 'earthin-visitor-counter'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($daily_stats)): ?>
-                                <tr><td colspan="3"><?php esc_html_e('No traffic recorded yet.', 'earthin-visitor-counter'); ?></td></tr>
-                            <?php else: ?>
-                                <?php foreach ($daily_stats as $day): ?>
-                                    <tr>
-                                        <td><strong><?php echo esc_html($day['visit_date']); ?></strong></td>
-                                        <td><?php echo number_format_i18n((int) $day['unique_visitors']); ?></td>
-                                        <td><?php echo number_format_i18n((int) $day['pageviews']); ?></td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+            <div class="earthin-grid">
+                <div class="earthin-card" style="padding:0; overflow:hidden;">
+                    <div style="padding:20px 24px; border-bottom:1px solid #f1f5f9;">
+                        <h2 class="earthin-card-title"><?php esc_html_e('Past 14 Days Activity Trend', 'earthin-visitor-counter'); ?></h2>
+                    </div>
+                    <div style="overflow-x:auto;">
+                        <table class="earthin-table">
+                            <thead>
+                                <tr>
+                                    <th><?php esc_html_e('Date', 'earthin-visitor-counter'); ?></th>
+                                    <th style="width:140px;"><?php esc_html_e('Unique Visitors', 'earthin-visitor-counter'); ?></th>
+                                    <th style="width:140px;"><?php esc_html_e('Total Pageviews', 'earthin-visitor-counter'); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($daily_stats)): ?>
+                                    <tr><td colspan="3" style="text-align:center; padding:32px; color:#64748b;"><?php esc_html_e('No traffic recorded yet. Visits will populate in real time.', 'earthin-visitor-counter'); ?></td></tr>
+                                <?php else: ?>
+                                    <?php foreach ($daily_stats as $day): ?>
+                                        <tr>
+                                            <td><span class="earthin-badge-pill earthin-badge-neutral"><?php echo esc_html($day['visit_date']); ?></span></td>
+                                            <td><strong><?php echo number_format_i18n((int) $day['unique_visitors']); ?></strong></td>
+                                            <td><span style="color:#059669; font-weight:700;"><?php echo number_format_i18n((int) $day['pageviews']); ?></span></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div>
-                    <h2><?php esc_html_e('Top Visited Content', 'earthin-visitor-counter'); ?></h2>
-                    <table class="widefat striped">
-                        <thead>
-                            <tr>
-                                <th><?php esc_html_e('Page Title', 'earthin-visitor-counter'); ?></th>
-                                <th><?php esc_html_e('Views', 'earthin-visitor-counter'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($top_pages)): ?>
-                                <tr><td colspan="2"><?php esc_html_e('No page hits recorded yet.', 'earthin-visitor-counter'); ?></td></tr>
-                            <?php else: ?>
-                                <?php foreach ($top_pages as $page): ?>
+                    <div class="earthin-card" style="padding:0; overflow:hidden; margin-bottom:24px;">
+                        <div style="padding:20px 24px; border-bottom:1px solid #f1f5f9;">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Top Visited Content', 'earthin-visitor-counter'); ?></h2>
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="earthin-table">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <a href="<?php echo esc_url(get_permalink($page['post_id'])); ?>" target="_blank">
-                                                <?php echo esc_html(get_the_title($page['post_id']) ?: __('(No title)', 'earthin-visitor-counter')); ?>
-                                            </a>
-                                        </td>
-                                        <td><strong><?php echo number_format_i18n((int) $page['views']); ?></strong></td>
+                                        <th><?php esc_html_e('Page Title', 'earthin-visitor-counter'); ?></th>
+                                        <th style="width:90px; text-align:right;"><?php esc_html_e('Views', 'earthin-visitor-counter'); ?></th>
                                     </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody>
+                                    <?php if (empty($top_pages)): ?>
+                                        <tr><td colspan="2" style="text-align:center; padding:24px; color:#64748b;"><?php esc_html_e('No page hits recorded yet.', 'earthin-visitor-counter'); ?></td></tr>
+                                    <?php else: ?>
+                                        <?php foreach ($top_pages as $page): ?>
+                                            <tr>
+                                                <td>
+                                                    <a href="<?php echo esc_url(get_permalink($page['post_id'])); ?>" target="_blank" style="color:#0f172a; text-decoration:none; font-weight:600;">
+                                                        <?php echo esc_html(get_the_title($page['post_id']) ?: __('(No title)', 'earthin-visitor-counter')); ?> &nearr;
+                                                    </a>
+                                                </td>
+                                                <td style="text-align:right;"><span class="earthin-badge-pill earthin-badge-success"><?php echo number_format_i18n((int) $page['views']); ?></span></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
-                    <div style="margin-top: 24px; background: #fff; padding: 16px; border: 1px solid #ccd0d4; border-radius: 8px;">
-                        <h3 style="margin-top: 0;"><?php esc_html_e('Available Shortcodes', 'earthin-visitor-counter'); ?></h3>
-                        <p><code>[earthin_visitor_counter]</code> - <?php esc_html_e('Displays all-time visits counter.', 'earthin-visitor-counter'); ?></p>
-                        <p><code>[earthin_page_views]</code> - <?php esc_html_e('Displays views for the current post/page.', 'earthin-visitor-counter'); ?></p>
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h3 class="earthin-card-title"><?php esc_html_e('Available Shortcodes', 'earthin-visitor-counter'); ?></h3>
+                        </div>
+                        <div style="margin-bottom:12px;">
+                            <code style="background:#ecfdf5; color:#047857; font-weight:700; padding:4px 8px; border-radius:6px; font-size:12px;">[earthin_visitor_counter]</code>
+                            <p style="font-size:12px; color:#64748b; margin:4px 0 0;"><?php esc_html_e('Displays total all-time site visits counter.', 'earthin-visitor-counter'); ?></p>
+                        </div>
+                        <div>
+                            <code style="background:#ecfdf5; color:#047857; font-weight:700; padding:4px 8px; border-radius:6px; font-size:12px;">[earthin_page_views]</code>
+                            <p style="font-size:12px; color:#64748b; margin:4px 0 0;"><?php esc_html_e('Displays view counter for the current single post/page.', 'earthin-visitor-counter'); ?></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -302,8 +375,8 @@ class Earthin_Visitor_Counter {
 
 add_action('plugins_loaded', ['Earthin_Visitor_Counter', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-visitor-counter')) . '">' . __('Settings', 'earthin-visitor-counter') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('admin.php?page=earthin-visitor-counter')) . '">' . __('Settings', 'earthin-visitor-counter') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

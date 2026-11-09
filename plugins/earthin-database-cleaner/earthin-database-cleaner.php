@@ -285,11 +285,49 @@ final class Plugin {
 		}
 
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Earthin Database Cleaner', 'earthin-database-cleaner' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'Preview and selectively purge expired transients, orphaned metadata, and unneeded revisions to keep your WordPress database lean.', 'earthin-database-cleaner' ); ?>
-			</p>
+		<div class="earthin-admin-wrap">
+			<style>
+				.earthin-admin-wrap { max-width: 1200px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+				.earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+				.earthin-header-left { display: flex; align-items: center; gap: 14px; }
+				.earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+				.earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+				.earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+				.earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+				.earthin-header-links { display: flex; gap: 10px; align-items: center; }
+				.earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+				.earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+				.earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+				.earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+				.earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+				.earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 10px 24px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+				.earthin-btn-primary:hover { background: #047857 !important; }
+				.earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+				.earthin-badge-success { background: #ecfdf5; color: #059669; }
+				.earthin-table { width: 100%; border-collapse: collapse; }
+				.earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+				.earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+				.earthin-table tr:hover td { background: #fafbfc; }
+			</style>
+
+			<header class="earthin-header">
+				<div class="earthin-header-left">
+					<span class="earthin-logo-badge">🌱 Earthin</span>
+					<div class="earthin-title-group">
+						<h1>
+							<?php echo esc_html__( 'Earthin Database Cleaner', 'earthin-database-cleaner' ); ?>
+							<span class="earthin-version-tag">v1.0.0</span>
+							<span class="earthin-badge-pill earthin-badge-success"><?php echo esc_html__( 'Optimizer Ready', 'earthin-database-cleaner' ); ?></span>
+						</h1>
+						<p><?php echo esc_html__( 'Purge redundant transients, revisions, and orphaned metadata safely by Shaurya Joshi.', 'earthin-database-cleaner' ); ?></p>
+					</div>
+				</div>
+				<div class="earthin-header-links">
+					<a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Plugin Hub', 'earthin-database-cleaner' ); ?> &nearr;</a>
+					<a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Documentation', 'earthin-database-cleaner' ); ?></a>
+					<a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Support', 'earthin-database-cleaner' ); ?></a>
+				</div>
+			</header>
 
 			<?php if ( ! empty( $_GET['edc_error'] ) ) : ?>
 				<div class="notice notice-error is-dismissible">
@@ -306,7 +344,7 @@ final class Plugin {
 			<?php endif; ?>
 
 			<?php if ( is_array( $report ) ) : ?>
-				<div class="notice notice-success is-dismissible">
+				<div class="notice notice-success is-dismissible" style="border-left-color: #059669;">
 					<p><strong><?php esc_html_e( 'Cleanup complete!', 'earthin-database-cleaner' ); ?></strong></p>
 					<ul style="list-style:disc; margin-left:20px;">
 						<?php
@@ -327,75 +365,83 @@ final class Plugin {
 			<?php endif; ?>
 
 			<!-- Database Metric Cards -->
-			<div style="display:flex; gap:16px; margin:24px 0; flex-wrap:wrap;">
-				<div style="flex:1; min-width:180px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#0f172a;"><?php echo (int) $overview['table_count']; ?></div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Tables (Prefix Matched)', 'earthin-database-cleaner' ); ?></div>
+			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:24px 0;">
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#059669;"><?php echo (int) $overview['table_count']; ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Prefix Matched Tables', 'earthin-database-cleaner' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:180px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#0f172a;"><?php echo esc_html( $overview['total_size_mb'] ); ?> MB</div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Total Database Size', 'earthin-database-cleaner' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#0f172a;"><?php echo esc_html( $overview['total_size_mb'] ); ?> MB</div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Total Database Footprint', 'earthin-database-cleaner' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:180px; background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:16px;">
-					<div style="font-size:24px; font-weight:700; color:#0f172a;"><?php echo esc_html( $overview['overhead_mb'] ); ?> MB</div>
-					<div style="font-size:13px; color:#64748b;"><?php esc_html_e( 'Free Overhead Space', 'earthin-database-cleaner' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:26px; font-weight:800; color:#d97706;"><?php echo esc_html( $overview['overhead_mb'] ); ?> MB</div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Reclaimable Overhead', 'earthin-database-cleaner' ); ?></div>
 				</div>
 			</div>
 
 			<!-- Cleanup Form -->
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:20px;">
-				<input type="hidden" name="action" value="edc_cleanup">
-				<?php wp_nonce_field( 'edc_cleanup_action', 'edc_cleanup_nonce' ); ?>
-
-				<table class="wp-list-table widefat fixed striped">
-					<thead>
-						<tr>
-							<th style="width:40px;"><input type="checkbox" id="edc-select-all" onclick="document.querySelectorAll('.edc-item-check').forEach(cb => { if(!cb.disabled) cb.checked = this.checked; });"></th>
-							<th style="width:240px;"><?php esc_html_e( 'Category', 'earthin-database-cleaner' ); ?></th>
-							<th style="width:140px;"><?php esc_html_e( 'Redundant Rows', 'earthin-database-cleaner' ); ?></th>
-							<th><?php esc_html_e( 'Details', 'earthin-database-cleaner' ); ?></th>
-						</tr>
-					</thead>
-					<tbody>
-						<?php foreach ( $inventory as $key => $data ) : ?>
-							<?php $has_records = $data['count'] > 0; ?>
-							<tr>
-								<td>
-									<input type="checkbox" name="edc_items[]" value="<?php echo esc_attr( $key ); ?>" class="edc-item-check" <?php disabled( ! $has_records ); ?>>
-								</td>
-								<td><strong><?php echo esc_html( $data['label'] ); ?></strong></td>
-								<td>
-									<?php if ( $has_records ) : ?>
-										<span style="background:#fee2e2; color:#b91c1c; padding:2px 8px; border-radius:9999px; font-weight:600; font-size:12px;">
-											<?php echo number_format_i18n( $data['count'] ); ?>
-										</span>
-									<?php else : ?>
-										<span style="background:#f1f5f9; color:#64748b; padding:2px 8px; border-radius:9999px; font-weight:500; font-size:12px;">
-											0
-										</span>
-									<?php endif; ?>
-								</td>
-								<td style="color:#475569; font-size:13px;"><?php echo esc_html( $data['description'] ); ?></td>
-							</tr>
-						<?php endforeach; ?>
-					</tbody>
-				</table>
-
-				<div style="background:#fffbeb; border:1px solid #fef3c7; border-left:4px solid #f59e0b; border-radius:6px; padding:16px; margin:24px 0;">
-					<h3 style="margin-top:0; color:#b45309;"><?php esc_html_e( 'Safety Notice & Administrator Confirmation', 'earthin-database-cleaner' ); ?></h3>
-					<p style="color:#78350f; font-size:13px;">
-						<?php esc_html_e( 'Database cleanups are permanent. Although these routines target only redundant historical records, it is recommended to take a full database backup before running any cleanup.', 'earthin-database-cleaner' ); ?>
-					</p>
-					<label style="display:block; margin-top:12px; font-weight:600; color:#78350f;">
-						<input type="checkbox" name="edc_confirm_purge" value="1" required>
-						<?php esc_html_e( 'I understand that deleted rows cannot be recovered and confirm this cleanup.', 'earthin-database-cleaner' ); ?>
-					</label>
+			<div class="earthin-card" style="padding:0; overflow:hidden;">
+				<div style="padding:20px 24px; border-bottom:1px solid #f1f5f9;">
+					<h2 class="earthin-card-title"><?php esc_html_e( 'Select Optimization Targets', 'earthin-database-cleaner' ); ?></h2>
 				</div>
 
-				<div style="margin-top:16px;">
-					<?php submit_button( __( 'Execute Selected Cleanup', 'earthin-database-cleaner' ), 'primary', 'submit', false, array( 'onclick' => 'return confirm("' . esc_js( __( 'Are you sure you want to permanently delete the selected database records?', 'earthin-database-cleaner' ) ) . '");' ) ); ?>
-				</div>
-			</form>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="edc_cleanup">
+					<?php wp_nonce_field( 'edc_cleanup_action', 'edc_cleanup_nonce' ); ?>
+
+					<div style="overflow-x:auto;">
+						<table class="earthin-table">
+							<thead>
+								<tr>
+									<th style="width:40px;"><input type="checkbox" id="edc-select-all" onclick="document.querySelectorAll('.edc-item-check').forEach(cb => { if(!cb.disabled) cb.checked = this.checked; });"></th>
+									<th style="width:240px;"><?php esc_html_e( 'Category', 'earthin-database-cleaner' ); ?></th>
+									<th style="width:140px;"><?php esc_html_e( 'Redundant Rows', 'earthin-database-cleaner' ); ?></th>
+									<th><?php esc_html_e( 'Details', 'earthin-database-cleaner' ); ?></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php foreach ( $inventory as $key => $data ) : ?>
+									<?php $has_records = $data['count'] > 0; ?>
+									<tr>
+										<td>
+											<input type="checkbox" name="edc_items[]" value="<?php echo esc_attr( $key ); ?>" class="edc-item-check" <?php disabled( ! $has_records ); ?>>
+										</td>
+										<td><strong><?php echo esc_html( $data['label'] ); ?></strong></td>
+										<td>
+											<?php if ( $has_records ) : ?>
+												<span style="background:#fee2e2; color:#b91c1c; padding:3px 10px; border-radius:999px; font-weight:700; font-size:12px;">
+													<?php echo number_format_i18n( $data['count'] ); ?>
+												</span>
+											<?php else : ?>
+												<span style="background:#f1f5f9; color:#64748b; padding:3px 10px; border-radius:999px; font-weight:600; font-size:12px;">
+													0
+												</span>
+											<?php endif; ?>
+										</td>
+										<td style="color:#475569; font-size:13px; line-height:1.5;"><?php echo esc_html( $data['description'] ); ?></td>
+									</tr>
+								<?php endforeach; ?>
+							</tbody>
+						</table>
+					</div>
+
+					<div style="padding: 24px; border-top: 1px solid #f1f5f9;">
+						<div style="background:#fffbeb; border:1px solid #fef3c7; border-left:4px solid #f59e0b; border-radius:8px; padding:18px; margin-bottom:20px;">
+							<h3 style="margin-top:0; color:#b45309; font-size:14px; font-weight:700;"><?php esc_html_e( 'Safety Notice & Administrator Confirmation', 'earthin-database-cleaner' ); ?></h3>
+							<p style="color:#78350f; font-size:13px; margin:6px 0 12px; line-height:1.5;">
+								<?php esc_html_e( 'Database cleanups permanently remove stale rows. It is standard best practice to take a database backup prior to execution.', 'earthin-database-cleaner' ); ?>
+							</p>
+							<label style="display:flex; align-items:center; gap:8px; font-weight:700; color:#78350f; font-size:13px; cursor:pointer;">
+								<input type="checkbox" name="edc_confirm_purge" value="1" required>
+								<?php esc_html_e( 'I confirm this database cleanup operation.', 'earthin-database-cleaner' ); ?>
+							</label>
+						</div>
+
+						<input type="submit" name="submit" class="button earthin-btn-primary" value="<?php esc_attr_e( 'Execute Selected Cleanup', 'earthin-database-cleaner' ); ?>" onclick="return confirm('<?php echo esc_js( __( 'Are you sure you want to permanently delete the selected database records?', 'earthin-database-cleaner' ) ); ?>');" />
+					</div>
+				</form>
+			</div>
 		</div>
 		<?php
 	}
@@ -403,8 +449,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-database-cleaner')) . '">' . __('Settings', 'earthin-database-cleaner') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('tools.php?page=earthin-database-cleaner')) . '">' . __('Settings', 'earthin-database-cleaner') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

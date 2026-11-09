@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
     <footer id="colophon" class="site-footer">
         <div class="earthin-container">
             <?php if (is_active_sidebar('footer-1')) : ?>
-                <div class="footer-widgets-wrap" style="margin-bottom: 2rem; border-bottom: 1px solid #1e293b; padding-bottom: 2rem;">
+                <div class="footer-widgets-wrap">
                     <?php dynamic_sidebar('footer-1'); ?>
                 </div>
             <?php endif; ?>

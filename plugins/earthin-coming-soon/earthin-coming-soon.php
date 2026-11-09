@@ -235,19 +235,72 @@ class Earthin_Coming_Soon {
 
         $subscribers = get_option('earthin_coming_soon_subscribers', []);
         $preview_url = home_url('/?earthin_preview=' . urlencode($this->options['secret_key'] ?? 'preview123'));
+        $is_active = !empty($this->options['enabled']);
+        $status_label = $is_active ? __('Splash Page Active', 'earthin-coming-soon') : __('Site Visible to Public', 'earthin-coming-soon');
+        $status_badge_class = $is_active ? 'earthin-badge-warning' : 'earthin-badge-success';
         ?>
-        <div class="wrap">
-            <h1><?php echo esc_html__('Earthin Coming Soon & Countdown', 'earthin-coming-soon'); ?></h1>
-            <p><?php echo esc_html__('Enable an under-construction splash page while building your site.', 'earthin-coming-soon'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1200px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+                @media(max-width: 900px) { .earthin-grid { grid-template-columns: 1fr; } }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-stat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+                .earthin-stat-num { font-size: 26px; font-weight: 800; color: #059669; line-height: 1.1; }
+                .earthin-stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; margin-top: 4px; }
+                .earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+                .earthin-btn-primary:hover { background: #047857 !important; }
+                .earthin-btn-secondary { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; color: #334155 !important; font-weight: 700 !important; padding: 8px 18px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; text-decoration: none; display: inline-block; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-badge-warning { background: #fffbeb; color: #d97706; }
+                .earthin-input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 14px; width: 100%; box-sizing: border-box; }
+                .earthin-input:focus { border-color: #059669; outline: none; box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+            </style>
+
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php echo esc_html__('Earthin Coming Soon & Countdown', 'earthin-coming-soon'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill <?php echo esc_attr($status_badge_class); ?>"><?php echo esc_html($status_label); ?></span>
+                        </h1>
+                        <p><?php echo esc_html__('High-converting launch splash page & countdown clock engineered by Shaurya Joshi.', 'earthin-coming-soon'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-coming-soon'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-coming-soon'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-coming-soon'); ?></a>
+                </div>
+            </header>
+
             <?php settings_errors('earthin_cs'); ?>
 
-            <div style="display:flex;gap:20px;margin-top:20px;">
-                <div style="flex:2;background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;">
+            <div class="earthin-grid">
+                <div class="earthin-card">
+                    <div class="earthin-card-header">
+                        <h2 class="earthin-card-title"><?php esc_html_e('Launch Splash Controls', 'earthin-coming-soon'); ?></h2>
+                    </div>
+
                     <form method="post">
                         <?php wp_nonce_field('earthin_cs_admin_nonce'); ?>
-                        <table class="form-table">
+                        <table class="form-table" role="presentation">
                             <tr>
-                                <th scope="row"><?php esc_html_e('Enable Coming Soon Mode', 'earthin-coming-soon'); ?></th>
+                                <th scope="row"><?php esc_html_e('Coming Soon Mode', 'earthin-coming-soon'); ?></th>
                                 <td>
                                     <label>
                                         <input type="checkbox" name="enabled" value="1" <?php checked(1, $this->options['enabled']); ?> />
@@ -258,58 +311,83 @@ class Earthin_Coming_Soon {
                             <tr>
                                 <th scope="row"><?php esc_html_e('Headline', 'earthin-coming-soon'); ?></th>
                                 <td>
-                                    <input type="text" name="headline" value="<?php echo esc_attr($this->options['headline']); ?>" class="large-text" required />
+                                    <input type="text" name="headline" value="<?php echo esc_attr($this->options['headline']); ?>" class="earthin-input" required />
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php esc_html_e('Subheadline', 'earthin-coming-soon'); ?></th>
+                                <th scope="row"><?php esc_html_e('Subheadline Description', 'earthin-coming-soon'); ?></th>
                                 <td>
-                                    <textarea name="subheadline" rows="3" class="large-text"><?php echo esc_textarea($this->options['subheadline']); ?></textarea>
+                                    <textarea name="subheadline" rows="3" class="earthin-input"><?php echo esc_textarea($this->options['subheadline']); ?></textarea>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php esc_html_e('Launch Target Date', 'earthin-coming-soon'); ?></th>
+                                <th scope="row"><?php esc_html_e('Target Launch Date', 'earthin-coming-soon'); ?></th>
                                 <td>
-                                    <input type="date" name="target_date" value="<?php echo esc_attr($this->options['target_date']); ?>" required />
+                                    <input type="date" name="target_date" value="<?php echo esc_attr($this->options['target_date']); ?>" class="earthin-input" style="max-width:240px;" required />
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php esc_html_e('Client Bypass Secret', 'earthin-coming-soon'); ?></th>
+                                <th scope="row"><?php esc_html_e('Client Bypass Secret Key', 'earthin-coming-soon'); ?></th>
                                 <td>
-                                    <input type="text" name="secret_key" value="<?php echo esc_attr($this->options['secret_key']); ?>" class="regular-text" />
-                                    <p class="description">
-                                        <?php esc_html_e('Share this secret preview link with clients to let them browse without logging in:', 'earthin-coming-soon'); ?><br>
-                                        <code><a href="<?php echo esc_url($preview_url); ?>" target="_blank"><?php echo esc_html($preview_url); ?></a></code>
+                                    <input type="text" name="secret_key" value="<?php echo esc_attr($this->options['secret_key']); ?>" class="earthin-input" style="max-width:240px;" />
+                                    <p class="description" style="margin-top:8px;">
+                                        <?php esc_html_e('Bypass URL to allow clients to preview the real site without logging in:', 'earthin-coming-soon'); ?><br>
+                                        <code style="background:#f1f5f9; padding:4px 8px; border-radius:6px; display:inline-block; margin-top:4px;"><a href="<?php echo esc_url($preview_url); ?>" target="_blank" style="color:#059669; text-decoration:none;"><?php echo esc_html($preview_url); ?> &nearr;</a></code>
                                     </p>
                                 </td>
                             </tr>
                             <tr>
-                                <th scope="row"><?php esc_html_e('Lead Capture Form', 'earthin-coming-soon'); ?></th>
+                                <th scope="row"><?php esc_html_e('Email Lead Capture', 'earthin-coming-soon'); ?></th>
                                 <td>
                                     <label>
                                         <input type="checkbox" name="lead_capture" value="1" <?php checked(1, $this->options['lead_capture']); ?> />
-                                        <?php esc_html_e('Allow visitors to submit email addresses to be notified upon launch.', 'earthin-coming-soon'); ?>
+                                        <?php esc_html_e('Display newsletter email capture box on splash page.', 'earthin-coming-soon'); ?>
                                     </label>
                                 </td>
                             </tr>
                         </table>
-                        <p class="submit">
-                            <input type="submit" name="earthin_save_cs" class="button button-primary" value="<?php esc_attr_e('Save Configuration', 'earthin-coming-soon'); ?>" />
+
+                        <p class="submit" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+                            <input type="submit" name="earthin_save_cs" class="button earthin-btn-primary" value="<?php esc_attr_e('Save Configuration', 'earthin-coming-soon'); ?>" />
                         </p>
                     </form>
                 </div>
 
-                <div style="flex:1;background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;">
-                    <h2><?php esc_html_e('Subscribed Leads', 'earthin-coming-soon'); ?> (<?php echo count($subscribers); ?>)</h2>
-                    <?php if (empty($subscribers)) : ?>
-                        <p class="description"><?php esc_html_e('No subscribers yet.', 'earthin-coming-soon'); ?></p>
-                    <?php else : ?>
-                        <ol style="padding-left:20px;max-height:300px;overflow-y:auto;">
-                            <?php foreach ($subscribers as $s) : ?>
-                                <li><code><?php echo esc_html($s); ?></code></li>
-                            <?php endforeach; ?>
-                        </ol>
-                    <?php endif; ?>
+                <div>
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Collected Leads', 'earthin-coming-soon'); ?></h2>
+                        </div>
+
+                        <div class="earthin-stat-box">
+                            <div class="earthin-stat-num"><?php echo count($subscribers); ?></div>
+                            <div class="earthin-stat-label"><?php esc_html_e('Subscribed Prospects', 'earthin-coming-soon'); ?></div>
+                        </div>
+
+                        <?php if (empty($subscribers)) : ?>
+                            <p style="font-size:13px; color:#64748b;"><?php esc_html_e('No email subscribers recorded yet.', 'earthin-coming-soon'); ?></p>
+                        <?php else : ?>
+                            <ul style="padding-left:0; list-style:none; max-height:260px; overflow-y:auto; margin:0;">
+                                <?php foreach ($subscribers as $s) : ?>
+                                    <li style="padding:6px 0; border-bottom:1px solid #f1f5f9; font-size:13px; color:#334155;">
+                                        ✉️ <a href="mailto:<?php echo esc_attr($s); ?>" style="color:#059669; text-decoration:none;"><?php echo esc_html($s); ?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Live Preview', 'earthin-coming-soon'); ?></h2>
+                        </div>
+                        <p style="font-size:13px; color:#64748b; line-height:1.5;">
+                            <?php esc_html_e('See exactly how your countdown clock and animated splash page look to visitors.', 'earthin-coming-soon'); ?>
+                        </p>
+                        <a href="<?php echo esc_url(home_url('/')); ?>" target="_blank" class="button earthin-btn-secondary" style="margin-top:8px;">
+                            <?php esc_html_e('Open Frontend in New Tab', 'earthin-coming-soon'); ?> &nearr;
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -319,8 +397,8 @@ class Earthin_Coming_Soon {
 
 add_action('plugins_loaded', ['Earthin_Coming_Soon', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-coming-soon')) . '">' . __('Settings', 'earthin-coming-soon') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-coming-soon')) . '">' . __('Settings', 'earthin-coming-soon') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

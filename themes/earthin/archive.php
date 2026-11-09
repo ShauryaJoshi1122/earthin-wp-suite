@@ -14,10 +14,10 @@ get_header();
 
 <main id="primary" class="site-main">
     <?php if (have_posts()) : ?>
-        <header class="page-header" style="margin-bottom: 2.5rem; border-bottom: 1px solid var(--earthin-border); padding-bottom: 1.5rem;">
+        <header class="page-header">
             <?php
             the_archive_title('<h1 class="page-title entry-title">', '</h1>');
-            the_archive_description('<div class="archive-description" style="color:#64748b; font-size:1rem;">', '</div>');
+            the_archive_description('<div class="archive-description">', '</div>');
             ?>
         </header>
 
@@ -49,7 +49,7 @@ get_header();
                 </div>
 
                 <footer class="entry-footer" style="margin-top: 1rem;">
-                    <a href="<?php the_permalink(); ?>" class="button" style="display:inline-block;padding:0.4rem 1rem;background:var(--earthin-primary);color:#fff;border-radius:6px;font-weight:600;font-size:0.875rem;">
+                    <a href="<?php the_permalink(); ?>" class="earthin-read-more">
                         <?php esc_html_e('Read More &rarr;', 'earthin'); ?>
                     </a>
                 </footer>

@@ -192,85 +192,152 @@ final class Plugin {
 		}
 
 		$settings = $this->get_settings();
-		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Earthin White Label CMS', 'earthin-white-label' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'Customize your WordPress administrative branding, login appearance, and client dashboard experience with 100% reversible settings.', 'earthin-white-label' ); ?>
-			</p>
+		$has_custom_logo = ! empty( $settings['login_logo_url'] );
 
-			<form method="post" action="options.php" style="margin-top:20px;">
+		$hidden_widgets_count = 0;
+		foreach ( array( 'hide_wp_news', 'hide_quick_draft', 'hide_activity', 'hide_at_a_glance' ) as $wk ) {
+			if ( ! empty( $settings[ $wk ] ) ) {
+				$hidden_widgets_count++;
+			}
+		}
+		?>
+		<div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+			<!-- Header Banner -->
+			<div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+				<div style="display:flex; align-items:center; gap:16px;">
+					<div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">🏷️</div>
+					<div>
+						<h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e( 'Earthin White Label CMS', 'earthin-white-label' ); ?></h1>
+						<p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e( 'Reversible branding controls for the WordPress login screen, dashboard widgets, and administrative footers', 'earthin-white-label' ); ?></p>
+					</div>
+				</div>
+				<div style="display:flex; align-items:center; gap:10px;">
+					<span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html( EWL_VERSION ); ?></span>
+					<a href="<?php echo esc_url( wp_login_url() ); ?>" target="_blank" class="button" style="background:#fff; color:#047857; border:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:5px; height:auto; line-height:1.4;">
+						<?php esc_html_e( 'Preview Login Screen ↗', 'earthin-white-label' ); ?>
+					</a>
+				</div>
+			</div>
+
+			<!-- Quick Stat Cards -->
+			<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'Login Screen Branding', 'earthin-white-label' ); ?></div>
+					<div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo $has_custom_logo ? '#059669' : '#0f172a'; ?>;">
+						<?php echo $has_custom_logo ? '✓ Custom Brand Logo' : 'Default WordPress'; ?>
+					</div>
+					<div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e( 'Applied to wp-login.php', 'earthin-white-label' ); ?></div>
+				</div>
+
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'Clean Dashboard', 'earthin-white-label' ); ?></div>
+					<div style="font-size:24px; font-weight:700; color:#059669; margin-top:4px;">
+						<?php echo esc_html( $hidden_widgets_count ); ?> / 4
+					</div>
+					<div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e( 'Clutter widgets removed', 'earthin-white-label' ); ?></div>
+				</div>
+
+				<div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+					<div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e( 'Security Hardening', 'earthin-white-label' ); ?></div>
+					<div style="font-size:18px; font-weight:700; color:#0f172a; margin-top:6px;">
+						<?php echo ! empty( $settings['hide_core_version'] ) ? '<span style="color:#10b981;">✓ Version Hidden</span>' : 'Exposed'; ?>
+					</div>
+					<div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e( 'Prevents recon of WP release', 'earthin-white-label' ); ?></div>
+				</div>
+			</div>
+
+			<form method="post" action="options.php">
 				<?php settings_fields( 'ewl_settings_group' ); ?>
 
-				<h2 class="title"><?php esc_html_e( 'Login Screen Branding', 'earthin-white-label' ); ?></h2>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Custom Login Logo URL', 'earthin-white-label' ); ?></th>
-						<td>
-							<input type="url" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_logo_url]" value="<?php echo esc_attr( $settings['login_logo_url'] ); ?>" class="large-text" placeholder="https://example.com/logo.png">
-							<p class="description"><?php esc_html_e( 'Enter the URL of your brand logo to replace the default WordPress logo on wp-login.php.', 'earthin-white-label' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Logo Destination Link', 'earthin-white-label' ); ?></th>
-						<td>
-							<input type="url" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_logo_link]" value="<?php echo esc_attr( $settings['login_logo_link'] ); ?>" class="large-text" placeholder="<?php echo esc_url( home_url( '/' ) ); ?>">
-							<p class="description"><?php esc_html_e( 'Destination URL when a user clicks the login logo (defaults to website home page).', 'earthin-white-label' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Login Background Color', 'earthin-white-label' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_bg_color]" value="<?php echo esc_attr( $settings['login_bg_color'] ); ?>" class="small-text">
-						</td>
-					</tr>
-				</table>
+				<div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+					<!-- Main Configuration Panel -->
+					<div>
+						<!-- Login Screen Card -->
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+							<h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+								<span>🔐</span> <?php esc_html_e( 'Login Screen Customization', 'earthin-white-label' ); ?>
+							</h2>
 
-				<h2 class="title" style="margin-top:24px;"><?php esc_html_e( 'Admin Dashboard & Widgets', 'earthin-white-label' ); ?></h2>
-				<table class="form-table" role="presentation">
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Hide Dashboard Widgets', 'earthin-white-label' ); ?></th>
-						<td>
-							<fieldset>
-								<label style="display:block; margin-bottom:8px;">
+							<div style="margin-bottom:16px;">
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Custom Login Logo URL', 'earthin-white-label' ); ?></label>
+								<input type="url" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_logo_url]" value="<?php echo esc_attr( $settings['login_logo_url'] ); ?>" class="large-text" placeholder="https://example.com/wp-content/uploads/logo.png" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+								<p style="font-size:12px; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Replaces the default WordPress logo on wp-login.php with your client or agency branding.', 'earthin-white-label' ); ?></p>
+							</div>
+
+							<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+								<div>
+									<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Logo Destination Link', 'earthin-white-label' ); ?></label>
+									<input type="url" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_logo_link]" value="<?php echo esc_attr( $settings['login_logo_link'] ); ?>" class="large-text" placeholder="<?php echo esc_url( home_url( '/' ) ); ?>" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+								</div>
+
+								<div>
+									<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Login Background Color', 'earthin-white-label' ); ?></label>
+									<input type="text" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[login_bg_color]" value="<?php echo esc_attr( $settings['login_bg_color'] ); ?>" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-family:monospace; font-size:13px;" placeholder="#f1f5f9">
+								</div>
+							</div>
+						</div>
+
+						<!-- Admin Dashboard Cleanup Card -->
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+							<h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+								<span>📊</span> <?php esc_html_e( 'Dashboard & Admin UI Decluttering', 'earthin-white-label' ); ?>
+							</h2>
+
+							<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px;">
+								<label style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer;">
 									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_wp_news]" value="1" <?php checked( 1, $settings['hide_wp_news'] ); ?>>
-									<?php esc_html_e( 'Hide "WordPress Events and News" widget', 'earthin-white-label' ); ?>
+									<span style="font-size:13px; font-weight:500; color:#1e293b;"><?php esc_html_e( 'Hide WP Events & News', 'earthin-white-label' ); ?></span>
 								</label>
-								<label style="display:block; margin-bottom:8px;">
-									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_quick_draft]" value="1" <?php checked( 1, $settings['hide_quick_draft'] ); ?>>
-									<?php esc_html_e( 'Hide "Quick Draft" widget', 'earthin-white-label' ); ?>
-								</label>
-								<label style="display:block; margin-bottom:8px;">
-									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_activity]" value="1" <?php checked( 1, $settings['hide_activity'] ); ?>>
-									<?php esc_html_e( 'Hide "Activity" widget', 'earthin-white-label' ); ?>
-								</label>
-								<label style="display:block;">
-									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_at_a_glance]" value="1" <?php checked( 1, $settings['hide_at_a_glance'] ); ?>>
-									<?php esc_html_e( 'Hide "At a Glance" widget', 'earthin-white-label' ); ?>
-								</label>
-							</fieldset>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Custom Admin Footer Text', 'earthin-white-label' ); ?></th>
-						<td>
-							<input type="text" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[custom_footer_text]" value="<?php echo esc_attr( $settings['custom_footer_text'] ); ?>" class="large-text">
-							<p class="description"><?php esc_html_e( 'Replaces the default "Thank you for creating with WordPress" message in admin footers.', 'earthin-white-label' ); ?></p>
-						</td>
-					</tr>
-					<tr>
-						<th scope="row"><?php esc_html_e( 'Security: Hide Core Version', 'earthin-white-label' ); ?></th>
-						<td>
-							<label>
-								<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_core_version]" value="1" <?php checked( 1, $settings['hide_core_version'] ); ?>>
-								<?php esc_html_e( 'Hide WordPress version string in bottom admin footer', 'earthin-white-label' ); ?>
-							</label>
-						</td>
-					</tr>
-				</table>
 
-				<div style="margin-top:20px;">
-					<?php submit_button( __( 'Save White Label Settings', 'earthin-white-label' ) ); ?>
+								<label style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer;">
+									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_quick_draft]" value="1" <?php checked( 1, $settings['hide_quick_draft'] ); ?>>
+									<span style="font-size:13px; font-weight:500; color:#1e293b;"><?php esc_html_e( 'Hide Quick Draft Box', 'earthin-white-label' ); ?></span>
+								</label>
+
+								<label style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer;">
+									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_activity]" value="1" <?php checked( 1, $settings['hide_activity'] ); ?>>
+									<span style="font-size:13px; font-weight:500; color:#1e293b;"><?php esc_html_e( 'Hide Activity Widget', 'earthin-white-label' ); ?></span>
+								</label>
+
+								<label style="display:flex; align-items:center; gap:10px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer;">
+									<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_at_a_glance]" value="1" <?php checked( 1, $settings['hide_at_a_glance'] ); ?>>
+									<span style="font-size:13px; font-weight:500; color:#1e293b;"><?php esc_html_e( 'Hide At A Glance Widget', 'earthin-white-label' ); ?></span>
+								</label>
+							</div>
+
+							<div style="margin-bottom:16px;">
+								<label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e( 'Custom Admin Footer Text', 'earthin-white-label' ); ?></label>
+								<input type="text" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[custom_footer_text]" value="<?php echo esc_attr( $settings['custom_footer_text'] ); ?>" class="large-text" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+								<p style="font-size:12px; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Replaces the default "Thank you for creating with WordPress" message.', 'earthin-white-label' ); ?></p>
+							</div>
+
+							<label style="display:flex; align-items:center; gap:10px; cursor:pointer;">
+								<input type="checkbox" name="<?php echo esc_attr( EWL_OPTION_KEY ); ?>[hide_core_version]" value="1" <?php checked( 1, $settings['hide_core_version'] ); ?>>
+								<span style="font-size:13px; font-weight:600; color:#0f172a;"><?php esc_html_e( 'Hide WordPress version string in bottom-right footer', 'earthin-white-label' ); ?></span>
+							</label>
+						</div>
+
+						<button type="submit" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+							<?php esc_html_e( 'Save White Label Settings', 'earthin-white-label' ); ?>
+						</button>
+					</div>
+
+					<!-- Sidebar Info -->
+					<div>
+						<div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:20px;">
+							<h3 style="font-size:14px; font-weight:700; color:#0f172a; margin:0 0 10px;"><?php esc_html_e( 'Client-Friendly UX', 'earthin-white-label' ); ?></h3>
+							<p style="font-size:12px; color:#64748b; line-height:1.5; margin:0 0 10px;">
+								<?php esc_html_e( 'Removing standard clutter widgets like "WordPress Events and News" prevents non-technical clients from feeling overwhelmed in the admin area.', 'earthin-white-label' ); ?>
+							</p>
+						</div>
+
+						<div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:18px;">
+							<div style="font-size:13px; font-weight:700; color:#166534; margin-bottom:8px;">💡 <?php esc_html_e( '100% Reversible', 'earthin-white-label' ); ?></div>
+							<p style="font-size:12px; color:#15803d; line-height:1.5; margin:0;">
+								<?php esc_html_e( 'Earthin White Label never modifies core WordPress files. All branding settings can be reverted or turned off instantly at any time.', 'earthin-white-label' ); ?>
+							</p>
+						</div>
+					</div>
 				</div>
 			</form>
 		</div>
@@ -280,8 +347,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-white-label')) . '">' . __('Settings', 'earthin-white-label') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-white-label')) . '">' . __('Settings', 'earthin-white-label') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

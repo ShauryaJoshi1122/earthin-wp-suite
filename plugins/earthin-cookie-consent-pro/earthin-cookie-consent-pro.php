@@ -142,89 +142,161 @@ class Earthin_Cookie_Consent_Pro {
                 'custom_css' => sanitize_textarea_field($_POST['custom_css'] ?? ''),
             ];
             update_option($this->option_name, $settings);
-            echo '<div class="updated"><p>' . esc_html__('Pro settings saved.', 'earthin-cookie-consent-pro') . '</p></div>';
-        }
-
-        if (isset($_POST['earthin_export_audit']) && check_admin_referer('earthin_pro_settings_nonce')) {
-            // Handled or displayed
+            echo '<div class="notice notice-success is-dismissible" style="border-left-color:#059669;"><p style="font-weight:600; color:#065f46;">' . esc_html__('Earthin Cookie Consent Pro settings saved successfully.', 'earthin-cookie-consent-pro') . '</p></div>';
         }
 
         $settings = $this->get_settings();
         $logs = get_option('earthin_cc_audit_logs', []);
+        $total_logs = is_array($logs) ? count($logs) : 0;
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Cookie Consent Pro Settings', 'earthin-cookie-consent-pro'); ?></h1>
-            <p><?php esc_html_e('Advanced compliance logging, geo-targeting policies, and styling customizer.', 'earthin-cookie-consent-pro'); ?></p>
+        <div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+            <!-- Header Banner -->
+            <div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">⭐</div>
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e('Earthin Cookie Consent Pro', 'earthin-cookie-consent-pro'); ?></h1>
+                            <span style="background:#fef08a; color:#854d0e; font-size:11px; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase;">PRO</span>
+                        </div>
+                        <p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e('Audit trails, geo-targeting policies, and advanced design overrides', 'earthin-cookie-consent-pro'); ?></p>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html(EARTHIN_COOKIE_CONSENT_PRO_VERSION); ?></span>
+                    <a href="<?php echo esc_url(admin_url('options-general.php?page=earthin-cookie-consent')); ?>" style="background:#fff; color:#047857; text-decoration:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600;">← Core Settings</a>
+                </div>
+            </div>
 
-            <form method="post">
-                <?php wp_nonce_field('earthin_pro_settings_nonce'); ?>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Geo-Targeting Policy', 'earthin-cookie-consent-pro'); ?></th>
-                        <td>
-                            <select name="geo_targeting">
+            <!-- Quick Stat Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Audit Trail Records', 'earthin-cookie-consent-pro'); ?></div>
+                    <div style="font-size:24px; font-weight:700; color:#059669; margin-top:4px;">
+                        <?php echo esc_html($total_logs); ?> / 100
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Stored proof-of-consent logs', 'earthin-cookie-consent-pro'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Geo-Targeting Rule', 'earthin-cookie-consent-pro'); ?></div>
+                    <div style="font-size:18px; font-weight:700; color:#0f172a; margin-top:6px;">
+                        <?php echo $settings['geo_targeting'] === 'eu_only' ? 'EU & UK Visitors Only' : 'Worldwide (All Visitors)'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#10b981; margin-top:2px; font-weight:500;">✓ Active Filter</div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Audit Status', 'earthin-cookie-consent-pro'); ?></div>
+                    <div style="font-size:18px; font-weight:700; color:<?php echo !empty($settings['audit_logging']) ? '#059669' : '#64748b'; ?>; margin-top:6px;">
+                        <?php echo !empty($settings['audit_logging']) ? '● Real-Time Logging' : '○ Disabled'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Anonymized SHA256 hashed records', 'earthin-cookie-consent-pro'); ?></div>
+                </div>
+            </div>
+
+            <!-- Pro Configuration Card -->
+            <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                    <span>⚡</span> <?php esc_html_e('Pro Features Configuration', 'earthin-cookie-consent-pro'); ?>
+                </h2>
+
+                <form method="post">
+                    <?php wp_nonce_field('earthin_pro_settings_nonce'); ?>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px;">
+                        <div>
+                            <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;">
+                                <?php esc_html_e('Geo-Targeting Policy', 'earthin-cookie-consent-pro'); ?>
+                            </label>
+                            <select name="geo_targeting" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
                                 <option value="all" <?php selected($settings['geo_targeting'], 'all'); ?>><?php esc_html_e('Show Banner Worldwide to All Visitors', 'earthin-cookie-consent-pro'); ?></option>
                                 <option value="eu_only" <?php selected($settings['geo_targeting'], 'eu_only'); ?>><?php esc_html_e('Target EU and UK Visitors Only (GDPR Mode)', 'earthin-cookie-consent-pro'); ?></option>
                             </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Consent Audit Trail', 'earthin-cookie-consent-pro'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="audit_logging" value="1" <?php checked($settings['audit_logging'], 1); ?> />
-                                <?php esc_html_e('Record anonymous proof of consent events (essential for GDPR audit readiness)', 'earthin-cookie-consent-pro'); ?>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Custom CSS', 'earthin-cookie-consent-pro'); ?></th>
-                        <td>
-                            <textarea name="custom_css" rows="4" class="large-text code"><?php echo esc_textarea($settings['custom_css']); ?></textarea>
-                            <p class="description"><?php esc_html_e('Inject custom CSS rules to seamlessly blend the cookie banner with your theme.', 'earthin-cookie-consent-pro'); ?></p>
-                        </td>
-                    </tr>
-                </table>
-                <p class="submit">
-                    <input type="submit" name="earthin_save_pro" class="button button-primary" value="<?php esc_attr_e('Save Pro Settings', 'earthin-cookie-consent-pro'); ?>" />
-                </p>
-            </form>
+                            <p style="font-size:12px; color:#64748b; margin-top:4px;">
+                                <?php esc_html_e('Reduces banner fatigue by only showing consent prompts where strictly legally mandated.', 'earthin-cookie-consent-pro'); ?>
+                            </p>
+                        </div>
 
-            <hr>
-            <h2><?php esc_html_e('Consent Audit Trail (Proof of Consent)', 'earthin-cookie-consent-pro'); ?></h2>
-            <?php if (empty($logs)): ?>
-                <p><?php esc_html_e('No consent records logged yet.', 'earthin-cookie-consent-pro'); ?></p>
-            <?php else: ?>
-                <table class="widefat striped">
-                    <thead>
-                        <tr>
-                            <th><?php esc_html_e('Timestamp', 'earthin-cookie-consent-pro'); ?></th>
-                            <th><?php esc_html_e('Anonymized Hash', 'earthin-cookie-consent-pro'); ?></th>
-                            <th><?php esc_html_e('Consent Decision', 'earthin-cookie-consent-pro'); ?></th>
-                            <th><?php esc_html_e('Client Agent', 'earthin-cookie-consent-pro'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach (array_slice($logs, 0, 25) as $log): ?>
-                            <tr>
-                                <td><?php echo esc_html($log['timestamp']); ?></td>
-                                <td><code><?php echo esc_html($log['ip_hash']); ?></code></td>
-                                <td>
-                                    <?php
-                                    $prefs = $log['preferences'] ?? [];
-                                    $parts = [];
-                                    foreach ($prefs as $k => $v) {
-                                        $parts[] = esc_html($k) . ': ' . ($v ? '<span style="color:green">Yes</span>' : '<span style="color:red">No</span>');
-                                    }
-                                    echo implode(' | ', $parts);
-                                    ?>
-                                </td>
-                                <td><span style="font-size:12px;"><?php echo esc_html($log['user_agent']); ?></span></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-            <?php endif; ?>
+                        <div>
+                            <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;">
+                                <?php esc_html_e('Proof of Consent Logging', 'earthin-cookie-consent-pro'); ?>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:10px; padding:10px 12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; cursor:pointer;">
+                                <input type="checkbox" name="audit_logging" value="1" <?php checked($settings['audit_logging'], 1); ?> style="margin-top:2px;" />
+                                <div>
+                                    <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Record anonymous consent events', 'earthin-cookie-consent-pro'); ?></strong>
+                                    <span style="font-size:11px; color:#64748b;">(Stores anonymized client tokens for GDPR compliance audits)</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom:20px;">
+                        <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;">
+                            <?php esc_html_e('Custom CSS Overrides', 'earthin-cookie-consent-pro'); ?>
+                        </label>
+                        <textarea name="custom_css" rows="4" class="large-text" style="font-family:monospace; font-size:12px; padding:10px; border-radius:6px; border:1px solid #cbd5e1; background:#f8fafc;" placeholder="#earthin-cc-banner { border-radius: 16px; }"><?php echo esc_textarea($settings['custom_css']); ?></textarea>
+                    </div>
+
+                    <button type="submit" name="earthin_save_pro" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+                        <?php esc_html_e('Save Pro Settings', 'earthin-cookie-consent-pro'); ?>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Audit Trail Log Table Card -->
+            <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03);">
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9;">
+                    <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0; display:flex; align-items:center; gap:8px;">
+                        <span>📜</span> <?php esc_html_e('Consent Audit Trail (Proof of Consent)', 'earthin-cookie-consent-pro'); ?>
+                    </h2>
+                    <span style="font-size:12px; color:#64748b;"><?php esc_html_e('Showing latest 25 events', 'earthin-cookie-consent-pro'); ?></span>
+                </div>
+
+                <?php if (empty($logs)): ?>
+                    <div style="text-align:center; padding:32px 16px; color:#94a3b8;">
+                        <span style="font-size:32px; display:block; margin-bottom:8px;">🍃</span>
+                        <p style="font-size:14px; margin:0;"><?php esc_html_e('No consent records logged yet. Records will appear here as visitors interact with the banner.', 'earthin-cookie-consent-pro'); ?></p>
+                    </div>
+                <?php else: ?>
+                    <div style="overflow-x:auto;">
+                        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:12px;">
+                            <thead>
+                                <tr style="background:#f8fafc; border-bottom:2px solid #e2e8f0; color:#475569;">
+                                    <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Timestamp', 'earthin-cookie-consent-pro'); ?></th>
+                                    <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Anonymized SHA256 Hash', 'earthin-cookie-consent-pro'); ?></th>
+                                    <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('Category Decisions', 'earthin-cookie-consent-pro'); ?></th>
+                                    <th style="padding:10px 12px; font-weight:600;"><?php esc_html_e('User Agent', 'earthin-cookie-consent-pro'); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach (array_slice($logs, 0, 25) as $log): ?>
+                                    <tr style="border-bottom:1px solid #f1f5f9;">
+                                        <td style="padding:10px 12px; color:#0f172a; white-space:nowrap;"><?php echo esc_html($log['timestamp']); ?></td>
+                                        <td style="padding:10px 12px;"><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:11px;"><?php echo esc_html($log['ip_hash']); ?></code></td>
+                                        <td style="padding:10px 12px;">
+                                            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+                                                <?php
+                                                $prefs = $log['preferences'] ?? [];
+                                                foreach ($prefs as $k => $v) {
+                                                    $bg = $v ? '#dcfce7' : '#fee2e2';
+                                                    $fg = $v ? '#166534' : '#991b1b';
+                                                    echo '<span style="background:' . $bg . '; color:' . $fg . '; padding:2px 6px; border-radius:3px; font-size:10px; font-weight:600;">' . esc_html($k) . '</span>';
+                                                }
+                                                ?>
+                                            </div>
+                                        </td>
+                                        <td style="padding:10px 12px; color:#64748b; font-size:11px; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                            <?php echo esc_html($log['user_agent']); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
         <?php
     }
@@ -232,8 +304,8 @@ class Earthin_Cookie_Consent_Pro {
 
 add_action('plugins_loaded', ['Earthin_Cookie_Consent_Pro', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cookie-consent-pro')) . '">' . __('Settings', 'earthin-cookie-consent-pro') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cookie-consent-pro')) . '">' . __('Settings', 'earthin-cookie-consent-pro') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

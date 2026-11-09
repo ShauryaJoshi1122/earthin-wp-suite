@@ -46,7 +46,7 @@ get_header();
                 </div>
 
                 <footer class="entry-footer" style="margin-top: 1rem;">
-                    <a href="<?php the_permalink(); ?>" class="button" style="display:inline-block;padding:0.4rem 1rem;background:var(--earthin-primary);color:#fff;border-radius:6px;font-weight:600;font-size:0.875rem;">
+                    <a href="<?php the_permalink(); ?>" class="earthin-read-more">
                         <?php esc_html_e('Read More &rarr;', 'earthin'); ?>
                     </a>
                 </footer>

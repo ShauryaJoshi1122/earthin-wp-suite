@@ -362,24 +362,76 @@ final class Plugin {
 				</div>
 			<?php endif; ?>
 
+		$total_rules = count( $rules );
+		?>
+		<div class="earthin-admin-wrap">
+			<style>
+				.earthin-admin-wrap { max-width: 1240px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+				.earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+				.earthin-header-left { display: flex; align-items: center; gap: 14px; }
+				.earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+				.earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+				.earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+				.earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+				.earthin-header-links { display: flex; gap: 10px; align-items: center; }
+				.earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+				.earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+				.earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+				.earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+				.earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+				.earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+				.earthin-btn-primary:hover { background: #047857 !important; }
+				.earthin-btn-secondary { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; color: #334155 !important; font-weight: 700 !important; padding: 7px 16px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; text-decoration: none; display: inline-block; }
+				.earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+				.earthin-badge-success { background: #ecfdf5; color: #059669; }
+				.earthin-badge-neutral { background: #f1f5f9; color: #64748b; }
+				.earthin-input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 14px; box-sizing: border-box; }
+				.earthin-input:focus { border-color: #059669; outline: none; box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+				.earthin-table { width: 100%; border-collapse: collapse; }
+				.earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+				.earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+				.earthin-table tr:hover td { background: #fafbfc; }
+			</style>
+
+			<header class="earthin-header">
+				<div class="earthin-header-left">
+					<span class="earthin-logo-badge">🌱 Earthin</span>
+					<div class="earthin-title-group">
+						<h1>
+							<?php echo esc_html__( 'Earthin Redirect Manager', 'earthin-redirect-manager' ); ?>
+							<span class="earthin-version-tag">v1.0.0</span>
+							<span class="earthin-badge-pill earthin-badge-success"><?php echo sprintf( esc_html__( '%d Active Rules', 'earthin-redirect-manager' ), $total_rules ); ?></span>
+						</h1>
+						<p><?php echo esc_html__( 'Fast 301, 302, 307 & 308 URL redirection engine without .htaccess edits by Shaurya Joshi.', 'earthin-redirect-manager' ); ?></p>
+					</div>
+				</div>
+				<div class="earthin-header-links">
+					<a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Plugin Hub', 'earthin-redirect-manager' ); ?> &nearr;</a>
+					<a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Documentation', 'earthin-redirect-manager' ); ?></a>
+					<a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Support', 'earthin-redirect-manager' ); ?></a>
+				</div>
+			</header>
+
 			<!-- Add New Rule Form -->
-			<div style="background:#ffffff; border:1px solid #cbd5e1; border-radius:8px; padding:20px; margin:20px 0;">
-				<h2 style="margin-top:0; font-size:16px;"><?php esc_html_e( 'Add New Redirect Rule', 'earthin-redirect-manager' ); ?></h2>
+			<div class="earthin-card">
+				<div class="earthin-card-header">
+					<h2 class="earthin-card-title"><?php esc_html_e( 'Create URL Redirection Rule', 'earthin-redirect-manager' ); ?></h2>
+				</div>
 				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 					<input type="hidden" name="action" value="erm_add_redirect">
 					<?php wp_nonce_field( 'erm_add_redirect_action', 'erm_nonce' ); ?>
-					<div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
-						<div style="flex:1; min-width:200px;">
-							<label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;"><?php esc_html_e( 'Source Relative Path', 'earthin-redirect-manager' ); ?></label>
-							<input type="text" name="from" placeholder="/old-path" required style="width:100%;">
+					<div style="display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;">
+						<div style="flex:1; min-width:220px;">
+							<label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;"><?php esc_html_e( 'Source Relative Path', 'earthin-redirect-manager' ); ?></label>
+							<input type="text" name="from" placeholder="/old-page-url" class="earthin-input" required style="width:100%;">
 						</div>
-						<div style="flex:2; min-width:250px;">
-							<label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;"><?php esc_html_e( 'Target Destination URL or Path', 'earthin-redirect-manager' ); ?></label>
-							<input type="text" name="to" placeholder="https://example.com/new-path or /new-path" required style="width:100%;">
+						<div style="flex:2; min-width:280px;">
+							<label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;"><?php esc_html_e( 'Target Destination Path or URL', 'earthin-redirect-manager' ); ?></label>
+							<input type="text" name="to" placeholder="/new-page-url or https://destination.com" class="earthin-input" required style="width:100%;">
 						</div>
-						<div style="width:150px;">
-							<label style="display:block; font-size:12px; font-weight:600; margin-bottom:4px;"><?php esc_html_e( 'HTTP Status', 'earthin-redirect-manager' ); ?></label>
-							<select name="status" style="width:100%;">
+						<div style="width:160px;">
+							<label style="display:block; font-size:12px; font-weight:700; color:#334155; margin-bottom:6px;"><?php esc_html_e( 'HTTP Status', 'earthin-redirect-manager' ); ?></label>
+							<select name="status" class="earthin-input" style="width:100%;">
 								<option value="301"><?php esc_html_e( '301 Permanent', 'earthin-redirect-manager' ); ?></option>
 								<option value="302"><?php esc_html_e( '302 Temporary', 'earthin-redirect-manager' ); ?></option>
 								<option value="307"><?php esc_html_e( '307 Temporary', 'earthin-redirect-manager' ); ?></option>
@@ -387,81 +439,87 @@ final class Plugin {
 							</select>
 						</div>
 						<div>
-							<?php submit_button( __( 'Add Redirect', 'earthin-redirect-manager' ), 'primary', 'submit', false ); ?>
+							<input type="submit" class="button earthin-btn-primary" value="<?php esc_attr_e( 'Add Redirect', 'earthin-redirect-manager' ); ?>" />
 						</div>
 					</div>
 				</form>
 			</div>
 
 			<!-- Active Rules Table -->
-			<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-				<h2 style="margin:0; font-size:16px;"><?php printf( esc_html__( 'Active Redirects (%d)', 'earthin-redirect-manager' ), count( $rules ) ); ?></h2>
-				<div style="display:flex; gap:8px;">
-					<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=erm_export_csv' ), 'erm_export_csv_action' ) ); ?>" class="button button-secondary">
-						<?php esc_html_e( 'Export CSV', 'earthin-redirect-manager' ); ?>
-					</a>
+			<div class="earthin-card" style="padding:0; overflow:hidden;">
+				<div style="padding:20px 24px; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
+					<h2 class="earthin-card-title"><?php printf( esc_html__( 'Active Redirects (%d)', 'earthin-redirect-manager' ), $total_rules ); ?></h2>
+					<div style="display:flex; gap:8px;">
+						<a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=erm_export_csv' ), 'erm_export_csv_action' ) ); ?>" class="button earthin-btn-secondary" style="font-size:12px !important;">
+							&darr; <?php esc_html_e( 'Export CSV', 'earthin-redirect-manager' ); ?>
+						</a>
+					</div>
+				</div>
+
+				<div style="overflow-x:auto;">
+					<table class="earthin-table">
+						<thead>
+							<tr>
+								<th style="width:260px;"><?php esc_html_e( 'Source Path', 'earthin-redirect-manager' ); ?></th>
+								<th><?php esc_html_e( 'Target Destination', 'earthin-redirect-manager' ); ?></th>
+								<th style="width:90px;"><?php esc_html_e( 'Code', 'earthin-redirect-manager' ); ?></th>
+								<th style="width:90px;"><?php esc_html_e( 'Hits', 'earthin-redirect-manager' ); ?></th>
+								<th style="width:100px;"><?php esc_html_e( 'Status', 'earthin-redirect-manager' ); ?></th>
+								<th style="width:140px; text-align:right;"><?php esc_html_e( 'Actions', 'earthin-redirect-manager' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php if ( empty( $rules ) ) : ?>
+								<tr>
+									<td colspan="6" style="text-align:center; padding:36px; color:#64748b;">
+										<?php esc_html_e( 'No redirects configured yet. Add your first rule above.', 'earthin-redirect-manager' ); ?>
+									</td>
+								</tr>
+							<?php else : ?>
+								<?php foreach ( $rules as $rule ) : ?>
+									<?php
+									$rid = $rule['id'] ?? '';
+									$toggle_url = wp_nonce_url( admin_url( 'admin-post.php?action=erm_toggle_redirect&id=' . $rid ), 'erm_toggle_' . $rid );
+									$delete_url = wp_nonce_url( admin_url( 'admin-post.php?action=erm_delete_redirect&id=' . $rid ), 'erm_delete_' . $rid );
+									?>
+									<tr>
+										<td><code style="background:#f1f5f9; padding:3px 8px; border-radius:6px;"><?php echo esc_html( $rule['from'] ?? '' ); ?></code></td>
+										<td><a href="<?php echo esc_url( $rule['to'] ?? '' ); ?>" target="_blank" rel="noopener noreferrer" style="color:#059669; text-decoration:none;"><?php echo esc_html( $rule['to'] ?? '' ); ?> &nearr;</a></td>
+										<td><span class="earthin-badge-pill earthin-badge-neutral"><?php echo (int) ( $rule['status'] ?? 301 ); ?></span></td>
+										<td><strong><?php echo number_format_i18n( (int) ( $rule['hits'] ?? 0 ) ); ?></strong></td>
+										<td>
+											<?php if ( ! empty( $rule['enabled'] ) ) : ?>
+												<span class="earthin-badge-pill earthin-badge-success"><?php esc_html_e( 'Active', 'earthin-redirect-manager' ); ?></span>
+											<?php else : ?>
+												<span class="earthin-badge-pill earthin-badge-neutral"><?php esc_html_e( 'Paused', 'earthin-redirect-manager' ); ?></span>
+											<?php endif; ?>
+										</td>
+										<td style="text-align:right; white-space:nowrap;">
+											<a href="<?php echo esc_url( $toggle_url ); ?>" style="color:#0284c7; text-decoration:none; font-weight:600; font-size:12px;">
+												<?php echo ! empty( $rule['enabled'] ) ? esc_html__( 'Pause', 'earthin-redirect-manager' ) : esc_html__( 'Resume', 'earthin-redirect-manager' ); ?>
+											</a> &bull; 
+											<a href="<?php echo esc_url( $delete_url ); ?>" style="color:#ef4444; text-decoration:none; font-weight:600; font-size:12px;" onclick="return confirm('<?php echo esc_js( __( 'Are you sure you want to delete this redirect?', 'earthin-redirect-manager' ) ); ?>');">
+												<?php esc_html_e( 'Delete', 'earthin-redirect-manager' ); ?>
+											</a>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</tbody>
+					</table>
 				</div>
 			</div>
 
-			<table class="wp-list-table widefat fixed striped">
-				<thead>
-					<tr>
-						<th style="width:240px;"><?php esc_html_e( 'Source Path', 'earthin-redirect-manager' ); ?></th>
-						<th><?php esc_html_e( 'Destination Target', 'earthin-redirect-manager' ); ?></th>
-						<th style="width:100px;"><?php esc_html_e( 'Type', 'earthin-redirect-manager' ); ?></th>
-						<th style="width:90px;"><?php esc_html_e( 'Hits', 'earthin-redirect-manager' ); ?></th>
-						<th style="width:100px;"><?php esc_html_e( 'Status', 'earthin-redirect-manager' ); ?></th>
-						<th style="width:140px;"><?php esc_html_e( 'Actions', 'earthin-redirect-manager' ); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php if ( empty( $rules ) ) : ?>
-						<tr>
-							<td colspan="6" style="text-align:center; padding:24px; color:#64748b;">
-								<?php esc_html_e( 'No redirects configured yet.', 'earthin-redirect-manager' ); ?>
-							</td>
-						</tr>
-					<?php else : ?>
-						<?php foreach ( $rules as $rule ) : ?>
-							<?php
-							$rid = $rule['id'] ?? '';
-							$toggle_url = wp_nonce_url( admin_url( 'admin-post.php?action=erm_toggle_redirect&id=' . $rid ), 'erm_toggle_' . $rid );
-							$delete_url = wp_nonce_url( admin_url( 'admin-post.php?action=erm_delete_redirect&id=' . $rid ), 'erm_delete_' . $rid );
-							?>
-							<tr>
-								<td><code><?php echo esc_html( $rule['from'] ?? '' ); ?></code></td>
-								<td><a href="<?php echo esc_url( $rule['to'] ?? '' ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $rule['to'] ?? '' ); ?></a></td>
-								<td><strong><?php echo (int) ( $rule['status'] ?? 301 ); ?></strong></td>
-								<td><?php echo number_format_i18n( (int) ( $rule['hits'] ?? 0 ) ); ?></td>
-								<td>
-									<?php if ( ! empty( $rule['enabled'] ) ) : ?>
-										<span style="color:#10b981; font-weight:600;">● <?php esc_html_e( 'Active', 'earthin-redirect-manager' ); ?></span>
-									<?php else : ?>
-										<span style="color:#94a3b8; font-weight:500;">○ <?php esc_html_e( 'Disabled', 'earthin-redirect-manager' ); ?></span>
-									<?php endif; ?>
-								</td>
-								<td>
-									<a href="<?php echo esc_url( $toggle_url ); ?>" class="button button-small">
-										<?php echo ! empty( $rule['enabled'] ) ? esc_html__( 'Disable', 'earthin-redirect-manager' ) : esc_html__( 'Enable', 'earthin-redirect-manager' ); ?>
-									</a>
-									<a href="<?php echo esc_url( $delete_url ); ?>" class="button button-small button-link-delete" onclick="return confirm('<?php echo esc_js( __( 'Are you sure you want to delete this redirect?', 'earthin-redirect-manager' ) ); ?>');">
-										<?php esc_html_e( 'Delete', 'earthin-redirect-manager' ); ?>
-									</a>
-								</td>
-							</tr>
-						<?php endforeach; ?>
-					<?php endif; ?>
-				</tbody>
-			</table>
-
 			<!-- CSV Import Box -->
-			<div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-top:24px;">
-				<h3 style="margin-top:0; font-size:14px;"><?php esc_html_e( 'Import Redirects from CSV', 'earthin-redirect-manager' ); ?></h3>
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">
+			<div class="earthin-card">
+				<div class="earthin-card-header">
+					<h3 class="earthin-card-title"><?php esc_html_e( 'Bulk Import Rules via CSV', 'earthin-redirect-manager' ); ?></h3>
+				</div>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data" style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
 					<input type="hidden" name="action" value="erm_import_csv">
 					<?php wp_nonce_field( 'erm_import_csv_action', 'erm_import_nonce' ); ?>
-					<input type="file" name="csv_file" accept=".csv" required>
-					<?php submit_button( __( 'Upload & Import CSV', 'earthin-redirect-manager' ), 'secondary', 'submit', false ); ?>
+					<input type="file" name="csv_file" accept=".csv" required class="earthin-input" style="padding:6px 10px;">
+					<input type="submit" class="button earthin-btn-secondary" value="<?php esc_attr_e( 'Upload & Import CSV', 'earthin-redirect-manager' ); ?>" />
 				</form>
 			</div>
 		</div>
@@ -471,8 +529,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-redirect-manager')) . '">' . __('Settings', 'earthin-redirect-manager') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('tools.php?page=earthin-redirect-manager')) . '">' . __('Settings', 'earthin-redirect-manager') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

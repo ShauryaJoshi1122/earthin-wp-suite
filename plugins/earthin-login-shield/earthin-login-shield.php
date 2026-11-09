@@ -222,98 +222,205 @@ class Earthin_Login_Shield {
 
         $settings = $this->get_settings();
         $logs = get_option('earthin_login_shield_logs', []);
+        $total_blocked = count($logs);
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Login Shield', 'earthin-login-shield'); ?></h1>
-            <p><?php esc_html_e('Defend your WordPress admin against brute-force attacks and credential stuffing.', 'earthin-login-shield'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1200px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+                @media(max-width: 900px) { .earthin-grid { grid-template-columns: 1fr; } }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-stat-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+                .earthin-stat-num { font-size: 26px; font-weight: 800; color: #059669; line-height: 1.1; }
+                .earthin-stat-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; margin-top: 4px; }
+                .earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; }
+                .earthin-btn-primary:hover { background: #047857 !important; }
+                .earthin-btn-danger { background: #ef4444 !important; border-color: #ef4444 !important; color: #ffffff !important; font-weight: 700 !important; padding: 6px 14px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-badge-danger { background: #fef2f2; color: #ef4444; }
+                .earthin-input { border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 12px; font-size: 14px; }
+                .earthin-input:focus { border-color: #059669; outline: none; box-shadow: 0 0 0 3px rgba(5,150,105,0.15); }
+                .earthin-table { width: 100%; border-collapse: collapse; }
+                .earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+                .earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+                .earthin-table tr:hover td { background: #fafbfc; }
+            </style>
 
-            <form method="post" action="options.php">
-                <?php settings_fields('earthin_login_shield_group'); ?>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Allowed Retries', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <input type="number" min="1" max="20" name="<?php echo esc_attr($this->option_name); ?>[allowed_retries]" value="<?php echo esc_attr($settings['allowed_retries']); ?>" />
-                            <p class="description"><?php esc_html_e('Maximum failed login attempts before lockout.', 'earthin-login-shield'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Lockout Duration', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <input type="number" min="1" max="1440" name="<?php echo esc_attr($this->option_name); ?>[lockout_duration]" value="<?php echo esc_attr($settings['lockout_duration']); ?>" />
-                            <span><?php esc_html_e('minutes', 'earthin-login-shield'); ?></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Extended Lockout Threshold', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <input type="number" min="1" max="10" name="<?php echo esc_attr($this->option_name); ?>[max_lockouts]" value="<?php echo esc_attr($settings['max_lockouts']); ?>" />
-                            <span><?php esc_html_e('lockouts', 'earthin-login-shield'); ?></span>
-                            <p class="description"><?php esc_html_e('Number of regular lockouts before triggering extended lockout.', 'earthin-login-shield'); ?></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Extended Lockout Duration', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <input type="number" min="1" max="168" name="<?php echo esc_attr($this->option_name); ?>[long_lockout_duration]" value="<?php echo esc_attr($settings['long_lockout_duration']); ?>" />
-                            <span><?php esc_html_e('hours', 'earthin-login-shield'); ?></span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('XML-RPC Protection', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[disable_xmlrpc]" value="1" <?php checked($settings['disable_xmlrpc'], 1); ?> />
-                                <?php esc_html_e('Disable XML-RPC API completely (recommended if not using Jetpack or mobile app)', 'earthin-login-shield'); ?>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('IP Whitelist (Never Locked Out)', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <textarea class="large-text" rows="3" name="<?php echo esc_attr($this->option_name); ?>[whitelist_ips]"><?php echo esc_textarea($settings['whitelist_ips']); ?></textarea>
-                            <p class="description"><?php esc_html_e('One IP address per line. Your current IP: ', 'earthin-login-shield'); ?><code><?php echo esc_html($this->get_client_ip()); ?></code></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('IP Blacklist (Always Blocked)', 'earthin-login-shield'); ?></th>
-                        <td>
-                            <textarea class="large-text" rows="3" name="<?php echo esc_attr($this->option_name); ?>[blacklist_ips]"><?php echo esc_textarea($settings['blacklist_ips']); ?></textarea>
-                            <p class="description"><?php esc_html_e('One IP address per line.', 'earthin-login-shield'); ?></p>
-                        </td>
-                    </tr>
-                </table>
-                <?php submit_button(); ?>
-            </form>
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php echo esc_html__('Earthin Login Shield', 'earthin-login-shield'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill earthin-badge-success"><?php echo esc_html__('Brute-Force Guard Active', 'earthin-login-shield'); ?></span>
+                        </h1>
+                        <p><?php echo esc_html__('Hardened authentication armor against password brute-force and credential abuse.', 'earthin-login-shield'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-login-shield'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-login-shield'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-login-shield'); ?></a>
+                </div>
+            </header>
 
-            <hr>
-            <h2><?php esc_html_e('Recent Failed Login Activity', 'earthin-login-shield'); ?></h2>
-            <?php if (empty($logs)): ?>
-                <p><?php esc_html_e('No failed login attempts recorded.', 'earthin-login-shield'); ?></p>
-            <?php else: ?>
-                <table class="widefat striped">
-                    <thead>
-                        <tr>
-                            <th><?php esc_html_e('Timestamp', 'earthin-login-shield'); ?></th>
-                            <th><?php esc_html_e('IP Address', 'earthin-login-shield'); ?></th>
-                            <th><?php esc_html_e('Attempted Username', 'earthin-login-shield'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($logs as $log): ?>
+            <div class="earthin-grid">
+                <div class="earthin-card">
+                    <div class="earthin-card-header">
+                        <h2 class="earthin-card-title"><?php esc_html_e('Brute Force Defense Parameters', 'earthin-login-shield'); ?></h2>
+                    </div>
+
+                    <form method="post" action="options.php">
+                        <?php settings_fields('earthin_login_shield_group'); ?>
+                        <table class="form-table" role="presentation">
                             <tr>
-                                <td><?php echo esc_html($log['timestamp']); ?></td>
-                                <td><code><?php echo esc_html($log['ip']); ?></code></td>
-                                <td><?php echo esc_html($log['username']); ?></td>
+                                <th scope="row"><?php esc_html_e('Allowed Retries', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <input type="number" min="1" max="20" name="<?php echo esc_attr($this->option_name); ?>[allowed_retries]" value="<?php echo esc_attr($settings['allowed_retries']); ?>" class="earthin-input" style="width:100px;" />
+                                    <p class="description"><?php esc_html_e('Maximum failed login attempts before initial lockout.', 'earthin-login-shield'); ?></p>
+                                </td>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <form method="post" style="margin-top: 15px;">
-                    <?php wp_nonce_field('earthin_clear_logs_nonce'); ?>
-                    <input type="submit" name="earthin_clear_logs" class="button button-secondary" value="<?php esc_attr_e('Clear Activity Log', 'earthin-login-shield'); ?>" onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear all logs?', 'earthin-login-shield'); ?>');" />
-                </form>
-            <?php endif; ?>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Lockout Duration', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <input type="number" min="1" max="1440" name="<?php echo esc_attr($this->option_name); ?>[lockout_duration]" value="<?php echo esc_attr($settings['lockout_duration']); ?>" class="earthin-input" style="width:100px;" />
+                                    <span><?php esc_html_e('minutes', 'earthin-login-shield'); ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Extended Lockout Threshold', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <input type="number" min="1" max="10" name="<?php echo esc_attr($this->option_name); ?>[max_lockouts]" value="<?php echo esc_attr($settings['max_lockouts']); ?>" class="earthin-input" style="width:100px;" />
+                                    <span><?php esc_html_e('lockouts', 'earthin-login-shield'); ?></span>
+                                    <p class="description"><?php esc_html_e('Number of regular lockouts before triggering prolonged lockout.', 'earthin-login-shield'); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('Extended Lockout Duration', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <input type="number" min="1" max="168" name="<?php echo esc_attr($this->option_name); ?>[long_lockout_duration]" value="<?php echo esc_attr($settings['long_lockout_duration']); ?>" class="earthin-input" style="width:100px;" />
+                                    <span><?php esc_html_e('hours', 'earthin-login-shield'); ?></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('XML-RPC Protection', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <label>
+                                        <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[disable_xmlrpc]" value="1" <?php checked($settings['disable_xmlrpc'], 1); ?> />
+                                        <strong><?php esc_html_e('Disable XML-RPC API completely', 'earthin-login-shield'); ?></strong>
+                                    </label>
+                                    <p class="description"><?php esc_html_e('Closes common multicall amplification attack vectors.', 'earthin-login-shield'); ?></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('IP Whitelist', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <textarea class="earthin-input" style="width:100%; box-sizing:border-box;" rows="3" name="<?php echo esc_attr($this->option_name); ?>[whitelist_ips]"><?php echo esc_textarea($settings['whitelist_ips']); ?></textarea>
+                                    <p class="description"><?php esc_html_e('One IP address per line. Your current IP:', 'earthin-login-shield'); ?> <code style="background:#ecfdf5; color:#047857; font-weight:700; padding:2px 6px; border-radius:4px;"><?php echo esc_html($this->get_client_ip()); ?></code></p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row"><?php esc_html_e('IP Blacklist', 'earthin-login-shield'); ?></th>
+                                <td>
+                                    <textarea class="earthin-input" style="width:100%; box-sizing:border-box;" rows="3" name="<?php echo esc_attr($this->option_name); ?>[blacklist_ips]"><?php echo esc_textarea($settings['blacklist_ips']); ?></textarea>
+                                    <p class="description"><?php esc_html_e('One IP address per line. Automatically rejected on wp-login.php.', 'earthin-login-shield'); ?></p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <p class="submit" style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #f1f5f9;">
+                            <input type="submit" class="button earthin-btn-primary" value="<?php esc_attr_e('Save Security Parameters', 'earthin-login-shield'); ?>" />
+                        </p>
+                    </form>
+                </div>
+
+                <div>
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Shield Intelligence', 'earthin-login-shield'); ?></h2>
+                        </div>
+
+                        <div class="earthin-stat-box">
+                            <div class="earthin-stat-num"><?php echo esc_html((string)$total_blocked); ?></div>
+                            <div class="earthin-stat-label"><?php esc_html_e('Total Failed Intrusions Logged', 'earthin-login-shield'); ?></div>
+                        </div>
+
+                        <p style="font-size:13px; color:#475569; margin:8px 0;">
+                            <strong><?php esc_html_e('Max Retries:', 'earthin-login-shield'); ?></strong>
+                            <code><?php echo esc_html((string)$settings['allowed_retries']); ?> attempts</code>
+                        </p>
+                        <p style="font-size:13px; color:#475569; margin:8px 0;">
+                            <strong><?php esc_html_e('Initial Lockout:', 'earthin-login-shield'); ?></strong>
+                            <code><?php echo esc_html((string)$settings['lockout_duration']); ?> mins</code>
+                        </p>
+                        <p style="font-size:13px; color:#475569; margin:8px 0;">
+                            <strong><?php esc_html_e('XML-RPC API:', 'earthin-login-shield'); ?></strong>
+                            <code><?php echo !empty($settings['disable_xmlrpc']) ? 'Blocked' : 'Enabled'; ?></code>
+                        </p>
+                    </div>
+
+                    <div class="earthin-card">
+                        <div class="earthin-card-header">
+                            <h2 class="earthin-card-title"><?php esc_html_e('Best Practice Tip', 'earthin-login-shield'); ?></h2>
+                        </div>
+                        <p style="font-size:13px; color:#64748b; line-height:1.6;">
+                            <?php esc_html_e('Combine Earthin Login Shield with Earthin 2FA for impenetrable defense against stolen credential attacks.', 'earthin-login-shield'); ?>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="earthin-card" style="padding:0; overflow:hidden;">
+                <div style="padding: 20px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                    <h2 class="earthin-card-title"><?php esc_html_e('Recent Failed Login Activity', 'earthin-login-shield'); ?></h2>
+                    <?php if (!empty($logs)): ?>
+                        <form method="post">
+                            <?php wp_nonce_field('earthin_clear_logs_nonce'); ?>
+                            <input type="submit" name="earthin_clear_logs" class="button earthin-btn-danger" value="<?php esc_attr_e('Clear Activity Log', 'earthin-login-shield'); ?>" onclick="return confirm('<?php esc_attr_e('Are you sure you want to clear all logs?', 'earthin-login-shield'); ?>');" />
+                        </form>
+                    <?php endif; ?>
+                </div>
+
+                <?php if (empty($logs)): ?>
+                    <div style="padding: 40px; text-align: center; color: #64748b;">
+                        <p style="margin: 0; font-size: 14px;"><?php esc_html_e('No failed login attempts recorded. System is clean and protected.', 'earthin-login-shield'); ?></p>
+                    </div>
+                <?php else: ?>
+                    <div style="overflow-x: auto;">
+                        <table class="earthin-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:180px;"><?php esc_html_e('Timestamp', 'earthin-login-shield'); ?></th>
+                                    <th style="width:160px;"><?php esc_html_e('IP Address', 'earthin-login-shield'); ?></th>
+                                    <th><?php esc_html_e('Target Username Attempted', 'earthin-login-shield'); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($logs as $log): ?>
+                                    <tr>
+                                        <td><span class="earthin-badge-pill earthin-badge-neutral"><?php echo esc_html($log['timestamp']); ?></span></td>
+                                        <td><code style="background:#fee2e2; color:#991b1b; padding:3px 8px; border-radius:6px; font-weight:700;"><?php echo esc_html($log['ip']); ?></code></td>
+                                        <td><strong><?php echo esc_html($log['username']); ?></strong></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
         </div>
         <?php
     }
@@ -321,8 +428,8 @@ class Earthin_Login_Shield {
 
 add_action('plugins_loaded', ['Earthin_Login_Shield', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-login-shield')) . '">' . __('Settings', 'earthin-login-shield') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-login-shield')) . '">' . __('Settings', 'earthin-login-shield') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

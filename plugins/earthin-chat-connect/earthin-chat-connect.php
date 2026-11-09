@@ -321,103 +321,231 @@ class Earthin_Chat_Connect {
             wp_die(__('You do not have sufficient permissions to access this page.', 'earthin-chat-connect'));
         }
         $settings = $this->get_settings();
+
+        $active_channels_count = 0;
+        foreach (['whatsapp', 'telegram', 'phone', 'email'] as $c) {
+            if (!empty($settings['channels'][$c]['active'])) {
+                $active_channels_count++;
+            }
+        }
+        $is_enabled = !empty($settings['enabled']);
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Chat Connect Settings', 'earthin-chat-connect'); ?></h1>
-            <p><?php esc_html_e('Connect directly with your website visitors via WhatsApp, Telegram, Phone, and Email.', 'earthin-chat-connect'); ?></p>
+        <div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+            <!-- Header Banner -->
+            <div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">💬</div>
+                    <div>
+                        <h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e('Earthin Chat Connect', 'earthin-chat-connect'); ?></h1>
+                        <p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e('Direct visitor engagement via WhatsApp, Telegram, Phone & Email floating widgets', 'earthin-chat-connect'); ?></p>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html(EARTHIN_CHAT_CONNECT_VERSION); ?></span>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" style="background:#fff; color:#047857; text-decoration:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600;">Documentation</a>
+                </div>
+            </div>
+
+            <!-- Metric Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Widget Status', 'earthin-chat-connect'); ?></div>
+                    <div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo $is_enabled ? '#059669' : '#94a3b8'; ?>;">
+                        <?php echo $is_enabled ? '● Active Front-End' : '○ Disabled'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Floating button presence', 'earthin-chat-connect'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Active Channels', 'earthin-chat-connect'); ?></div>
+                    <div style="font-size:24px; font-weight:700; color:#059669; margin-top:4px;">
+                        <?php echo esc_html($active_channels_count); ?> / 4
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('WhatsApp, Telegram, Phone, Email', 'earthin-chat-connect'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Position', 'earthin-chat-connect'); ?></div>
+                    <div style="font-size:18px; font-weight:700; color:#0f172a; margin-top:6px;">
+                        <?php echo $settings['position'] === 'bottom-left' ? 'Bottom Left' : 'Bottom Right'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Responsive anchored floating icon', 'earthin-chat-connect'); ?></div>
+                </div>
+            </div>
 
             <form method="post" action="options.php">
-                <?php
-                settings_fields('earthin_chat_connect_group');
-                ?>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Enable Chat Button', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <label>
+                <?php settings_fields('earthin_chat_connect_group'); ?>
+
+                <div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+                    <!-- Main Channels & Design Column -->
+                    <div>
+                        <!-- Widget General Options Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>⚙️</span> <?php esc_html_e('General Widget Settings', 'earthin-chat-connect'); ?>
+                            </h2>
+
+                            <label style="display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer;">
                                 <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enabled]" value="1" <?php checked($settings['enabled'], 1); ?> />
-                                <?php esc_html_e('Display chat widget on front end', 'earthin-chat-connect'); ?>
+                                <span style="font-size:14px; font-weight:600; color:#0f172a;"><?php esc_html_e('Enable Chat Button on Website Front-End', 'earthin-chat-connect'); ?></span>
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Widget Position', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <select name="<?php echo esc_attr($this->option_name); ?>[position]">
-                                <option value="bottom-right" <?php selected($settings['position'], 'bottom-right'); ?>><?php esc_html_e('Bottom Right', 'earthin-chat-connect'); ?></option>
-                                <option value="bottom-left" <?php selected($settings['position'], 'bottom-left'); ?>><?php esc_html_e('Bottom Left', 'earthin-chat-connect'); ?></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Button Color', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <input type="color" name="<?php echo esc_attr($this->option_name); ?>[button_color]" value="<?php echo esc_attr($settings['button_color']); ?>" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Header / Callout Text', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <input type="text" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[tooltip_text]" value="<?php echo esc_attr($settings['tooltip_text']); ?>" />
-                        </td>
-                    </tr>
-                </table>
 
-                <h2 class="title"><?php esc_html_e('Channels Configuration', 'earthin-chat-connect'); ?></h2>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('WhatsApp', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][active]" value="1" <?php checked($settings['channels']['whatsapp']['active'], 1); ?> />
-                                <?php esc_html_e('Enable WhatsApp', 'earthin-chat-connect'); ?>
-                            </label>
-                            <br><br>
-                            <label><?php esc_html_e('Phone Number (with country code, digits only):', 'earthin-chat-connect'); ?><br>
-                            <input type="text" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][phone]" value="<?php echo esc_attr($settings['channels']['whatsapp']['phone']); ?>" placeholder="14155552671" /></label>
-                            <br><br>
-                            <label><?php esc_html_e('Default Pre-filled Message:', 'earthin-chat-connect'); ?><br>
-                            <input type="text" class="large-text" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][message]" value="<?php echo esc_attr($settings['channels']['whatsapp']['message']); ?>" /></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Telegram', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][telegram][active]" value="1" <?php checked($settings['channels']['telegram']['active'], 1); ?> />
-                                <?php esc_html_e('Enable Telegram', 'earthin-chat-connect'); ?>
-                            </label>
-                            <br><br>
-                            <label><?php esc_html_e('Telegram Username (without @):', 'earthin-chat-connect'); ?><br>
-                            <input type="text" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[channels][telegram][username]" value="<?php echo esc_attr($settings['channels']['telegram']['username']); ?>" placeholder="your_telegram_handle" /></label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Phone Call', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][phone][active]" value="1" <?php checked($settings['channels']['phone']['active'], 1); ?> />
-                                <?php esc_html_e('Enable Direct Phone Call', 'earthin-chat-connect'); ?>
-                            </label>
-                            <br><br>
-                            <input type="text" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[channels][phone][number]" value="<?php echo esc_attr($settings['channels']['phone']['number']); ?>" placeholder="+1 (555) 000-0000" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Email', 'earthin-chat-connect'); ?></th>
-                        <td>
-                            <label>
-                                <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][email][active]" value="1" <?php checked($settings['channels']['email']['active'], 1); ?> />
-                                <?php esc_html_e('Enable Email Inquiry', 'earthin-chat-connect'); ?>
-                            </label>
-                            <br><br>
-                            <label><?php esc_html_e('Email Address:', 'earthin-chat-connect'); ?><br>
-                            <input type="email" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[channels][email][address]" value="<?php echo esc_attr($settings['channels']['email']['address']); ?>" placeholder="support@yourdomain.com" /></label>
-                        </td>
-                    </tr>
-                </table>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Widget Position', 'earthin-chat-connect'); ?></label>
+                                    <select name="<?php echo esc_attr($this->option_name); ?>[position]" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+                                        <option value="bottom-right" <?php selected($settings['position'], 'bottom-right'); ?>><?php esc_html_e('Bottom Right', 'earthin-chat-connect'); ?></option>
+                                        <option value="bottom-left" <?php selected($settings['position'], 'bottom-left'); ?>><?php esc_html_e('Bottom Left', 'earthin-chat-connect'); ?></option>
+                                    </select>
+                                </div>
 
-                <?php submit_button(); ?>
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Button Accent Color', 'earthin-chat-connect'); ?></label>
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <input type="color" name="<?php echo esc_attr($this->option_name); ?>[button_color]" value="<?php echo esc_attr($settings['button_color']); ?>" style="width:42px; height:36px; padding:2px; border:1px solid #cbd5e1; border-radius:6px; cursor:pointer;" />
+                                        <span style="font-size:13px; color:#64748b; font-family:monospace;"><?php echo esc_html($settings['button_color']); ?></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="margin-top:16px;">
+                                <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Callout / Tooltip Text', 'earthin-chat-connect'); ?></label>
+                                <input type="text" class="large-text" name="<?php echo esc_attr($this->option_name); ?>[tooltip_text]" value="<?php echo esc_attr($settings['tooltip_text']); ?>" style="padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" placeholder="Need help? Chat with us!" />
+                            </div>
+                        </div>
+
+                        <!-- Communication Channels Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>📱</span> <?php esc_html_e('Communication Channels', 'earthin-chat-connect'); ?>
+                            </h2>
+
+                            <!-- WhatsApp -->
+                            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; margin-bottom:16px;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:20px;">🟢</span>
+                                        <strong style="font-size:14px; color:#0f172a;">WhatsApp</strong>
+                                    </div>
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#059669;">
+                                        <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][active]" value="1" <?php checked($settings['channels']['whatsapp']['active'], 1); ?> />
+                                        <?php esc_html_e('Active', 'earthin-chat-connect'); ?>
+                                    </label>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Phone Number (with country code):', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][phone]" value="<?php echo esc_attr($settings['channels']['whatsapp']['phone']); ?>" placeholder="14155552671" />
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Menu Label:', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][label]" value="<?php echo esc_attr($settings['channels']['whatsapp']['label']); ?>" placeholder="WhatsApp" />
+                                    </div>
+                                </div>
+                                <div style="margin-top:10px;">
+                                    <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Pre-filled Message:', 'earthin-chat-connect'); ?></label>
+                                    <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][whatsapp][message]" value="<?php echo esc_attr($settings['channels']['whatsapp']['message']); ?>" />
+                                </div>
+                            </div>
+
+                            <!-- Telegram -->
+                            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; margin-bottom:16px;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:20px;">✈️</span>
+                                        <strong style="font-size:14px; color:#0f172a;">Telegram</strong>
+                                    </div>
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#059669;">
+                                        <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][telegram][active]" value="1" <?php checked($settings['channels']['telegram']['active'], 1); ?> />
+                                        <?php esc_html_e('Active', 'earthin-chat-connect'); ?>
+                                    </label>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Username (without @):', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][telegram][username]" value="<?php echo esc_attr($settings['channels']['telegram']['username']); ?>" placeholder="your_telegram_handle" />
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Menu Label:', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][telegram][label]" value="<?php echo esc_attr($settings['channels']['telegram']['label']); ?>" placeholder="Telegram" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; margin-bottom:16px;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:20px;">📞</span>
+                                        <strong style="font-size:14px; color:#0f172a;"><?php esc_html_e('Direct Phone Call', 'earthin-chat-connect'); ?></strong>
+                                    </div>
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#059669;">
+                                        <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][phone][active]" value="1" <?php checked($settings['channels']['phone']['active'], 1); ?> />
+                                        <?php esc_html_e('Active', 'earthin-chat-connect'); ?>
+                                    </label>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Phone Number:', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][phone][number]" value="<?php echo esc_attr($settings['channels']['phone']['number']); ?>" placeholder="+1 (555) 000-0000" />
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Menu Label:', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][phone][label]" value="<?php echo esc_attr($settings['channels']['phone']['label']); ?>" placeholder="Call Us" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Email -->
+                            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px;">
+                                <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:20px;">✉️</span>
+                                        <strong style="font-size:14px; color:#0f172a;"><?php esc_html_e('Email Inquiry', 'earthin-chat-connect'); ?></strong>
+                                    </div>
+                                    <label style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; color:#059669;">
+                                        <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[channels][email][active]" value="1" <?php checked($settings['channels']['email']['active'], 1); ?> />
+                                        <?php esc_html_e('Active', 'earthin-chat-connect'); ?>
+                                    </label>
+                                </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Email Address:', 'earthin-chat-connect'); ?></label>
+                                        <input type="email" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][email][address]" value="<?php echo esc_attr($settings['channels']['email']['address']); ?>" placeholder="support@yourdomain.com" />
+                                    </div>
+                                    <div>
+                                        <label style="font-size:12px; font-weight:600; color:#475569; display:block; margin-bottom:4px;"><?php esc_html_e('Subject:', 'earthin-chat-connect'); ?></label>
+                                        <input type="text" style="width:100%; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[channels][email][subject]" value="<?php echo esc_attr($settings['channels']['email']['subject']); ?>" placeholder="Inquiry from website" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+                            <?php esc_html_e('Save Chat Connect Settings', 'earthin-chat-connect'); ?>
+                        </button>
+                    </div>
+
+                    <!-- Sidebar Info & Preview -->
+                    <div>
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:20px;">
+                            <h3 style="font-size:14px; font-weight:700; color:#0f172a; margin:0 0 12px;"><?php esc_html_e('Live Widget Preview', 'earthin-chat-connect'); ?></h3>
+                            <div style="background:#f1f5f9; border-radius:8px; height:180px; position:relative; overflow:hidden; border:1px dashed #cbd5e1; display:flex; align-items:center; justify-content:center;">
+                                <span style="font-size:12px; color:#94a3b8;"><?php esc_html_e('Website Page Simulation', 'earthin-chat-connect'); ?></span>
+                                <div style="position:absolute; bottom:16px; <?php echo $settings['position'] === 'bottom-left' ? 'left:16px;' : 'right:16px;'; ?> width:48px; height:48px; background:<?php echo esc_attr($settings['button_color']); ?>; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:22px; box-shadow:0 4px 12px rgba(0,0,0,0.18);">
+                                    💬
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:18px;">
+                            <div style="font-size:13px; font-weight:700; color:#166534; margin-bottom:8px;">🔒 <?php esc_html_e('Zero Tracking / 100% Privacy', 'earthin-chat-connect'); ?></div>
+                            <p style="font-size:12px; color:#15803d; line-height:1.5; margin:0;">
+                                <?php esc_html_e('Earthin Chat Connect communicates directly using native WhatsApp (wa.me) and Telegram protocols without third-party cookies or telemetry servers.', 'earthin-chat-connect'); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <?php
@@ -426,8 +554,9 @@ class Earthin_Chat_Connect {
 
 add_action('plugins_loaded', ['Earthin_Chat_Connect', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-chat-connect')) . '">' . __('Settings', 'earthin-chat-connect') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-chat-connect')) . '">' . __('Settings', 'earthin-chat-connect') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });
+

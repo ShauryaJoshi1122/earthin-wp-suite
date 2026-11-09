@@ -258,69 +258,113 @@ final class Plugin {
 			}
 		}
 
+		$overall_healthy = empty($counts['critical']);
+		$status_label = $overall_healthy ? __( 'System Healthy', 'earthin-site-health-monitor' ) : __( 'Attention Required', 'earthin-site-health-monitor' );
+		$status_badge_class = $overall_healthy ? 'earthin-badge-success' : 'earthin-badge-danger';
 		?>
-		<div class="wrap">
-			<h1><?php esc_html_e( 'Earthin Site Health Monitor', 'earthin-site-health-monitor' ); ?></h1>
-			<p class="description">
-				<?php esc_html_e( 'Comprehensive technical environment checks and actionable recommendations for optimal WordPress security and performance.', 'earthin-site-health-monitor' ); ?>
-			</p>
+		<div class="earthin-admin-wrap">
+			<style>
+				.earthin-admin-wrap { max-width: 1240px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+				.earthin-header { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #ffffff; padding: 22px 28px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 18px rgba(5,150,105,0.22); flex-wrap: wrap; gap: 16px; }
+				.earthin-header-left { display: flex; align-items: center; gap: 14px; }
+				.earthin-logo-badge { background: rgba(255,255,255,0.2); color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+				.earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+				.earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.2); color: #ffffff; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+				.earthin-title-group p { margin: 4px 0 0; color: #d1fae5; font-size: 13px; }
+				.earthin-header-links { display: flex; gap: 10px; align-items: center; }
+				.earthin-link-btn { background: #ffffff; color: #047857 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; transition: all 0.15s ease; }
+				.earthin-link-btn:hover { background: #f0fdf4; color: #065f46 !important; }
+				.earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+				.earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+				.earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+				.earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+				.earthin-badge-success { background: #ecfdf5; color: #059669; }
+				.earthin-badge-warning { background: #fffbeb; color: #d97706; }
+				.earthin-badge-danger { background: #fef2f2; color: #ef4444; }
+				.earthin-badge-neutral { background: #f1f5f9; color: #64748b; }
+				.earthin-table { width: 100%; border-collapse: collapse; }
+				.earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+				.earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+				.earthin-table tr:hover td { background: #fafbfc; }
+			</style>
+
+			<header class="earthin-header">
+				<div class="earthin-header-left">
+					<span class="earthin-logo-badge">🌱 Earthin</span>
+					<div class="earthin-title-group">
+						<h1>
+							<?php echo esc_html__( 'Earthin Site Health Monitor', 'earthin-site-health-monitor' ); ?>
+							<span class="earthin-version-tag">v<?php echo esc_html( ESHM_VERSION ); ?></span>
+							<span class="earthin-badge-pill <?php echo esc_attr( $status_badge_class ); ?>"><?php echo esc_html( $status_label ); ?></span>
+						</h1>
+						<p><?php echo esc_html__( 'Comprehensive server diagnostics and performance auditing engine by Shaurya Joshi.', 'earthin-site-health-monitor' ); ?></p>
+					</div>
+				</div>
+				<div class="earthin-header-links">
+					<a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Plugin Hub', 'earthin-site-health-monitor' ); ?> &nearr;</a>
+					<a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Documentation', 'earthin-site-health-monitor' ); ?></a>
+					<a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__( 'Support', 'earthin-site-health-monitor' ); ?></a>
+				</div>
+			</header>
 
 			<!-- Overview Cards -->
-			<div style="display:flex; gap:16px; margin:24px 0; flex-wrap:wrap;">
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #10b981; border-radius:8px; padding:16px;">
-					<div style="font-size:28px; font-weight:700; color:#10b981;"><?php echo (int) $counts['good']; ?></div>
-					<div style="font-weight:600; color:#334155; margin-top:4px;"><?php esc_html_e( 'Items Passing', 'earthin-site-health-monitor' ); ?></div>
+			<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin:24px 0;">
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:28px; font-weight:800; color:#059669;"><?php echo (int) $counts['good']; ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Passing Checks', 'earthin-site-health-monitor' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #f59e0b; border-radius:8px; padding:16px;">
-					<div style="font-size:28px; font-weight:700; color:#f59e0b;"><?php echo (int) $counts['warning']; ?></div>
-					<div style="font-weight:600; color:#334155; margin-top:4px;"><?php esc_html_e( 'Recommended Improvements', 'earthin-site-health-monitor' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:28px; font-weight:800; color:#d97706;"><?php echo (int) $counts['warning']; ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Notice & Recommendations', 'earthin-site-health-monitor' ); ?></div>
 				</div>
-				<div style="flex:1; min-width:200px; background:#ffffff; border:1px solid #cbd5e1; border-left:4px solid #ef4444; border-radius:8px; padding:16px;">
-					<div style="font-size:28px; font-weight:700; color:#ef4444;"><?php echo (int) $counts['critical']; ?></div>
-					<div style="font-weight:600; color:#334155; margin-top:4px;"><?php esc_html_e( 'Critical Alerts', 'earthin-site-health-monitor' ); ?></div>
+				<div class="earthin-card" style="padding:18px 24px; margin-bottom:0;">
+					<div style="font-size:28px; font-weight:800; color:#ef4444;"><?php echo (int) $counts['critical']; ?></div>
+					<div style="font-size:12px; font-weight:700; text-transform:uppercase; color:#64748b; margin-top:4px;"><?php esc_html_e( 'Critical Alerts', 'earthin-site-health-monitor' ); ?></div>
 				</div>
 			</div>
 
 			<!-- Diagnostics Table -->
-			<table class="wp-list-table widefat fixed striped">
-				<thead>
-					<tr>
-						<th style="width:120px;"><?php esc_html_e( 'Status', 'earthin-site-health-monitor' ); ?></th>
-						<th style="width:220px;"><?php esc_html_e( 'Diagnostic Item', 'earthin-site-health-monitor' ); ?></th>
-						<th style="width:200px;"><?php esc_html_e( 'Detected Value', 'earthin-site-health-monitor' ); ?></th>
-						<th><?php esc_html_e( 'Assessment & Recommended Action', 'earthin-site-health-monitor' ); ?></th>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ( $diagnostics as $d ) : ?>
-						<tr>
-							<td>
-								<?php if ( 'good' === $d['badge'] ) : ?>
-									<span style="background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:4px; font-weight:600; font-size:12px;">✓ <?php esc_html_e( 'Pass', 'earthin-site-health-monitor' ); ?></span>
-								<?php elseif ( 'warning' === $d['badge'] ) : ?>
-									<span style="background:#fef3c7; color:#b45309; padding:3px 8px; border-radius:4px; font-weight:600; font-size:12px;">! <?php esc_html_e( 'Notice', 'earthin-site-health-monitor' ); ?></span>
-								<?php else : ?>
-									<span style="background:#fee2e2; color:#b91c1c; padding:3px 8px; border-radius:4px; font-weight:600; font-size:12px;">✕ <?php esc_html_e( 'Critical', 'earthin-site-health-monitor' ); ?></span>
-								<?php endif; ?>
-							</td>
-							<td><strong><?php echo esc_html( $d['title'] ); ?></strong></td>
-							<td><code><?php echo esc_html( $d['value'] ); ?></code></td>
-							<td>
-								<div><?php echo esc_html( $d['description'] ); ?></div>
-								<?php if ( ! empty( $d['action'] ) ) : ?>
-									<div style="margin-top:4px; color:#475569; font-size:12px;">
-										<strong><?php esc_html_e( 'Recommendation:', 'earthin-site-health-monitor' ); ?></strong> <?php echo esc_html( $d['action'] ); ?>
-									</div>
-								<?php endif; ?>
-							</td>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-
-			<div style="margin-top:24px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; font-size:13px; color:#64748b;">
-				<strong><?php esc_html_e( 'Security Disclaimer:', 'earthin-site-health-monitor' ); ?></strong>
-				<?php esc_html_e( 'Earthin Site Health Monitor provides administrative configuration verification. A clean report indicates good operational posture but does not guarantee immunity from zero-day exploits or credential compromise.', 'earthin-site-health-monitor' ); ?>
+			<div class="earthin-card" style="padding:0; overflow:hidden;">
+				<div style="padding:20px 24px; border-bottom:1px solid #f1f5f9;">
+					<h2 class="earthin-card-title"><?php esc_html_e( 'System Diagnostic Evaluation', 'earthin-site-health-monitor' ); ?></h2>
+				</div>
+				<div style="overflow-x:auto;">
+					<table class="earthin-table">
+						<thead>
+							<tr>
+								<th style="width:110px;"><?php esc_html_e( 'Result', 'earthin-site-health-monitor' ); ?></th>
+								<th style="width:230px;"><?php esc_html_e( 'Diagnostic Item', 'earthin-site-health-monitor' ); ?></th>
+								<th style="width:200px;"><?php esc_html_e( 'Detected Value', 'earthin-site-health-monitor' ); ?></th>
+								<th><?php esc_html_e( 'Assessment & Recommended Action', 'earthin-site-health-monitor' ); ?></th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ( $diagnostics as $d ) : ?>
+								<tr>
+									<td>
+										<?php if ( 'good' === $d['badge'] ) : ?>
+											<span class="earthin-badge-pill earthin-badge-success">✓ <?php esc_html_e( 'Pass', 'earthin-site-health-monitor' ); ?></span>
+										<?php elseif ( 'warning' === $d['badge'] ) : ?>
+											<span class="earthin-badge-pill earthin-badge-warning">! <?php esc_html_e( 'Notice', 'earthin-site-health-monitor' ); ?></span>
+										<?php else : ?>
+											<span class="earthin-badge-pill earthin-badge-danger">✕ <?php esc_html_e( 'Critical', 'earthin-site-health-monitor' ); ?></span>
+										<?php endif; ?>
+									</td>
+									<td><strong><?php echo esc_html( $d['title'] ); ?></strong></td>
+									<td><code style="background:#f1f5f9; padding:2px 8px; border-radius:6px;"><?php echo esc_html( $d['value'] ); ?></code></td>
+									<td>
+										<div style="color:#334155; line-height:1.5;"><?php echo esc_html( $d['description'] ); ?></div>
+										<?php if ( ! empty( $d['action'] ) ) : ?>
+											<div style="margin-top:6px; color:#0f172a; font-size:12px; background:#f8fafc; padding:6px 10px; border-radius:6px; border:1px solid #e2e8f0;">
+												<strong><?php esc_html_e( 'Recommendation:', 'earthin-site-health-monitor' ); ?></strong> <?php echo esc_html( $d['action'] ); ?>
+											</div>
+										<?php endif; ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 		<?php
@@ -329,8 +373,8 @@ final class Plugin {
 
 Plugin::instance();
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-site-health-monitor')) . '">' . __('Settings', 'earthin-site-health-monitor') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('tools.php?page=earthin-site-health-monitor')) . '">' . __('Settings', 'earthin-site-health-monitor') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

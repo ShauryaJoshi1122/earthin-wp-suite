@@ -155,36 +155,67 @@ class Earthin_Security_2FA {
             $secret = (string) $secret;
         }
 
+        $backup_codes = get_user_meta($user->ID, '_earthin_2fa_backup_codes', true) ?: [];
         $otpauth_url = sprintf('otpauth://totp/EarthinSuite:%s?secret=%s&issuer=EarthinSuite', rawurlencode($user->user_email), $secret);
         $qr_url = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=' . rawurlencode($otpauth_url);
         ?>
-        <h2><?php echo esc_html__('Earthin Two-Factor Authentication (2FA)', 'earthin-security-2fa'); ?></h2>
-        <table class="form-table">
-            <tr>
-                <th><label><?php echo esc_html__('2FA Status', 'earthin-security-2fa'); ?></label></th>
-                <td>
-                    <?php if ($enabled) : ?>
-                        <span style="color:#008a20;font-weight:bold;">✔ <?php echo esc_html__('Active & Enforced', 'earthin-security-2fa'); ?></span>
-                        <p class="description">
-                            <label>
-                                <input type="checkbox" name="earthin_disable_2fa" value="1" />
-                                <?php echo esc_html__('Check this box and save profile to disable 2FA for this account.', 'earthin-security-2fa'); ?>
-                            </label>
-                        </p>
-                    <?php else : ?>
-                        <span style="color:#888;">○ <?php echo esc_html__('Not Configured', 'earthin-security-2fa'); ?></span>
-                        <div style="margin-top:15px;background:#f9f9f9;padding:15px;border:1px solid #ddd;border-radius:6px;max-width:420px;">
-                            <p><strong>1. Scan with Google Authenticator or Authy:</strong></p>
-                            <img src="<?php echo esc_url($qr_url); ?>" alt="2FA QR Code" width="160" height="160" style="display:block;margin:10px 0;" />
-                            <p>Secret key: <code><?php echo esc_html($secret); ?></code></p>
-                            <p><strong>2. Enter 6-digit code to confirm and activate:</strong></p>
-                            <input type="text" name="earthin_verify_2fa_code" placeholder="123456" maxlength="6" class="regular-text" style="width:140px;" />
-                            <input type="hidden" name="earthin_temp_secret" value="<?php echo esc_attr($secret); ?>" />
+        <div class="earthin-card" style="background:#ffffff; border-radius:12px; border:1px solid #e2e8f0; padding:24px 28px; max-width:750px; margin:24px 0; box-shadow:0 1px 3px rgba(0,0,0,0.05); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; margin-bottom:18px; border-bottom:1px solid #f1f5f9; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:#059669; color:#fff; font-weight:800; font-size:12px; padding:4px 10px; border-radius:6px; letter-spacing:0.04em;">🌱 Earthin Security</span>
+                    <h2 style="margin:0; font-size:18px; font-weight:700; color:#0f172a;"><?php echo esc_html__('Two-Factor Authentication (TOTP 2FA)', 'earthin-security-2fa'); ?></h2>
+                </div>
+                <?php if ($enabled) : ?>
+                    <span style="background:#ecfdf5; color:#059669; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;">✔ <?php echo esc_html__('2FA Active & Enforced', 'earthin-security-2fa'); ?></span>
+                <?php else : ?>
+                    <span style="background:#f1f5f9; color:#64748b; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;">○ <?php echo esc_html__('Not Configured', 'earthin-security-2fa'); ?></span>
+                <?php endif; ?>
+            </div>
+
+            <?php if ($enabled) : ?>
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px; margin-bottom:18px;">
+                    <strong style="display:block; font-size:13px; color:#334155; margin-bottom:8px;"><?php echo esc_html__('Emergency Recovery Scratch Codes:', 'earthin-security-2fa'); ?></strong>
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <?php if (!empty($backup_codes) && is_array($backup_codes)) : ?>
+                            <?php foreach ($backup_codes as $code) : ?>
+                                <code style="background:#ffffff; border:1px solid #cbd5e1; padding:4px 10px; border-radius:6px; font-size:13px; font-weight:700; color:#0f172a;"><?php echo esc_html($code); ?></code>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <span style="font-size:12px; color:#64748b;"><?php echo esc_html__('Standard TOTP active.', 'earthin-security-2fa'); ?></span>
+                        <?php endif; ?>
+                    </div>
+                    <p style="font-size:12px; color:#64748b; margin:8px 0 0;"><?php echo esc_html__('Store these emergency codes in a password manager. Each single-use code allows emergency login if you lose your phone.', 'earthin-security-2fa'); ?></p>
+                </div>
+
+                <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#ef4444; font-weight:600; cursor:pointer;">
+                    <input type="checkbox" name="earthin_disable_2fa" value="1" />
+                    <?php echo esc_html__('Check this box and click "Update Profile" below to revoke and disable 2FA.', 'earthin-security-2fa'); ?>
+                </label>
+            <?php else : ?>
+                <div style="display:grid; grid-template-columns: 180px 1fr; gap:20px; align-items:start;">
+                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:10px; text-align:center;">
+                        <img src="<?php echo esc_url($qr_url); ?>" alt="2FA QR Code" width="160" height="160" style="display:block; border-radius:6px;" />
+                        <span style="display:block; font-size:11px; color:#64748b; margin-top:6px;"><?php echo esc_html__('Scan with Google Authenticator', 'earthin-security-2fa'); ?></span>
+                    </div>
+
+                    <div>
+                        <div style="margin-bottom:14px;">
+                            <strong style="display:block; font-size:13px; color:#0f172a;"><?php echo esc_html__('Manual Setup Secret Key:', 'earthin-security-2fa'); ?></strong>
+                            <code style="background:#f1f5f9; padding:4px 10px; border-radius:6px; font-size:13px; font-weight:700; color:#059669; display:inline-block; margin-top:4px;"><?php echo esc_html($secret); ?></code>
                         </div>
-                    <?php endif; ?>
-                </td>
-            </tr>
-        </table>
+
+                        <label style="display:block; font-size:13px; font-weight:700; color:#334155; margin-bottom:6px;">
+                            <?php echo esc_html__('Verify 6-Digit Authenticator Code:', 'earthin-security-2fa'); ?>
+                        </label>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <input type="text" name="earthin_verify_2fa_code" placeholder="123456" maxlength="6" style="border:1px solid #cbd5e1; border-radius:8px; padding:8px 12px; font-size:16px; font-weight:700; letter-spacing:0.1em; width:130px;" />
+                            <input type="hidden" name="earthin_temp_secret" value="<?php echo esc_attr($secret); ?>" />
+                            <span style="font-size:12px; color:#64748b;"><?php echo esc_html__('Enter code and save profile to activate.', 'earthin-security-2fa'); ?></span>
+                        </div>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
         <?php
     }
 
@@ -221,8 +252,8 @@ class Earthin_Security_2FA {
 
 add_action('plugins_loaded', ['Earthin_Security_2FA', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('profile.php')) . '">' . __('Settings', 'earthin-security-2fa') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('profile.php')) . '">' . __('Settings', 'earthin-security-2fa') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

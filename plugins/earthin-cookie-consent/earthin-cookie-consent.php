@@ -367,76 +367,159 @@ class Earthin_Cookie_Consent {
             wp_die(__('Unauthorized', 'earthin-cookie-consent'));
         }
         $settings = $this->get_settings();
+        $is_enabled = !empty($settings['enabled']);
         ?>
-        <div class="wrap">
-            <h1><?php esc_html_e('Earthin Cookie Consent Settings', 'earthin-cookie-consent'); ?></h1>
-            <p><?php esc_html_e('Configure GDPR and CCPA compliant cookie notice banners and consent categories.', 'earthin-cookie-consent'); ?></p>
+        <div class="wrap" style="max-width:1100px; margin:20px auto 40px; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,sans-serif;">
+            <!-- Header Banner -->
+            <div style="display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg, #059669 0%, #047857 100%); padding:22px 28px; border-radius:12px; color:#fff; box-shadow:0 4px 18px rgba(5,150,105,0.22); margin-bottom:24px;">
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div style="background:rgba(255,255,255,0.2); border-radius:12px; width:50px; height:50px; display:flex; align-items:center; justify-content:center; font-size:26px;">🍪</div>
+                    <div>
+                        <h1 style="color:#fff; margin:0; font-size:22px; font-weight:700; line-height:1.2;"><?php esc_html_e('Earthin Cookie Consent', 'earthin-cookie-consent'); ?></h1>
+                        <p style="margin:4px 0 0; color:#d1fae5; font-size:13px;"><?php esc_html_e('GDPR & CCPA compliant cookie notice banner with granular category controls', 'earthin-cookie-consent'); ?></p>
+                    </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="background:rgba(255,255,255,0.18); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600;">v<?php echo esc_html(EARTHIN_COOKIE_CONSENT_VERSION); ?></span>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" style="background:#fff; color:#047857; text-decoration:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:600;">Documentation</a>
+                </div>
+            </div>
+
+            <!-- Metric Cards -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; margin-bottom:24px;">
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Banner Status', 'earthin-cookie-consent'); ?></div>
+                    <div style="font-size:20px; font-weight:700; margin-top:4px; color:<?php echo $is_enabled ? '#059669' : '#94a3b8'; ?>;">
+                        <?php echo $is_enabled ? '● Active Front-End' : '○ Disabled'; ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Displays to first-time visitors', 'earthin-cookie-consent'); ?></div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Compliance Standards', 'earthin-cookie-consent'); ?></div>
+                    <div style="font-size:20px; font-weight:700; color:#0f172a; margin-top:4px;">GDPR + CCPA</div>
+                    <div style="font-size:12px; color:#10b981; margin-top:2px; font-weight:500;">✓ Script Blocking Enabled</div>
+                </div>
+
+                <div style="background:#fff; padding:18px 20px; border-radius:10px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.03);">
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; color:#64748b; letter-spacing:0.5px;"><?php esc_html_e('Cookie Memory', 'earthin-cookie-consent'); ?></div>
+                    <div style="font-size:20px; font-weight:700; color:#0f172a; margin-top:4px;">
+                        <?php echo esc_html($settings['cookie_expiry_days']); ?> <?php esc_html_e('Days', 'earthin-cookie-consent'); ?>
+                    </div>
+                    <div style="font-size:12px; color:#94a3b8; margin-top:2px;"><?php esc_html_e('Consent duration on client device', 'earthin-cookie-consent'); ?></div>
+                </div>
+            </div>
 
             <form method="post" action="options.php">
                 <?php settings_fields('earthin_cookie_consent_group'); ?>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Enable Cookie Banner', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <label>
+
+                <div style="display:grid; grid-template-columns:2fr 1fr; gap:24px;">
+                    <!-- Left Form Area -->
+                    <div>
+                        <!-- Appearance & Layout Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>🎨</span> <?php esc_html_e('Banner Layout & Design', 'earthin-cookie-consent'); ?>
+                            </h2>
+
+                            <label style="display:flex; align-items:center; gap:10px; margin-bottom:16px; cursor:pointer;">
                                 <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enabled]" value="1" <?php checked($settings['enabled'], 1); ?> />
-                                <?php esc_html_e('Display banner on frontend for unconsented visitors', 'earthin-cookie-consent'); ?>
+                                <span style="font-size:14px; font-weight:600; color:#0f172a;"><?php esc_html_e('Display Banner on Front-End', 'earthin-cookie-consent'); ?></span>
                             </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Banner Position', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <select name="<?php echo esc_attr($this->option_name); ?>[banner_position]">
-                                <option value="bottom" <?php selected($settings['banner_position'], 'bottom'); ?>><?php esc_html_e('Bottom Bar (Full width)', 'earthin-cookie-consent'); ?></option>
-                                <option value="top" <?php selected($settings['banner_position'], 'top'); ?>><?php esc_html_e('Top Bar (Full width)', 'earthin-cookie-consent'); ?></option>
-                                <option value="bottom-right" <?php selected($settings['banner_position'], 'bottom-right'); ?>><?php esc_html_e('Floating Box (Bottom Right)', 'earthin-cookie-consent'); ?></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Theme Style', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <select name="<?php echo esc_attr($this->option_name); ?>[banner_theme]">
-                                <option value="dark" <?php selected($settings['banner_theme'], 'dark'); ?>><?php esc_html_e('Dark', 'earthin-cookie-consent'); ?></option>
-                                <option value="light" <?php selected($settings['banner_theme'], 'light'); ?>><?php esc_html_e('Light', 'earthin-cookie-consent'); ?></option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Banner Notice Text', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <textarea class="large-text" rows="3" name="<?php echo esc_attr($this->option_name); ?>[message]"><?php echo esc_textarea($settings['message']); ?></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Privacy Policy URL', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <input type="url" class="regular-text" name="<?php echo esc_attr($this->option_name); ?>[privacy_policy_url]" value="<?php echo esc_attr($settings['privacy_policy_url']); ?>" placeholder="https://example.com/privacy-policy" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Cookie Expiry', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <input type="number" min="1" max="730" name="<?php echo esc_attr($this->option_name); ?>[cookie_expiry_days]" value="<?php echo esc_attr($settings['cookie_expiry_days']); ?>" />
-                            <span><?php esc_html_e('days', 'earthin-cookie-consent'); ?></span>
-                        </td>
-                    </tr>
-                </table>
 
-                <h2><?php esc_html_e('Categories & Script Blocking', 'earthin-cookie-consent'); ?></h2>
-                <table class="form-table" role="presentation">
-                    <tr>
-                        <th scope="row"><?php esc_html_e('Granular Categories', 'earthin-cookie-consent'); ?></th>
-                        <td>
-                            <label><input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_analytics_category]" value="1" <?php checked($settings['enable_analytics_category'], 1); ?> /> <?php esc_html_e('Enable Analytics Category', 'earthin-cookie-consent'); ?></label><br>
-                            <label><input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_marketing_category]" value="1" <?php checked($settings['enable_marketing_category'], 1); ?> /> <?php esc_html_e('Enable Marketing Category', 'earthin-cookie-consent'); ?></label><br>
-                            <label><input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_functional_category]" value="1" <?php checked($settings['enable_functional_category'], 1); ?> /> <?php esc_html_e('Enable Functional Category', 'earthin-cookie-consent'); ?></label>
-                        </td>
-                    </tr>
-                </table>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Position', 'earthin-cookie-consent'); ?></label>
+                                    <select name="<?php echo esc_attr($this->option_name); ?>[banner_position]" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+                                        <option value="bottom" <?php selected($settings['banner_position'], 'bottom'); ?>><?php esc_html_e('Bottom Bar (Full width)', 'earthin-cookie-consent'); ?></option>
+                                        <option value="top" <?php selected($settings['banner_position'], 'top'); ?>><?php esc_html_e('Top Bar (Full width)', 'earthin-cookie-consent'); ?></option>
+                                        <option value="bottom-right" <?php selected($settings['banner_position'], 'bottom-right'); ?>><?php esc_html_e('Floating Box (Bottom Right)', 'earthin-cookie-consent'); ?></option>
+                                    </select>
+                                </div>
 
-                <?php submit_button(); ?>
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Theme Style', 'earthin-cookie-consent'); ?></label>
+                                    <select name="<?php echo esc_attr($this->option_name); ?>[banner_theme]" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;">
+                                        <option value="dark" <?php selected($settings['banner_theme'], 'dark'); ?>><?php esc_html_e('Dark Slate (#0f172a)', 'earthin-cookie-consent'); ?></option>
+                                        <option value="light" <?php selected($settings['banner_theme'], 'light'); ?>><?php esc_html_e('Clean White (#ffffff)', 'earthin-cookie-consent'); ?></option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom:16px;">
+                                <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Banner Notice Text', 'earthin-cookie-consent'); ?></label>
+                                <textarea class="large-text" rows="3" name="<?php echo esc_attr($this->option_name); ?>[message]" style="padding:10px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px; line-height:1.5;"><?php echo esc_textarea($settings['message']); ?></textarea>
+                            </div>
+
+                            <div style="display:grid; grid-template-columns:2fr 1fr; gap:16px;">
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Privacy Policy URL', 'earthin-cookie-consent'); ?></label>
+                                    <input type="url" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[privacy_policy_url]" value="<?php echo esc_attr($settings['privacy_policy_url']); ?>" placeholder="https://example.com/privacy-policy" />
+                                </div>
+                                <div>
+                                    <label style="font-size:13px; font-weight:600; color:#334155; display:block; margin-bottom:6px;"><?php esc_html_e('Consent Expiry (Days)', 'earthin-cookie-consent'); ?></label>
+                                    <input type="number" min="1" max="730" style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #cbd5e1; font-size:13px;" name="<?php echo esc_attr($this->option_name); ?>[cookie_expiry_days]" value="<?php echo esc_attr($settings['cookie_expiry_days']); ?>" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categories Card -->
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:24px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:24px;">
+                            <h2 style="font-size:16px; font-weight:700; color:#0f172a; margin:0 0 16px; padding-bottom:12px; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; gap:8px;">
+                                <span>🛡️</span> <?php esc_html_e('Consent Categories & Script Blocking', 'earthin-cookie-consent'); ?>
+                            </h2>
+
+                            <div style="display:flex; flex-direction:column; gap:12px;">
+                                <label style="display:flex; align-items:flex-start; gap:12px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_analytics_category]" value="1" <?php checked($settings['enable_analytics_category'], 1); ?> style="margin-top:3px;" />
+                                    <div>
+                                        <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Analytics Cookies', 'earthin-cookie-consent'); ?></strong>
+                                        <span style="font-size:12px; color:#64748b;">Google Analytics, Plausible, Matomo, PostHog, etc.</span>
+                                    </div>
+                                </label>
+
+                                <label style="display:flex; align-items:flex-start; gap:12px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_marketing_category]" value="1" <?php checked($settings['enable_marketing_category'], 1); ?> style="margin-top:3px;" />
+                                    <div>
+                                        <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Marketing & Ads Cookies', 'earthin-cookie-consent'); ?></strong>
+                                        <span style="font-size:12px; color:#64748b;">Facebook Pixel, Google Ads, TikTok Pixel, LinkedIn Insight Tag</span>
+                                    </div>
+                                </label>
+
+                                <label style="display:flex; align-items:flex-start; gap:12px; padding:12px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; cursor:pointer;">
+                                    <input type="checkbox" name="<?php echo esc_attr($this->option_name); ?>[enable_functional_category]" value="1" <?php checked($settings['enable_functional_category'], 1); ?> style="margin-top:3px;" />
+                                    <div>
+                                        <strong style="font-size:13px; color:#0f172a; display:block;"><?php esc_html_e('Functional Preferences', 'earthin-cookie-consent'); ?></strong>
+                                        <span style="font-size:12px; color:#64748b;">Language selectors, currency converters, personalized preferences</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="button button-primary" style="background:#059669; border-color:#047857; color:#fff; font-weight:600; padding:8px 24px; height:auto; border-radius:6px; font-size:14px; box-shadow:0 2px 4px rgba(5,150,105,0.25);">
+                            <?php esc_html_e('Save Cookie Consent Settings', 'earthin-cookie-consent'); ?>
+                        </button>
+                    </div>
+
+                    <!-- Sidebar Info -->
+                    <div>
+                        <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:20px; box-shadow:0 2px 6px rgba(0,0,0,0.03); margin-bottom:20px;">
+                            <h3 style="font-size:14px; font-weight:700; color:#0f172a; margin:0 0 10px;"><?php esc_html_e('Shortcode for Footer', 'earthin-cookie-consent'); ?></h3>
+                            <p style="font-size:12px; color:#64748b; line-height:1.5; margin:0 0 10px;">
+                                <?php esc_html_e('Insert this shortcode into your site footer or privacy policy page to let users reopen the consent modal anytime:', 'earthin-cookie-consent'); ?>
+                            </p>
+                            <code style="display:block; background:#f1f5f9; padding:8px 12px; border-radius:6px; font-size:12px; color:#0f172a; user-select:all;">[earthin_cookie_settings]</code>
+                        </div>
+
+                        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:18px;">
+                            <div style="font-size:13px; font-weight:700; color:#166534; margin-bottom:8px;">💡 <?php esc_html_e('Script Blocking Syntax', 'earthin-cookie-consent'); ?></div>
+                            <p style="font-size:12px; color:#15803d; line-height:1.5; margin:0 0 8px;">
+                                <?php esc_html_e('To block scripts until consent is given, change script tags from:', 'earthin-cookie-consent'); ?>
+                            </p>
+                            <code style="display:block; background:#dcfce7; padding:6px 10px; border-radius:4px; font-size:11px; color:#166534; word-break:break-all;">&lt;script type="text/plain" data-earthin-category="analytics" src="..."&gt;</code>
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
         <?php
@@ -445,8 +528,8 @@ class Earthin_Cookie_Consent {
 
 add_action('plugins_loaded', ['Earthin_Cookie_Consent', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cookie-consent')) . '">' . __('Settings', 'earthin-cookie-consent') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cookie-consent')) . '">' . __('Settings', 'earthin-cookie-consent') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });

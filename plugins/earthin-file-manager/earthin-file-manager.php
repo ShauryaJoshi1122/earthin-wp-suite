@@ -130,33 +130,83 @@ class Earthin_File_Manager {
             ];
         }
         ?>
-        <div class="wrap">
-            <h1><?php echo esc_html__('Earthin File Manager', 'earthin-file-manager'); ?></h1>
-            <p><?php echo esc_html__('Secure directory explorer and code editor engineered by Shaurya Joshi.', 'earthin-file-manager'); ?></p>
+        <div class="earthin-admin-wrap">
+            <style>
+                .earthin-admin-wrap { max-width: 1240px; margin: 20px 20px 0 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+                .earthin-header { background: #0f172a; color: #ffffff; padding: 22px 28px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08); flex-wrap: wrap; gap: 16px; }
+                .earthin-header-left { display: flex; align-items: center; gap: 14px; }
+                .earthin-logo-badge { background: #059669; color: #ffffff; font-weight: 800; font-size: 14px; padding: 6px 12px; border-radius: 8px; letter-spacing: 0.04em; display: inline-flex; align-items: center; gap: 6px; }
+                .earthin-title-group h1 { color: #ffffff; margin: 0; font-size: 20px; font-weight: 700; line-height: 1.2; display: flex; align-items: center; gap: 10px; }
+                .earthin-version-tag { font-size: 11px; background: rgba(255,255,255,0.15); color: #cbd5e1; padding: 2px 8px; border-radius: 999px; font-weight: 600; }
+                .earthin-title-group p { margin: 4px 0 0; color: #94a3b8; font-size: 13px; }
+                .earthin-header-links { display: flex; gap: 10px; align-items: center; }
+                .earthin-link-btn { background: rgba(255,255,255,0.08); color: #e2e8f0 !important; text-decoration: none !important; font-size: 12px; font-weight: 600; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s ease; }
+                .earthin-link-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff !important; }
+                .earthin-card { background: #ffffff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 24px 28px; margin-bottom: 24px; }
+                .earthin-card-header { padding-bottom: 14px; margin-bottom: 20px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between; }
+                .earthin-card-title { font-size: 16px; font-weight: 700; color: #0f172a; margin: 0; }
+                .earthin-btn-primary { background: #059669 !important; border-color: #059669 !important; color: #ffffff !important; font-weight: 700 !important; padding: 8px 22px !important; border-radius: 8px !important; box-shadow: 0 2px 4px rgba(5,150,105,0.2) !important; text-shadow: none !important; cursor: pointer; text-decoration: none; display: inline-block; }
+                .earthin-btn-primary:hover { background: #047857 !important; }
+                .earthin-btn-secondary { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; color: #334155 !important; font-weight: 700 !important; padding: 8px 18px !important; border-radius: 8px !important; text-shadow: none !important; cursor: pointer; text-decoration: none; display: inline-block; }
+                .earthin-badge-pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+                .earthin-badge-success { background: #ecfdf5; color: #059669; }
+                .earthin-table { width: 100%; border-collapse: collapse; }
+                .earthin-table th { background: #f8fafc; padding: 12px 14px; font-size: 12px; font-weight: 700; color: #475569; text-align: left; border-bottom: 2px solid #e2e8f0; }
+                .earthin-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 13px; color: #334155; }
+                .earthin-table tr:hover td { background: #fafbfc; }
+                .earthin-textarea-code { width: 100%; background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; font-size: 13px; line-height: 1.5; padding: 16px; border-radius: 8px; border: 1px solid #1e293b; box-sizing: border-box; }
+            </style>
+
+            <header class="earthin-header">
+                <div class="earthin-header-left">
+                    <span class="earthin-logo-badge">🌱 Earthin</span>
+                    <div class="earthin-title-group">
+                        <h1>
+                            <?php echo esc_html__('Earthin File Manager', 'earthin-file-manager'); ?>
+                            <span class="earthin-version-tag">v1.0.0</span>
+                            <span class="earthin-badge-pill earthin-badge-success"><?php echo esc_html__('Sandboxed ABSPATH', 'earthin-file-manager'); ?></span>
+                        </h1>
+                        <p><?php echo esc_html__('Hardened server file explorer and code editor engineered by Shaurya Joshi.', 'earthin-file-manager'); ?></p>
+                    </div>
+                </div>
+                <div class="earthin-header-links">
+                    <a href="https://plugins.earthin.online" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Plugin Hub', 'earthin-file-manager'); ?> &nearr;</a>
+                    <a href="https://plugins.earthin.online/docs" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Documentation', 'earthin-file-manager'); ?></a>
+                    <a href="https://plugins.earthin.online/support" target="_blank" class="earthin-link-btn"><?php echo esc_html__('Support', 'earthin-file-manager'); ?></a>
+                </div>
+            </header>
+
             <?php settings_errors('earthin_files'); ?>
 
-            <div style="background:#fff;padding:16px;border:1px solid #ccd0d4;border-radius:8px;margin-top:15px;display:flex;align-items:center;justify-content:space-between;">
-                <div>
-                    <strong><?php echo esc_html__('Current Path:', 'earthin-file-manager'); ?></strong>
-                    <code><?php echo esc_html($current_dir); ?></code>
-                </div>
-                <div>
-                    <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($this->base_path))); ?>" class="button button-secondary">
-                        <?php echo esc_html__('Root (ABSPATH)', 'earthin-file-manager'); ?>
-                    </a>
+            <div class="earthin-card" style="padding: 18px 24px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:13px; font-weight:700; color:#475569;"><?php echo esc_html__('Location:', 'earthin-file-manager'); ?></span>
+                        <code style="background:#f1f5f9; padding:5px 10px; border-radius:6px; font-size:13px; color:#0f172a; word-break:break-all;"><?php echo esc_html($current_dir); ?></code>
+                    </div>
+                    <div>
+                        <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($this->base_path))); ?>" class="button earthin-btn-secondary">
+                            &uarr; <?php echo esc_html__('Root Directory', 'earthin-file-manager'); ?>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <?php if ($edit_file && is_file($edit_file)) : ?>
-                <div style="background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;margin-top:20px;">
-                    <h2><?php echo esc_html__('Editing File:', 'earthin-file-manager'); ?> <code><?php echo esc_html(basename($edit_file)); ?></code></h2>
+                <div class="earthin-card">
+                    <div class="earthin-card-header">
+                        <h2 class="earthin-card-title">
+                            <?php echo esc_html__('Editing File:', 'earthin-file-manager'); ?>
+                            <code style="color:#059669;"><?php echo esc_html(basename($edit_file)); ?></code>
+                        </h2>
+                    </div>
                     <form method="post">
                         <?php wp_nonce_field('earthin_save_file_nonce'); ?>
                         <input type="hidden" name="file_path" value="<?php echo esc_attr($edit_file); ?>" />
-                        <textarea name="file_content" rows="18" style="width:100%;font-family:monospace;font-size:13px;"><?php echo esc_textarea($edit_content); ?></textarea>
-                        <p class="submit">
-                            <input type="submit" name="earthin_save_file" class="button button-primary" value="<?php echo esc_attr__('Save File Changes', 'earthin-file-manager'); ?>" />
-                            <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode(dirname($edit_file)))); ?>" class="button button-secondary">
+                        <textarea name="file_content" rows="18" class="earthin-textarea-code"><?php echo esc_textarea($edit_content); ?></textarea>
+                        <p class="submit" style="margin-top:20px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:10px;">
+                            <input type="submit" name="earthin_save_file" class="button earthin-btn-primary" value="<?php echo esc_attr__('Save File Changes', 'earthin-file-manager'); ?>" />
+                            <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode(dirname($edit_file)))); ?>" class="button earthin-btn-secondary">
                                 <?php echo esc_html__('Close Editor', 'earthin-file-manager'); ?>
                             </a>
                         </p>
@@ -164,45 +214,50 @@ class Earthin_File_Manager {
                 </div>
             <?php endif; ?>
 
-            <div style="background:#fff;padding:24px;border:1px solid #ccd0d4;border-radius:8px;margin-top:20px;">
-                <table class="wp-list-table widefat fixed striped">
-                    <thead>
-                        <tr>
-                            <th><?php echo esc_html__('File / Directory Name', 'earthin-file-manager'); ?></th>
-                            <th style="width:100px;"><?php echo esc_html__('Size', 'earthin-file-manager'); ?></th>
-                            <th style="width:100px;"><?php echo esc_html__('Permissions', 'earthin-file-manager'); ?></th>
-                            <th style="width:160px;"><?php echo esc_html__('Last Modified', 'earthin-file-manager'); ?></th>
-                            <th style="width:120px;"><?php echo esc_html__('Action', 'earthin-file-manager'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($items as $item) : ?>
+            <div class="earthin-card" style="padding:0; overflow:hidden;">
+                <div style="padding: 20px 24px; border-bottom: 1px solid #f1f5f9; display: flex; align-items: center; justify-content: space-between;">
+                    <h2 class="earthin-card-title"><?php echo esc_html__('Directory Contents', 'earthin-file-manager'); ?> (<?php echo count($items); ?> items)</h2>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="earthin-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    <?php if ($item['is_dir']) : ?>
-                                        📁 <strong>
-                                            <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($item['path']))); ?>">
-                                                <?php echo esc_html($item['name']); ?>
-                                            </a>
-                                        </strong>
-                                    <?php else : ?>
-                                        📄 <?php echo esc_html($item['name']); ?>
-                                    <?php endif; ?>
-                                </td>
-                                <td><?php echo esc_html($item['size']); ?></td>
-                                <td><code><?php echo esc_html($item['perms']); ?></code></td>
-                                <td><?php echo esc_html($item['modified']); ?></td>
-                                <td>
-                                    <?php if (!$item['is_dir']) : ?>
-                                        <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($current_dir) . '&edit=' . urlencode($item['path']))); ?>" class="button button-small">
-                                            Edit
-                                        </a>
-                                    <?php endif; ?>
-                                </td>
+                                <th><?php echo esc_html__('Name', 'earthin-file-manager'); ?></th>
+                                <th style="width:110px;"><?php echo esc_html__('Size', 'earthin-file-manager'); ?></th>
+                                <th style="width:110px;"><?php echo esc_html__('Permissions', 'earthin-file-manager'); ?></th>
+                                <th style="width:160px;"><?php echo esc_html__('Last Modified', 'earthin-file-manager'); ?></th>
+                                <th style="width:100px; text-align:right;"><?php echo esc_html__('Action', 'earthin-file-manager'); ?></th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($items as $item) : ?>
+                                <tr>
+                                    <td>
+                                        <?php if ($item['is_dir']) : ?>
+                                            <span style="font-size:16px;">📁</span> <strong>
+                                                <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($item['path']))); ?>" style="color:#0f172a; text-decoration:none;">
+                                                    <?php echo esc_html($item['name']); ?>
+                                                </a>
+                                            </strong>
+                                        <?php else : ?>
+                                            <span style="font-size:16px;">📄</span> <span style="color:#334155;"><?php echo esc_html($item['name']); ?></span>
+                                        <?php endif; ?>
+                                    </td>
+                                    <td><span style="font-size:12px; color:#64748b;"><?php echo esc_html($item['size']); ?></span></td>
+                                    <td><code style="background:#f1f5f9; padding:2px 6px; border-radius:4px; font-size:12px;"><?php echo esc_html($item['perms']); ?></code></td>
+                                    <td><span style="font-size:12px; color:#64748b;"><?php echo esc_html($item['modified']); ?></span></td>
+                                    <td style="text-align:right;">
+                                        <?php if (!$item['is_dir']) : ?>
+                                            <a href="<?php echo esc_url(admin_url('tools.php?page=earthin-file-manager&dir=' . urlencode($current_dir) . '&edit=' . urlencode($item['path']))); ?>" class="button earthin-btn-secondary" style="padding:4px 12px !important; font-size:12px !important;">
+                                                <?php echo esc_html__('Edit', 'earthin-file-manager'); ?>
+                                            </a>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
         <?php
@@ -211,8 +266,8 @@ class Earthin_File_Manager {
 
 add_action('plugins_loaded', ['Earthin_File_Manager', 'get_instance']);
 
-add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
-     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-file-manager')) . '">' . __('Settings', 'earthin-file-manager') . '</a>';
-    array_unshift(, );
-    return ;
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $settings_link = '<a href="' . esc_url(admin_url('tools.php?page=earthin-file-manager')) . '">' . __('Settings', 'earthin-file-manager') . '</a>';
+    array_unshift($links, $settings_link);
+    return $links;
 });
