@@ -2,7 +2,8 @@
 /**
  * Earthin WP Suite Test Runner.
  *
- * Runs standalone automated unit and security tests.
+ * Runs standalone unit and security tests with assertions that remain active
+ * regardless of the PHP zend.assertions configuration.
  */
 
 error_reporting( E_ALL );
@@ -16,6 +17,8 @@ require_once __DIR__ . '/test-schema.php';
 require_once __DIR__ . '/test-module-manager.php';
 
 echo "Running Earthin WP Suite Automated Tests...\n";
+echo "PHP version: " . PHP_VERSION . "\n";
+echo "Assertion mode: ews_assert (always enabled)\n";
 echo "===========================================\n";
 
 $tests = array(

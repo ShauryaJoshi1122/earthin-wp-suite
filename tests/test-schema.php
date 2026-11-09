@@ -1,6 +1,6 @@
 <?php
 /**
- * Test Schema JSON-LD script escaping.
+ * Test JSON-LD script payload escaping.
  */
 
 function test_schema_escaping() {
@@ -16,9 +16,9 @@ function test_schema_escaping() {
 	$json   = wp_json_encode( $data, $flags );
 	$output = '<script type="application/ld+json">' . $json . '</script>';
 
-	// Ensure raw </script> tag does not appear within the payload.
-	assert( strpos( $json, '</script>' ) === false, 'JSON payload must hex-encode tag characters to prevent script injection breakout' );
-	assert( strpos( $json, '\u003C' ) !== false, 'Tag character must be hex-encoded as \\u003C' );
+	ews_assert( false === strpos( $json, '</script>' ), 'JSON payload must hex-encode tag characters to prevent script breakout.' );
+	ews_assert( false !== strpos( $json, '\\u003C' ), 'Tag character must be hex-encoded as \\u003C.' );
+	ews_assert( false !== strpos( $output, '<script type="application/ld+json">' ), 'JSON-LD script wrapper should be present.' );
 
-	echo "  [PASS] test_schema_escaping: JSON-LD script tags are safely hex-encoded.\n";
+	echo "  [PASS] test_schema_escaping: JSON-LD payload escaping verified.\n";
 }

@@ -12,14 +12,12 @@ function test_module_manager() {
 	$manager->register( $seo );
 	$manager->register( $sec );
 
-	assert( $manager->has( 'seo' ) === true, 'Manager should have seo module' );
-	assert( $manager->has( 'security' ) === true, 'Manager should have security module' );
-	assert( $manager->has( 'nonexistent' ) === false, 'Manager should return false for unregistered module' );
+	ews_assert( true === $manager->has( 'seo' ), 'Manager should have SEO module.' );
+	ews_assert( true === $manager->has( 'security' ), 'Manager should have security module.' );
+	ews_assert( false === $manager->has( 'nonexistent' ), 'Manager should reject unregistered module lookup.' );
+	ews_assert( $seo === $manager->get( 'seo' ), 'Manager should retrieve the correct module instance.' );
+	ews_assert( null === $manager->get( 'nonexistent' ), 'Manager should return null for missing module.' );
+	ews_assert( 2 === count( $manager->all() ), 'Manager should have exactly two registered modules.' );
 
-	assert( $manager->get( 'seo' ) === $seo, 'Manager should retrieve correct module instance' );
-	assert( $manager->get( 'nonexistent' ) === null, 'Manager should return null for missing module' );
-
-	assert( count( $manager->all() ) === 2, 'Manager should have exactly 2 registered modules' );
-
-	echo "  [PASS] test_module_manager: registration, retrieval, and independence verified.\n";
+	echo "  [PASS] test_module_manager: registration and retrieval verified.\n";
 }

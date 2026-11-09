@@ -24,6 +24,20 @@ if ( ! defined( 'DATE_W3C' ) ) {
 	define( 'DATE_W3C', 'Y-m-d\\TH:i:sP' );
 }
 
+/**
+ * Assertion helper that is always active, independent of zend.assertions.
+ *
+ * @param bool   $condition Condition to evaluate.
+ * @param string $message   Failure message.
+ * @return void
+ * @throws RuntimeException When the condition is false.
+ */
+function ews_assert( $condition, $message = 'Assertion failed' ) {
+	if ( ! $condition ) {
+		throw new RuntimeException( $message );
+	}
+}
+
 // Global state simulation for tests.
 global $ews_test_options, $ews_test_post_meta, $ews_test_posts, $ews_test_transients, $ews_test_headers;
 $ews_test_options    = array();
@@ -79,7 +93,7 @@ function __( $text, $domain = 'default' ) {
 function wp_strip_all_tags( $text, $remove_breaks = false ) {
 	$text = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', (string) $text );
 	$text = strip_tags( $text );
-	return $remove_breaks ? preg_replace( '/[\r\n\t ]+/', ' ', $text ) : $text;
+	return $remove_breaks ? preg_replace( '/[\\r\\n\\t ]+/', ' ', $text ) : $text;
 }
 
 function sanitize_text_field( $str ) {
