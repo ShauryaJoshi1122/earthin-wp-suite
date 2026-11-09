@@ -59,6 +59,33 @@ final class RSS_Module implements Module_Interface {
 		return true;
 	}
 
+	/**
+	 * Fetch a feed without following redirects.
+	 *
+	 * Every feed URL is validated before the request and WordPress's safe HTTP
+	 * transport validates it again. Redirects are deliberately disabled: a
+	 * redirect target must never be fetched without a fresh validation step.
+	 *
+	 * @param string $url Feed URL.
+	 * @return array|\WP_Error HTTP response or WordPress error.
+	 */
+	public static function request_feed( string $url ) {
+		if ( ! self::is_safe_feed_url( $url ) ) {
+			return new \WP_Error( 'ews_unsafe_feed_url', __( 'The feed URL is not a permitted public HTTP destination.', 'earthin-wp-suite' ) );
+		}
+
+		return wp_safe_remote_get(
+			$url,
+			array(
+				'timeout'             => 15,
+				'redirection'         => 0,
+				'reject_unsafe_urls'  => true,
+				'limit_response_size' => 2 * 1024 * 1024,
+				'user-agent'          => 'Earthin-WP-Suite/' . ( defined( 'EWS_VERSION' ) ? EWS_VERSION : '0.0.0' ),
+			)
+		);
+	}
+
 	public function import() {
 		if ( ! current_user_can( 'publish_posts' ) ) {
 			wp_die( esc_html__( 'Access denied. Administrator or editor capability required.', 'earthin-wp-suite' ) );
@@ -75,8 +102,16 @@ final class RSS_Module implements Module_Interface {
 
 		require_once ABSPATH . WPINC . '/feed.php';
 
-		$feed = fetch_feed( $url );
-		if ( is_wp_error( $feed ) ) {
+		$response = self::request_feed( $url );
+		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+			wp_safe_redirect( admin_url( 'admin.php?page=earthin-wp-suite&ews_rss=failed' ) );
+			exit;
+		}
+
+		// Parse only the body returned by the single validated HTTP request.
+		$feed = new \SimplePie();
+		$feed->set_raw_data( wp_remote_retrieve_body( $response ) );
+		if ( ! $feed->init() ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=earthin-wp-suite&ews_rss=failed' ) );
 			exit;
 		}
