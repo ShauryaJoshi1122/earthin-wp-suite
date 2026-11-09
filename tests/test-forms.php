@@ -1,25 +1,25 @@
 <?php
 /**
- * Test Forms module security and sanitation.
+ * Test Forms module configuration and input-sanitization assumptions.
  */
 
 function test_forms_module() {
-	$module = new \Earthin\WPSuite\Forms_Module();
+	$module = new \\Earthin\\WPSuite\\Forms_Module();
 
-	assert( $module->id() === 'forms' );
-	assert( $module->is_enabled() === false, 'Forms module should be disabled by default' );
+	ews_assert( 'forms' === $module->id(), 'Forms module ID should be stable.' );
+	ews_assert( false === $module->is_enabled(), 'Forms module should be disabled by default.' );
 
-	// Test header injection sanitization.
-	$dirty_name  = "John Doe\r\nBcc: victim@example.com";
-	$dirty_email = "john@example.com\r\nCc: spam@example.com";
+	// Verify the sanitization primitives used by the handler remove header line breaks.
+	$dirty_name  = "John Doe\\r\\nBcc: victim@example.com";
+	$dirty_email = "john@example.com\\r\\nCc: spam@example.com";
 
-	$clean_name  = trim( str_replace( array( "\r", "\n" ), '', $dirty_name ) );
-	$clean_email = trim( str_replace( array( "\r", "\n" ), '', $dirty_email ) );
+	$clean_name  = trim( str_replace( array( "\\r", "\\n" ), '', sanitize_text_field( $dirty_name ) ) );
+	$clean_email = trim( str_replace( array( "\\r", "\\n" ), '', sanitize_email( $dirty_email ) ) );
 
-	assert( strpos( $clean_name, "\r" ) === false, 'CR must be stripped from name' );
-	assert( strpos( $clean_name, "\n" ) === false, 'LF must be stripped from name' );
-	assert( strpos( $clean_email, "\r" ) === false, 'CR must be stripped from email' );
-	assert( strpos( $clean_email, "\n" ) === false, 'LF must be stripped from email' );
+	ews_assert( false === strpos( $clean_name, "\\r" ), 'CR must be stripped from name.' );
+	ews_assert( false === strpos( $clean_name, "\\n" ), 'LF must be stripped from name.' );
+	ews_assert( false === strpos( $clean_email, "\\r" ), 'CR must be stripped from email.' );
+	ews_assert( false === strpos( $clean_email, "\\n" ), 'LF must be stripped from email.' );
 
-	echo "  [PASS] test_forms_module: anti-injection and form configurations verified.\n";
+	echo "  [PASS] test_forms_module: module configuration and sanitization primitives verified.\n";
 }
