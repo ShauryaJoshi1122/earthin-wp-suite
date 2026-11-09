@@ -1,0 +1,9 @@
+{
+  "name": "earthin-wp-suite-monorepo",
+  "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

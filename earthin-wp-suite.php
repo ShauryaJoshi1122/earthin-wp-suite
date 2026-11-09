@@ -5,8 +5,9 @@
  * Version: 0.2.0
  * Requires at least: 6.4
  * Requires PHP: 8.1
- * Author: Earthin
- * Author URI: https://earthin.online/
+ * Author: Shaurya Joshi
+ * Author URI: https://plugins.earthin.online
+ * Support URI: https://plugins.earthin.online/support
  * Text Domain: earthin-wp-suite
  * License: GPL-2.0-or-later
  */

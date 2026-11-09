@@ -1,6 +1,8 @@
 # Earthin WP Suite
 
-A modular all-in-one WordPress plugin suite by [Earthin](https://earthin.online/).
+A modular all-in-one WordPress plugin suite by [Shaurya Joshi](https://plugins.earthin.online) under the **Earthin** brand.
+
+Official website & plugin hub: [https://plugins.earthin.online](https://plugins.earthin.online)
 
 ## Current development status — 0.2.0
 

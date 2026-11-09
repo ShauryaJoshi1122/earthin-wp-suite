@@ -1,0 +1,50 @@
+name: Earthin Plugin Hub CI
+
+on:
+  push:
+    paths:
+      - 'apps/plugin-hub/**'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/plugin-hub-ci.yml'
+  pull_request:
+    paths:
+      - 'apps/plugin-hub/**'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/plugin-hub-ci.yml'
+
+jobs:
+  verify:
+    name: Typecheck, Test & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run TypeScript typecheck
+        run: pnpm --filter plugin-hub type-check
+
+      - name: Run Vitest test suite
+        run: pnpm --filter plugin-hub test
+
+      - name: Run Next.js production build
+        run: pnpm --filter plugin-hub build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1

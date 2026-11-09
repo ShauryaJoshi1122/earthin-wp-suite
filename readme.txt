@@ -1,22 +1,52 @@
 === Earthin WP Suite ===
-Contributors: earthin
-Tags: wordpress, seo, social-sharing, website-management
+Contributors: ShauryaJoshi1122
+Donate link: https://plugins.earthin.online
+Tags: seo, security, redirects, forms, sitemap, performance, administration
 Requires at least: 6.4
+Tested up to: 6.7
 Requires PHP: 8.1
 Stable tag: 0.2.0
 License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-A modular WordPress management suite by Earthin.
+A comprehensive, modular WordPress management suite developed under the Earthin brand by Shaurya Joshi.
 
 == Description ==
-Earthin WP Suite provides a modular architecture with independent modules for SEO, social previews, structured data schema, XML sitemaps, security headers, URL redirects, safe contact forms, and RSS draft automation.
+
+Earthin WP Suite is an all-in-one WordPress optimization and website management suite featuring a decoupled, modular architecture. Every module operates independently and can be toggled without performance overhead or cross-module interference.
+
+### Core Modules Included
+
+* **SEO Management**: Custom meta titles, meta descriptions, canonical URLs, and robots indexing directives for posts and pages.
+* **Schema Markup**: Structured JSON-LD breadcrumb and article schema generation with automated escaping.
+* **XML Sitemaps**: Dynamic, search-engine compliant XML sitemap generation with hourly cache invalidation.
+* **Social Previews**: Open Graph and Twitter Card metadata generation with fallbacks.
+* **Security Hardening**: Configurable HTTP security headers including X-Content-Type-Options, X-Frame-Options, X-XSS-Protection, and Referrer-Policy.
+* **URL Redirects**: Performant 301, 302, 307, and 308 redirect manager with infinite loop prevention, external destination validation, and hit analytics.
+* **Safe Contact Forms**: Lightweight frontend form shortcode with anti-spam honeypot, email header injection protection, and CSV export.
+* **RSS Automation**: Scheduled draft publishing from external RSS feeds with hardened SSRF protection against private network queries.
+
+Developed by Shaurya Joshi for the Earthin ecosystem.
 
 == Installation ==
-1. Upload the plugin folder to the WordPress plugins directory (`wp-content/plugins/earthin-wp-suite`).
-2. Activate Earthin WP Suite through the 'Plugins' menu in WordPress.
-3. Open Earthin Suite in the WordPress admin menu to configure enabled modules.
+
+1. Upload the `earthin-wp-suite` folder to your `/wp-content/plugins/` directory.
+2. Activate the plugin through the **Plugins** menu in WordPress.
+3. Access the **Earthin Suite** menu in the WordPress admin bar to configure active modules and settings.
+
+== Frequently Asked Questions ==
+
+= Does disabling a module remove its data? =
+No. Disabling a module safely unhooks its runtime callbacks while preserving all saved configuration and historical logs.
+
+= Are redirects safe from infinite loops? =
+Yes. The redirects module validates that source and destination paths do not resolve to the same relative URI before saving.
+
+= Where can I get support or report issues? =
+Visit our official support desk at https://plugins.earthin.online/support or submit an issue on GitHub.
 
 == Changelog ==
+
 = 0.2.0 =
 * Feature: Tabbed administration dashboard with Modules & Controls, Redirects Manager, Form Inquiries, and System Status views.
 * Feature: Redirects administration interface with rule creation, loop validation, status code selection, and hit tracking.
@@ -29,8 +59,7 @@ Earthin WP Suite provides a modular architecture with independent modules for SE
 * Enhanced schema generation with secure script tag escaping and proper article typing.
 * Added activation and deactivation hooks with version verification.
 * Synchronized version numbers across bootstrap, documentation, and metadata.
+* Updated author attribution to Shaurya Joshi with official Earthin Plugin Hub references.
 
 = 0.1.0 =
-* Added plugin bootstrap, module interface and registry.
-* Added administrator dashboard and module toggles.
-* Preserved settings during uninstall.
+* Initial modular release with core registry, settings framework, and basic SEO/Security tools.

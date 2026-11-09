@@ -1,0 +1,30 @@
+# Node.js and Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env*.local
+!.env.example
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# PHP and Composer
+vendor/
+composer.lock
+*.log
