@@ -18,7 +18,7 @@ This repository contains an early development build. It is not yet a production 
 - Optional security module adding conservative response headers and disabling XML-RPC.
 - Exact-path redirect runtime supporting 404 page recovery, loop prevention, and safe local/external destinations.
 - Safe contact form shortcode (`[earthin_contact_form]`) with honeypot anti-spam, email header injection protection, IP rate limiting, and private post type submission persistence.
-- RSS import of up to five items into **drafts** with strict Server-Side Request Forgery (SSRF) defense against private/loopback IP addresses.
+- RSS import of up to five items into **drafts**, with URL checks and bounded WordPress HTTP requests. DNS-rebinding and transport-level address pinning limitations are documented; do not treat this as complete SSRF protection.
 - Automated unit test suite and CI test runner in `.github/workflows/php-lint.yml`.
 - Non-destructive uninstall behavior.
 
