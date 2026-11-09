@@ -36,22 +36,54 @@ final class Social_Preview_Module implements Module_Interface {
 	}
 	public function output() {
 		if ( is_admin() || is_feed() || is_404() ) { return; }
-		$title = is_singular() ? get_the_title() : get_bloginfo( 'name' );
-		$url = is_singular() ? get_permalink() : home_url( '/' );
-		$description = is_singular() ? get_the_excerpt() : get_bloginfo( 'description' );
-		if ( is_singular() && ! $description ) { $description = wp_trim_words( wp_strip_all_tags( get_post_field( 'post_content', get_queried_object_id() ) ), 28 ); }
-		$image = '';
-		if ( is_singular() ) {
-			$image = get_post_meta( get_queried_object_id(), '_ews_social_image', true );
-			if ( ! $image && has_post_thumbnail() ) { $image = get_the_post_thumbnail_url( get_queried_object_id(), 'full' ); }
+
+		$post_id     = is_singular() ? get_queried_object_id() : 0;
+		$title       = $post_id ? get_the_title( $post_id ) : get_bloginfo( 'name' );
+		$url         = $post_id ? get_permalink( $post_id ) : home_url( '/' );
+		$description = $post_id ? get_the_excerpt( $post_id ) : get_bloginfo( 'description' );
+
+		if ( $post_id && ! $description ) {
+			$raw_content = get_post_field( 'post_content', $post_id );
+			$description = wp_trim_words( wp_strip_all_tags( (string) $raw_content ), 28 );
 		}
-		if ( ! $image ) { $image = get_site_icon_url( 512 ); }
-		$tags = array( 'og:type' => is_singular() ? 'article' : 'website', 'og:site_name' => get_bloginfo( 'name' ), 'og:title' => $title, 'og:description' => $description, 'og:url' => $url, 'twitter:card' => $image ? 'summary_large_image' : 'summary', 'twitter:title' => $title, 'twitter:description' => $description );
-		if ( $image ) { $tags['og:image'] = $image; $tags['twitter:image'] = $image; }
+		if ( ! $description ) {
+			$description = get_bloginfo( 'description' );
+		}
+
+		$image = '';
+		if ( $post_id ) {
+			$image = get_post_meta( $post_id, '_ews_social_image', true );
+			if ( ! $image && has_post_thumbnail( $post_id ) ) {
+				$image = get_the_post_thumbnail_url( $post_id, 'full' );
+			}
+		}
+		if ( ! $image ) {
+			$image = get_site_icon_url( 512 );
+		}
+
+		$tags = array(
+			'og:type'             => is_singular() ? 'article' : 'website',
+			'og:site_name'        => get_bloginfo( 'name' ),
+			'og:title'            => $title,
+			'og:description'      => $description,
+			'og:url'              => $url,
+			'twitter:card'        => $image ? 'summary_large_image' : 'summary',
+			'twitter:title'       => $title,
+			'twitter:description' => $description,
+		);
+
+		if ( $image ) {
+			$tags['og:image']      = $image;
+			$tags['twitter:image'] = $image;
+		}
+
+		$url_keys = array( 'og:url', 'og:image', 'twitter:image' );
+
 		foreach ( $tags as $property => $content ) {
 			if ( '' !== (string) $content ) {
-				$attribute = 0 === strpos( $property, 'twitter:' ) ? 'name' : 'property';
-				echo '<meta ' . esc_attr( $attribute ) . '="' . esc_attr( $property ) . '" content="' . esc_attr( wp_strip_all_tags( $content ) ) . '" />' . "\n";
+				$attribute     = 0 === strpos( $property, 'twitter:' ) ? 'name' : 'property';
+				$clean_content = in_array( $property, $url_keys, true ) ? esc_url( $content ) : esc_attr( wp_strip_all_tags( $content ) );
+				echo '<meta ' . esc_attr( $attribute ) . '="' . esc_attr( $property ) . '" content="' . $clean_content . '" />' . "\n";
 			}
 		}
 	}

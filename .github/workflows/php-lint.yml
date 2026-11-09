@@ -16,3 +16,6 @@ jobs:
       - name: Lint PHP files
         run: |
           find . -type f -name '*.php' -not -path './vendor/*' -print0 | xargs -0 -r -n1 php -l
+      - name: Run automated tests
+        run: |
+          php tests/run-tests.php
