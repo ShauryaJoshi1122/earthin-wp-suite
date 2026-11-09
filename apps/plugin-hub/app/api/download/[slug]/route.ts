@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import path from 'path';
+import fs from 'fs';
 
 export async function GET(
   request: NextRequest,
@@ -26,7 +28,21 @@ export async function GET(
   // Increment download counter
   db.incrementDownloadCount(slug);
 
+  // Check if standalone ZIP exists in public/downloads/plugins
+  const zipPath = path.join(process.cwd(), 'public', 'downloads', 'plugins', `${slug}.zip`);
+  if (fs.existsSync(zipPath)) {
+    const fileBuffer = fs.readFileSync(zipPath);
+    return new NextResponse(fileBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/zip',
+        'Content-Disposition': `attachment; filename="${slug}.zip"`,
+        'Cache-Control': 'public, max-age=3600',
+      },
+    });
+  }
+
   // Return redirect to the plugin zip file or GitHub archive
-  const targetUrl = plugin.downloadUrl || 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/archive/refs/heads/main.zip';
-  return NextResponse.redirect(new URL(targetUrl), 302);
+  const targetUrl = plugin.downloadUrl || `/downloads/plugins/${slug}.zip`;
+  return NextResponse.redirect(new URL(targetUrl, request.url), 302);
 }

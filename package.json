@@ -1,6 +1,9 @@
 {
   "name": "earthin-wp-suite-monorepo",
   "private": true,
+  "scripts": {
+    "package:zips": "python3 scripts/package-distributions.py"
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"

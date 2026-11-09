@@ -56,7 +56,7 @@ export const EARTHIN_THEMES: EarthinTheme[] = [
       'Portfolio & Project Showcase (template-portfolio.php)',
       'Left Sidebar Editorial Wiki (template-left-sidebar.php)',
     ],
-    downloadUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/raw/main/themes/earthin',
+    downloadUrl: '/api/download/theme/earthin',
     githubUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/tree/main/themes/earthin',
   },
   {
@@ -88,7 +88,7 @@ export const EARTHIN_THEMES: EarthinTheme[] = [
       'Search Results (search.php)',
       'Minimal 404 Recovery (404.php)',
     ],
-    downloadUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/raw/main/themes/earthin-minimal',
+    downloadUrl: '/api/download/theme/earthin-minimal',
     githubUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/tree/main/themes/earthin-minimal',
   },
   {
@@ -120,7 +120,7 @@ export const EARTHIN_THEMES: EarthinTheme[] = [
       'Catalog Search (search.php)',
       'Store 404 Page (404.php)',
     ],
-    downloadUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/raw/main/themes/earthin-store',
+    downloadUrl: '/api/download/theme/earthin-store',
     githubUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/tree/main/themes/earthin-store',
   },
   {
@@ -152,7 +152,7 @@ export const EARTHIN_THEMES: EarthinTheme[] = [
       'Site Search (search.php)',
       'Cyber 404 Route (404.php)',
     ],
-    downloadUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/raw/main/themes/earthin-agency',
+    downloadUrl: '/api/download/theme/earthin-agency',
     githubUrl: 'https://github.com/ShauryaJoshi1122/earthin-wp-suite/tree/main/themes/earthin-agency',
   },
 ];

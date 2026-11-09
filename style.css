@@ -1,0 +1,17 @@
+/*
+Theme Name: Earthin WP Suite
+Theme URI: https://plugins.earthin.online
+Author: Shaurya Joshi
+Author URI: https://plugins.earthin.online
+Description: Complete Earthin WordPress Suite theme and plugins repository. Includes all 4 high-speed themes (Flagship, Minimal, Store, Agency) and 29 native performance, security, and eCommerce plugins.
+Version: 1.0.0
+Tested up to: 6.7
+Requires at least: 6.4
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: earthin
+Tags: blog, e-commerce, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, full-width-template, theme-options, threaded-comments, translation-ready
+*/
+
+@import url('themes/earthin/style.css');

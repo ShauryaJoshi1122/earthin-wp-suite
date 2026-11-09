@@ -178,11 +178,12 @@ export default function ThemesPage() {
                     </div>
 
                     <a
-                      href="https://github.com/ShauryaJoshi1122/earthin-wp-suite/archive/refs/heads/main.zip"
+                      href={`/api/download/theme/${theme.slug}`}
+                      download={`${theme.slug}.zip`}
                       className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-2 rounded-md shadow-sm transition-colors"
                     >
                       <Download className="h-3.5 w-3.5" />
-                      Download Theme ZIP
+                      Download {theme.slug}.zip
                     </a>
                   </div>
                 </CardContent>

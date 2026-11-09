@@ -54,7 +54,7 @@ class DatabaseService {
   private plugins: PluginItem[] = INITIAL_PLUGINS.map((p, idx) => ({
     ...p,
     allowDownload: true,
-    downloadUrl: `https://github.com/ShauryaJoshi1122/earthin-wp-suite/archive/refs/heads/main.zip`,
+    downloadUrl: `/downloads/plugins/${p.slug}.zip`,
     downloadAccess: p.pricingModel === 'premium' ? ('licensed' as const) : ('public' as const),
     downloadsCount: 10 + (idx * 7) + 5,
     inrPrice: p.pricingModel === 'premium' ? 3999 : p.pricingModel === 'freemium' ? 1499 : 0,

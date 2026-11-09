@@ -159,17 +159,28 @@ export default function HomePage() {
 
                   <div className="flex items-center justify-between gap-2">
                     <Link href="/themes" className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-1">
-                      View Details &rarr;
+                      Details &rarr;
                     </Link>
-                    <a
-                      href={t.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-slate-500 hover:text-slate-800 transition-colors"
-                      title="Inspect source code"
-                    >
-                      <ExternalLink className="h-3.5 w-3.5" />
-                    </a>
+                    <div className="flex items-center gap-1.5">
+                      <a
+                        href={t.downloadUrl}
+                        download={`${t.slug}.zip`}
+                        className="text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2 py-1 rounded transition-colors flex items-center gap-1"
+                        title={`Download ${t.slug}.zip`}
+                      >
+                        <Download className="h-3 w-3" />
+                        ZIP
+                      </a>
+                      <a
+                        href={t.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-slate-500 hover:text-slate-800 transition-colors p-1"
+                        title="Inspect source code"
+                      >
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               </CardContent>
