@@ -25,11 +25,20 @@ import {
   ToggleRight
 } from 'lucide-react';
 import { db, PaymentSettingsRecord, OrderRecord, LicenseRecord } from '@/lib/db';
+import { getStoredUser, AuthUser } from '@/lib/auth';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 
 export default function AdminDashboardPage() {
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+  React.useEffect(() => {
+    setCurrentUser(getStoredUser());
+    setIsCheckingAuth(false);
+  }, []);
+
   const [activeTab, setActiveTab] = useState<'overview' | 'downloads' | 'upi' | 'plugins' | 'orders' | 'licenses'>('downloads');
   
   // State from DB
@@ -118,6 +127,36 @@ export default function AdminDashboardPage() {
     .filter((o) => o.status === 'APPROVED')
     .reduce((acc, curr) => acc + curr.amount, 0);
 
+  if (isCheckingAuth) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-20 text-center text-slate-500 font-medium">
+        Verifying administrative authorization...
+      </div>
+    );
+  }
+
+  if (!currentUser || currentUser.role !== 'ADMIN') {
+    return (
+      <div className="max-w-xl mx-auto my-20 p-8 bg-white border border-slate-200 rounded-2xl shadow-sm text-center">
+        <div className="w-14 h-14 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mb-4 border border-amber-200">
+          <ShieldCheck className="h-7 w-7" />
+        </div>
+        <h2 className="text-2xl font-bold text-slate-900">Administrator Access Required</h2>
+        <p className="text-sm text-slate-600 mt-2 mb-6">
+          The Earthin Admin Panel is restricted to authorized store owners. Please sign in with your administrator account to access plugin distribution controls and UPI payment settings.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/login">
+            <Button variant="primary">Sign In as Admin</Button>
+          </Link>
+          <Link href="/">
+            <Button variant="outline">Back to Home</Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Header */}
@@ -133,13 +172,16 @@ export default function AdminDashboardPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
+          <span className="text-xs font-mono text-slate-600 hidden sm:inline-block">
+            {currentUser.email}
+          </span>
           <Link href="/plugins">
             <Button variant="outline" size="sm">
               <Eye className="mr-1.5 h-4 w-4" />
               View Public Hub
             </Button>
           </Link>
-          <Badge variant="emerald">Live Production</Badge>
+          <Badge variant="purple">Admin Active</Badge>
         </div>
       </div>
 

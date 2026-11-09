@@ -3,26 +3,40 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Package, Lock, Mail, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Package, Lock, Mail, ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { loginUser } from '@/lib/auth';
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState<{ type: 'admin' | 'customer'; message: string } | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate instantaneous local session transition
-    setTimeout(() => {
-      if (email.toLowerCase().includes('admin') || email.toLowerCase().includes('shaurya')) {
+
+    const user = loginUser(email, password);
+
+    if (user.role === 'ADMIN') {
+      setNotice({
+        type: 'admin',
+        message: 'Admin credentials recognized! Redirecting to Owner Administration...',
+      });
+      setTimeout(() => {
         router.push('/admin');
-      } else {
+      }, 700);
+    } else {
+      setNotice({
+        type: 'customer',
+        message: `Welcome back, ${user.name}! Redirecting to your Customer Account...`,
+      });
+      setTimeout(() => {
         router.push('/account');
-      }
-    }, 600);
+      }, 700);
+    }
   };
 
   return (
@@ -45,7 +59,20 @@ export default function LoginPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow-sm border border-slate-200/80 rounded-2xl sm:px-10">
-          <form className="space-y-5" onSubmit={handleSubmit}>
+          {notice && (
+            <div
+              className={`mb-5 p-3 rounded-xl border text-xs font-semibold flex items-center gap-2 ${
+                notice.type === 'admin'
+                  ? 'bg-purple-50 text-purple-900 border-purple-200'
+                  : 'bg-emerald-50 text-emerald-900 border-emerald-200'
+              }`}
+            >
+              <CheckCircle2 className="h-4 w-4 shrink-0" />
+              <span>{notice.message}</span>
+            </div>
+          )}
+
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                 Email address
@@ -55,9 +82,9 @@ export default function LoginPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="developer@example.com"
+                  placeholder="admin@earthin.online or your@email.com"
                   required
-                  className="w-full px-3 py-2 pl-9 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="w-full px-3 py-2 pl-9 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
                 />
                 <Mail className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
               </div>
@@ -86,14 +113,36 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" variant="primary" className="w-full justify-center" disabled={loading}>
-              {loading ? 'Authenticating...' : 'Sign In'}
+              {loading ? 'Verifying...' : 'Sign In'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-slate-100 flex items-center justify-center gap-2 text-xs text-slate-500">
-            <ShieldCheck className="h-4 w-4 text-emerald-600" />
-            <span>Secure SSL connection with encrypted session tokens</span>
+          {/* Quick Demo Credentials Guide */}
+          <div className="mt-6 pt-5 border-t border-slate-100 bg-slate-50 -mx-6 -mb-8 p-5 rounded-b-2xl border-b space-y-2">
+            <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Quick Sign In Guide:</div>
+            <div className="flex flex-col gap-1.5 text-xs text-slate-600">
+              <div className="flex items-center justify-between">
+                <span>🔑 <strong>Admin Sign In:</strong></span>
+                <button
+                  type="button"
+                  onClick={() => { setEmail('admin@earthin.online'); setPassword('admin123'); }}
+                  className="text-emerald-700 font-semibold underline text-[11px] hover:text-emerald-800"
+                >
+                  Use admin@earthin.online
+                </button>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>👤 <strong>Customer Sign In:</strong></span>
+                <button
+                  type="button"
+                  onClick={() => { setEmail('user@example.com'); setPassword('user123'); }}
+                  className="text-emerald-700 font-semibold underline text-[11px] hover:text-emerald-800"
+                >
+                  Use normal email
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

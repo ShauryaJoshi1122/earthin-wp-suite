@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Package, Lock, Mail, User, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Package, Lock, Mail, User, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { registerUser } from '@/lib/auth';
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -12,13 +13,22 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    const user = registerUser(name, email, password);
+
+    setNotice(`Welcome, ${user.name}! Your account has been created. Redirecting...`);
     setTimeout(() => {
-      router.push('/account');
-    }, 600);
+      if (user.role === 'ADMIN') {
+        router.push('/admin');
+      } else {
+        router.push('/account');
+      }
+    }, 700);
   };
 
   return (
@@ -41,6 +51,13 @@ export default function RegisterPage() {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-6 shadow-sm border border-slate-200/80 rounded-2xl sm:px-10">
+          {notice && (
+            <div className="mb-5 p-3 rounded-xl bg-emerald-50 text-emerald-900 border border-emerald-200 text-xs font-semibold flex items-center gap-2">
+              <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
+              <span>{notice}</span>
+            </div>
+          )}
+
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -51,7 +68,7 @@ export default function RegisterPage() {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Shaurya Joshi"
+                  placeholder="Your Full Name"
                   required
                   className="w-full px-3 py-2 pl-9 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
@@ -68,7 +85,7 @@ export default function RegisterPage() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="developer@example.com"
+                  placeholder="yourname@gmail.com"
                   required
                   className="w-full px-3 py-2 pl-9 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
@@ -94,7 +111,7 @@ export default function RegisterPage() {
             </div>
 
             <Button type="submit" variant="primary" className="w-full justify-center mt-2" disabled={loading}>
-              {loading ? 'Creating account...' : 'Complete Registration'}
+              {loading ? 'Registering...' : 'Complete Registration'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>

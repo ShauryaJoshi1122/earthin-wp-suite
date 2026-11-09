@@ -73,8 +73,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/admin" className="hover:text-emerald-600 transition-colors">
-                  Admin Portal
+                <Link href="/login" className="hover:text-emerald-600 transition-colors">
+                  Sign In / Register
                 </Link>
               </li>
             </ul>

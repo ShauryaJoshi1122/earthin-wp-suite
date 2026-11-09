@@ -1,15 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Layers, Menu, X, ArrowRight, ShieldCheck } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { Layers, Menu, X, ShieldAlert, LogOut, User as UserIcon } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { getStoredUser, logoutUser, AuthUser } from '@/lib/auth';
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
+
+  // Load and sync user auth state
+  useEffect(() => {
+    setUser(getStoredUser());
+
+    const handleAuthChange = () => {
+      setUser(getStoredUser());
+    };
+
+    window.addEventListener('earthin_auth_changed', handleAuthChange);
+    return () => {
+      window.removeEventListener('earthin_auth_changed', handleAuthChange);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    logoutUser();
+    setUser(null);
+    router.push('/');
+  };
 
   const navLinks = [
     { label: 'Home', href: '/' },
@@ -19,6 +42,8 @@ export function Navbar() {
     { label: 'Docs', href: '/docs' },
     { label: 'Support', href: '/support' },
   ];
+
+  const isAdmin = user?.role === 'ADMIN';
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
@@ -54,18 +79,40 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Action Buttons */}
+        {/* Action Buttons (Admin button is ONLY shown if user is authenticated as ADMIN) */}
         <div className="hidden md:flex items-center space-x-2">
-          <Link href="/account">
-            <Button size="sm" variant="ghost">
-              Account
-            </Button>
-          </Link>
-          <Link href="/admin">
-            <Button size="sm" variant="outline" className="border-slate-300">
-              Admin
-            </Button>
-          </Link>
+          {isAdmin && (
+            <Link href="/admin">
+              <Button size="sm" variant="outline" className="border-emerald-600 text-emerald-700 bg-emerald-50 flex items-center gap-1 font-semibold">
+                <ShieldAlert className="h-3.5 w-3.5" />
+                Admin Panel
+              </Button>
+            </Link>
+          )}
+
+          {user ? (
+            <>
+              {!isAdmin && (
+                <Link href="/account">
+                  <Button size="sm" variant="ghost" className="flex items-center gap-1 text-slate-700">
+                    <UserIcon className="h-3.5 w-3.5" />
+                    My Account
+                  </Button>
+                </Link>
+              )}
+              <Button size="sm" variant="ghost" onClick={handleLogout} className="text-slate-500 hover:text-rose-600 flex items-center gap-1">
+                <LogOut className="h-3.5 w-3.5" />
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Link href="/login">
+              <Button size="sm" variant="ghost">
+                Sign In
+              </Button>
+            </Link>
+          )}
+
           <Link href="/plugins">
             <Button size="sm" variant="primary">
               Explore Plugins
@@ -108,7 +155,37 @@ export function Navbar() {
               </Link>
             );
           })}
+          
           <div className="pt-4 border-t border-slate-100 flex flex-col space-y-2">
+            {isAdmin && (
+              <Link href="/admin" onClick={() => setMobileOpen(false)}>
+                <Button className="w-full bg-emerald-700" size="md">
+                  Admin Panel
+                </Button>
+              </Link>
+            )}
+
+            {user ? (
+              <>
+                {!isAdmin && (
+                  <Link href="/account" onClick={() => setMobileOpen(false)}>
+                    <Button variant="outline" className="w-full" size="md">
+                      My Account
+                    </Button>
+                  </Link>
+                )}
+                <Button variant="ghost" onClick={() => { handleLogout(); setMobileOpen(false); }} className="w-full text-rose-600">
+                  Sign Out
+                </Button>
+              </>
+            ) : (
+              <Link href="/login" onClick={() => setMobileOpen(false)}>
+                <Button variant="outline" className="w-full" size="md">
+                  Sign In / Register
+                </Button>
+              </Link>
+            )}
+
             <Link href="/plugins" onClick={() => setMobileOpen(false)}>
               <Button className="w-full" size="md">
                 Explore Plugins

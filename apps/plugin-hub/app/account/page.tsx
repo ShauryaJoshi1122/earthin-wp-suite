@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Key, 
@@ -12,18 +12,31 @@ import {
   LifeBuoy, 
   ArrowRight,
   ShieldCheck,
-  ExternalLink
+  ExternalLink,
+  User,
+  LogIn
 } from 'lucide-react';
 import { db, LicenseRecord } from '@/lib/db';
+import { getStoredUser, AuthUser } from '@/lib/auth';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 
 export default function CustomerAccountPage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
-  const customerEmail = 'developer@example.com';
-  const licenses = db.getLicensesByEmail(customerEmail);
-  const orders = db.getOrders().filter((o) => o.customerEmail.toLowerCase() === customerEmail.toLowerCase());
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setCurrentUser(getStoredUser());
+    setLoading(false);
+  }, []);
+
+  const customerEmail = currentUser?.email || 'developer@example.com';
+  const licenses = currentUser ? db.getLicensesByEmail(customerEmail) : db.getLicenses();
+  const orders = currentUser 
+    ? db.getOrders().filter((o) => o.customerEmail.toLowerCase() === customerEmail.toLowerCase())
+    : db.getOrders();
 
   const handleCopy = (key: string) => {
     navigator.clipboard.writeText(key);
@@ -31,17 +44,50 @@ export default function CustomerAccountPage() {
     setTimeout(() => setCopiedKey(null), 2500);
   };
 
+  if (!loading && !currentUser) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-16 text-center">
+        <div className="w-14 h-14 mx-auto rounded-2xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-4 border border-emerald-200">
+          <User className="h-7 w-7" />
+        </div>
+        <h1 className="text-2xl font-bold text-slate-900">Sign In to View Your Account</h1>
+        <p className="text-sm text-slate-600 mt-2 mb-6">
+          Sign in or create an account to view your active plugin licenses, order receipts, and manage direct downloads.
+        </p>
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <Link href="/login">
+            <Button variant="primary" className="flex items-center gap-1.5">
+              <LogIn className="h-4 w-4" />
+              Sign In
+            </Button>
+          </Link>
+          <Link href="/register">
+            <Button variant="outline">
+              Create Account
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Account Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 border-b border-slate-200">
         <div>
           <span className="text-xs font-semibold uppercase tracking-wider text-emerald-800">Customer Dashboard</span>
-          <h1 className="text-3xl font-extrabold text-slate-900 mt-1">My Earthin Account</h1>
+          <h1 className="text-3xl font-extrabold text-slate-900 mt-1">
+            {currentUser ? `Welcome back, ${currentUser.name}` : 'My Earthin Account'}
+          </h1>
           <p className="text-sm text-slate-500 mt-1">Manage your active plugin licenses, authorized domains, and verified download releases.</p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant="emerald">Verified Customer</Badge>
+          {currentUser?.role === 'ADMIN' ? (
+            <Badge variant="purple">Administrator</Badge>
+          ) : (
+            <Badge variant="emerald">Verified Customer</Badge>
+          )}
           <span className="text-xs font-mono text-slate-500">{customerEmail}</span>
         </div>
       </div>
