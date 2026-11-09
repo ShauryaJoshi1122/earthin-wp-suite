@@ -67,11 +67,11 @@ final class RSS_Module implements Module_Interface {
 	 * redirect target must never be fetched without a fresh validation step.
 	 *
 	 * @param string $url Feed URL.
-	 * @return array|\\WP_Error HTTP response or WordPress error.
+	 * @return array|\WP_Error HTTP response or WordPress error.
 	 */
 	public static function request_feed( string $url ) {
 		if ( ! self::is_safe_feed_url( $url ) ) {
-			return new \\WP_Error( 'ews_unsafe_feed_url', __( 'The feed URL is not a permitted public HTTP destination.', 'earthin-wp-suite' ) );
+			return new \WP_Error( 'ews_unsafe_feed_url', __( 'The feed URL is not a permitted public HTTP destination.', 'earthin-wp-suite' ) );
 		}
 
 		return wp_safe_remote_get(
@@ -109,7 +109,7 @@ final class RSS_Module implements Module_Interface {
 		}
 
 		// Parse only the body returned by the single validated HTTP request.
-		$feed = new \\SimplePie();
+		$feed = new \SimplePie();
 		$feed->set_raw_data( wp_remote_retrieve_body( $response ) );
 		if ( ! $feed->init() ) {
 			wp_safe_redirect( admin_url( 'admin.php?page=earthin-wp-suite&ews_rss=failed' ) );
