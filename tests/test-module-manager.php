@@ -4,10 +4,10 @@
  */
 
 function test_module_manager() {
-	$manager = new \\Earthin\\WPSuite\\Module_Manager();
+	$manager = new \Earthin\WPSuite\Module_Manager();
 
-	$seo = new \\Earthin\\WPSuite\\SEO_Module();
-	$sec = new \\Earthin\\WPSuite\\Security_Module();
+	$seo = new \Earthin\WPSuite\SEO_Module();
+	$sec = new \Earthin\WPSuite\Security_Module();
 
 	$manager->register( $seo );
 	$manager->register( $sec );
