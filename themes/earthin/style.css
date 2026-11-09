@@ -1,0 +1,343 @@
+/*
+Theme Name: Earthin
+Theme URI: https://plugins.earthin.online
+Author: Shaurya Joshi
+Author URI: https://plugins.earthin.online
+Description: Ultra-lightweight, high-performance, and responsive multi-purpose WordPress theme built for speed, SEO, and full compatibility with Earthin Page Builder and Gutenberg.
+Version: 1.0.0
+Tested up to: 6.7
+Requires at least: 6.4
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: earthin
+Tags: blog, e-commerce, custom-background, custom-colors, custom-header, custom-logo, custom-menu, featured-images, footer-widgets, full-width-template, theme-options, threaded-comments, translation-ready, accessibility-ready
+*/
+
+/* --------------------------------------------------------------------------
+   Earthin Theme Core Reset & Base Styles
+   -------------------------------------------------------------------------- */
+:root {
+    --earthin-primary: #059669;
+    --earthin-primary-hover: #047857;
+    --earthin-dark: #0f172a;
+    --earthin-body-text: #334155;
+    --earthin-bg: #ffffff;
+    --earthin-surface: #f8fafc;
+    --earthin-border: #e2e8f0;
+    --earthin-font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    --earthin-max-width: 1200px;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--earthin-font-sans);
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--earthin-body-text);
+    background-color: var(--earthin-bg);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--earthin-primary);
+    text-decoration: none;
+    transition: color 0.15s ease-in-out;
+}
+
+a:hover, a:focus {
+    color: var(--earthin-primary-hover);
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Accessibility */
+.screen-reader-text {
+    border: 0;
+    clip: rect(1px, 1px, 1px, 1px);
+    clip-path: inset(50%);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute !important;
+    width: 1px;
+    word-wrap: normal !important;
+}
+
+.skip-link:focus {
+    background-color: #f1f1f1;
+    border-radius: 3px;
+    box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+    clip: auto !important;
+    clip-path: none;
+    color: #21759b;
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    height: auto;
+    left: 5px;
+    line-height: normal;
+    padding: 15px 23px 14px;
+    text-decoration: none;
+    top: 5px;
+    width: auto;
+    z-index: 100000;
+}
+
+/* Layout Container */
+.earthin-container {
+    max-width: var(--earthin-max-width);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+/* Site Header */
+.site-header {
+    background: #ffffff;
+    border-bottom: 1px solid var(--earthin-border);
+    position: relative;
+    z-index: 100;
+}
+
+.site-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 70px;
+}
+
+.site-branding {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.site-title {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.site-title a {
+    color: var(--earthin-dark);
+    text-decoration: none;
+}
+
+.site-description {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+/* Navigation */
+.main-navigation ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.main-navigation a {
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    display: block;
+}
+
+.main-navigation a:hover,
+.main-navigation .current-menu-item > a {
+    color: var(--earthin-primary);
+}
+
+.menu-toggle {
+    display: none;
+    background: transparent;
+    border: 1px solid var(--earthin-border);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    .main-navigation ul {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    .main-navigation.toggled ul {
+        display: flex;
+    }
+}
+
+/* Content Area */
+.site-content {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+}
+
+.content-area-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
+
+@media (min-width: 992px) {
+    .has-sidebar .content-area-wrap {
+        grid-template-columns: 2.5fr 1fr;
+    }
+}
+
+/* Post Card & Typography */
+article.post, article.page {
+    margin-bottom: 3rem;
+    background: #ffffff;
+}
+
+.entry-title {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--earthin-dark);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.entry-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.entry-meta {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.post-thumbnail {
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.entry-content {
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.entry-content h1, .entry-content h2, .entry-content h3, .entry-content h4 {
+    color: var(--earthin-dark);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Sidebar & Widgets */
+.widget-area {
+    background: var(--earthin-surface);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--earthin-border);
+}
+
+.widget {
+    margin-bottom: 2rem;
+}
+
+.widget-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--earthin-dark);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--earthin-primary);
+}
+
+.widget ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.widget li {
+    padding: 0.35rem 0;
+    border-bottom: 1px solid var(--earthin-border);
+}
+
+/* Footer */
+.site-footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+    font-size: 0.9rem;
+}
+
+.site-footer a {
+    color: #cbd5e1;
+}
+
+.site-footer a:hover {
+    color: #ffffff;
+}
+
+.site-footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .site-footer-inner {
+        flex-direction: row;
+        text-align: left;
+    }
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 2rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pagination .page-numbers {
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--earthin-border);
+    border-radius: 6px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.pagination .page-numbers.current {
+    background: var(--earthin-primary);
+    color: #ffffff;
+    border-color: var(--earthin-primary);
+}

@@ -3,9 +3,9 @@ import { getAllPlugins, getPluginBySlug, getFeaturedPlugins, CATEGORIES } from '
 import { cn, formatVersion } from '../lib/utils';
 
 describe('Plugin Catalog Data', () => {
-  it('returns all 25 official Earthin plugins from catalog', () => {
+  it('returns all 30 official Earthin plugins from catalog', () => {
     const plugins = getAllPlugins();
-    expect(plugins.length).toBe(25);
+    expect(plugins.length).toBe(30);
   });
 
   it('retrieves Earthin WP Suite with accurate version and compatibility claims', () => {
@@ -47,6 +47,11 @@ describe('Plugin Catalog Data', () => {
       'earthin-code-snippets',
       'earthin-file-manager',
       'earthin-security-2fa',
+      'earthin-form-builder',
+      'earthin-sticky-header',
+      'earthin-coming-soon',
+      'earthin-svg-support',
+      'earthin-activity-log',
     ];
 
     slugs.forEach((slug) => {
