@@ -425,3 +425,9 @@ class Earthin_Chat_Connect {
 }
 
 add_action('plugins_loaded', ['Earthin_Chat_Connect', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-chat-connect')) . '">' . __('Settings', 'earthin-chat-connect') . '</a>';
+    array_unshift(, );
+    return ;
+});

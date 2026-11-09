@@ -256,3 +256,9 @@ final class Plugin {
 }
 
 Plugin::instance();
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-advanced-editor')) . '">' . __('Settings', 'earthin-advanced-editor') . '</a>';
+    array_unshift(, );
+    return ;
+});

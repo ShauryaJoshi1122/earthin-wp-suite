@@ -466,3 +466,9 @@ final class Plugin {
 }
 
 Plugin::instance();
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('upload.php?page=earthin-image-optimizer')) . '">' . __('Settings', 'earthin-image-optimizer') . '</a>';
+    array_unshift(, );
+    return ;
+});

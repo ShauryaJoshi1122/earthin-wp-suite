@@ -203,3 +203,9 @@ class Earthin_Activity_Log {
 }
 
 add_action('plugins_loaded', ['Earthin_Activity_Log', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-activity-log')) . '">' . __('Settings', 'earthin-activity-log') . '</a>';
+    array_unshift(, );
+    return ;
+});

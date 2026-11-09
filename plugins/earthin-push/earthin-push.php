@@ -265,3 +265,9 @@ class Earthin_Web_Push {
 }
 
 add_action('plugins_loaded', ['Earthin_Web_Push', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-push')) . '">' . __('Settings', 'earthin-push') . '</a>';
+    array_unshift(, );
+    return ;
+});

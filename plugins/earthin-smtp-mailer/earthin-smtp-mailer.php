@@ -257,3 +257,9 @@ class Earthin_SMTP_Mailer {
 }
 
 add_action('plugins_loaded', ['Earthin_SMTP_Mailer', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-smtp-mailer')) . '">' . __('Settings', 'earthin-smtp-mailer') . '</a>';
+    array_unshift(, );
+    return ;
+});

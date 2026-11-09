@@ -45,3 +45,9 @@ add_action( 'plugins_loaded', function () {
 	load_plugin_textdomain( 'earthin-wp-suite', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 	\Earthin\WPSuite\Plugin::instance()->boot();
 } );
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-wp-suite')) . '">' . __('Settings', 'earthin-wp-suite') . '</a>';
+    array_unshift(, );
+    return ;
+});

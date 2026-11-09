@@ -444,3 +444,9 @@ class Earthin_Cookie_Consent {
 }
 
 add_action('plugins_loaded', ['Earthin_Cookie_Consent', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cookie-consent')) . '">' . __('Settings', 'earthin-cookie-consent') . '</a>';
+    array_unshift(, );
+    return ;
+});

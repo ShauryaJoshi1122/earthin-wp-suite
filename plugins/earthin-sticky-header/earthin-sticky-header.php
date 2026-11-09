@@ -260,3 +260,9 @@ class Earthin_Sticky_Header {
 }
 
 add_action('plugins_loaded', ['Earthin_Sticky_Header', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-sticky-header')) . '">' . __('Settings', 'earthin-sticky-header') . '</a>';
+    array_unshift(, );
+    return ;
+});

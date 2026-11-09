@@ -220,3 +220,9 @@ class Earthin_Form_Builder {
 }
 
 add_action('plugins_loaded', ['Earthin_Form_Builder', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('admin.php?page=earthin-form-builder')) . '">' . __('Settings', 'earthin-form-builder') . '</a>';
+    array_unshift(, );
+    return ;
+});

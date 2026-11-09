@@ -268,3 +268,9 @@ class Earthin_Cache_Accelerator {
 }
 
 add_action('plugins_loaded', ['Earthin_Cache_Accelerator', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-cache-accelerator')) . '">' . __('Settings', 'earthin-cache-accelerator') . '</a>';
+    array_unshift(, );
+    return ;
+});

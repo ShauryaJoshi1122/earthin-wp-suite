@@ -320,3 +320,9 @@ class Earthin_Login_Shield {
 }
 
 add_action('plugins_loaded', ['Earthin_Login_Shield', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-login-shield')) . '">' . __('Settings', 'earthin-login-shield') . '</a>';
+    array_unshift(, );
+    return ;
+});

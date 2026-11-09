@@ -328,3 +328,9 @@ final class Plugin {
 }
 
 Plugin::instance();
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-site-health-monitor')) . '">' . __('Settings', 'earthin-site-health-monitor') . '</a>';
+    array_unshift(, );
+    return ;
+});

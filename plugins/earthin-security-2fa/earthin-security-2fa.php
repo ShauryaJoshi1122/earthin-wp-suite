@@ -220,3 +220,9 @@ class Earthin_Security_2FA {
 }
 
 add_action('plugins_loaded', ['Earthin_Security_2FA', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('profile.php')) . '">' . __('Settings', 'earthin-security-2fa') . '</a>';
+    array_unshift(, );
+    return ;
+});

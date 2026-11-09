@@ -318,3 +318,9 @@ class Earthin_Coming_Soon {
 }
 
 add_action('plugins_loaded', ['Earthin_Coming_Soon', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('options-general.php?page=earthin-coming-soon')) . '">' . __('Settings', 'earthin-coming-soon') . '</a>';
+    array_unshift(, );
+    return ;
+});

@@ -276,3 +276,9 @@ class Earthin_Code_Snippets {
 }
 
 add_action('plugins_loaded', ['Earthin_Code_Snippets', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function() {
+     = '<a href="' . esc_url(admin_url('tools.php?page=earthin-code-snippets')) . '">' . __('Settings', 'earthin-code-snippets') . '</a>';
+    array_unshift(, );
+    return ;
+});

@@ -119,3 +119,9 @@ class Earthin_SVG_Support {
 }
 
 add_action('plugins_loaded', ['Earthin_SVG_Support', 'get_instance']);
+
+add_filter('plugin_action_links_' . plugin_basename(__FILE__), function($links) {
+    $media_link = '<a href="' . esc_url(admin_url('upload.php')) . '">' . __('Media Library', 'earthin-svg-support') . '</a>';
+    array_unshift($links, $media_link);
+    return $links;
+});
