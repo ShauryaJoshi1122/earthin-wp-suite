@@ -36,7 +36,7 @@ foreach ( $tests as $test_fn ) {
 	try {
 		$test_fn();
 		$passed++;
-	} catch ( \\Throwable $e ) {
+	} catch ( \Throwable $e ) {
 		$failed++;
 		echo "  [FAIL] {$test_fn}: " . $e->getMessage() . "\n";
 		echo "         in " . $e->getFile() . ':' . $e->getLine() . "\n";
