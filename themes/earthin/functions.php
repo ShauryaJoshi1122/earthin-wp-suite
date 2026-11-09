@@ -95,6 +95,38 @@ function earthin_widgets_init(): void {
 }
 add_action('widgets_init', 'earthin_widgets_init');
 
+function earthin_body_classes(array $classes): array {
+    $no_sidebar_templates = [
+        'template-full-width.php',
+        'template-canvas.php',
+        'template-reading.php',
+        'template-contact.php',
+        'template-about.php',
+        'template-services.php',
+        'template-portfolio.php',
+    ];
+
+    foreach ($no_sidebar_templates as $tpl) {
+        if (is_page_template($tpl)) {
+            $classes = array_diff($classes, ['has-sidebar']);
+            $classes[] = 'no-sidebar';
+            $classes[] = 'earthin-no-sidebar';
+            break;
+        }
+    }
+
+    if (is_page_template('template-left-sidebar.php')) {
+        $classes[] = 'earthin-left-sidebar';
+        if (is_active_sidebar('sidebar-1')) {
+            $classes[] = 'has-sidebar';
+        }
+    }
+
+    return array_values(array_unique($classes));
+}
+add_filter('body_class', 'earthin_body_classes', 20);
+
 // Load Template Tags & Customizer
 require_once get_template_directory() . '/inc/template-tags.php';
 require_once get_template_directory() . '/inc/customizer.php';
+

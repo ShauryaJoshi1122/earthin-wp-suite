@@ -672,3 +672,808 @@ article.post:hover {
     line-height: 1.6;
 }
 
+/* --------------------------------------------------------------------------
+   Custom Page Templates
+   -------------------------------------------------------------------------- */
+
+/* Layout Overrides for No-Sidebar & Left-Sidebar */
+.earthin-no-sidebar .content-area-wrap,
+.no-sidebar .content-area-wrap {
+    grid-template-columns: 1fr !important;
+}
+
+.earthin-full-width-content {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .earthin-left-sidebar.has-sidebar .content-area-wrap {
+        grid-template-columns: 1fr 2.6fr;
+    }
+    .earthin-left-sidebar #secondary {
+        order: -1;
+    }
+}
+
+/* 1. Blank Canvas Template */
+.earthin-canvas-page {
+    background-color: var(--earthin-bg);
+}
+
+.earthin-canvas-main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.earthin-canvas-content {
+    width: 100%;
+}
+
+/* 2. Longform / Reading Mode Template */
+.earthin-reading-main {
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.earthin-reading-header {
+    margin-bottom: 2.5rem;
+}
+
+.earthin-reading-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.earthin-reading-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    letter-spacing: 0.03em;
+}
+
+.earthin-reading-date {
+    color: var(--earthin-text-muted);
+    font-size: 0.85rem;
+}
+
+.earthin-reading-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--earthin-text);
+    margin: 0 0 1.5rem;
+    letter-spacing: -0.025em;
+}
+
+.earthin-reading-byline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--earthin-border);
+}
+
+.byline-avatar img {
+    border-radius: 50%;
+    display: block;
+}
+
+.byline-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.byline-details .author-name a {
+    color: var(--earthin-text);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+}
+
+.byline-details .author-title {
+    color: var(--earthin-text-muted);
+    font-size: 0.8rem;
+}
+
+.earthin-reading-thumbnail {
+    margin: 2rem 0;
+    border-radius: var(--earthin-radius-lg);
+    overflow: hidden;
+}
+
+.earthin-reading-content {
+    font-size: 1.15rem;
+    line-height: 1.85;
+    color: #334155;
+}
+
+.earthin-reading-content p {
+    margin-bottom: 1.75rem;
+}
+
+.earthin-reading-content h2,
+.earthin-reading-content h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--earthin-text);
+}
+
+.earthin-reading-footer {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--earthin-border);
+}
+
+.earthin-author-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.75rem;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-author-box .author-avatar img {
+    border-radius: 50%;
+    display: block;
+}
+
+.earthin-author-box .author-heading {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    color: var(--earthin-text);
+}
+
+.earthin-author-box .author-bio {
+    font-size: 0.925rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-reading-comments-wrap {
+    margin-top: 3rem;
+}
+
+/* 3. Contact Page Template */
+.earthin-contact-header {
+    text-align: center;
+    max-width: 680px;
+    margin: 0 auto 3rem;
+}
+
+.earthin-contact-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0.75rem 0;
+}
+
+.earthin-contact-subtitle {
+    font-size: 1.05rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-contact-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
+
+@media (min-width: 992px) {
+    .earthin-contact-layout {
+        grid-template-columns: 1fr 1.2fr;
+        align-items: start;
+    }
+}
+
+.earthin-contact-cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 600px) {
+    .earthin-contact-cards-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.earthin-contact-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.25rem;
+    box-shadow: var(--earthin-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.earthin-contact-icon {
+    font-size: 1.5rem;
+}
+
+.earthin-contact-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.25rem;
+}
+
+.earthin-contact-card-desc {
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.4;
+    margin: 0 0 0.5rem;
+}
+
+.earthin-contact-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--earthin-primary);
+    text-decoration: none;
+}
+
+.earthin-contact-link:hover {
+    text-decoration: underline;
+}
+
+.earthin-contact-text {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+.earthin-hours-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+}
+
+.earthin-hours-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.earthin-pill-muted {
+    background: #f1f5f9;
+    color: #64748b;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.earthin-contact-faq-box {
+    background: #f8fafc;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.25rem;
+}
+
+.earthin-faq-heading {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.75rem;
+}
+
+.earthin-faq-item {
+    margin-bottom: 0.5rem;
+    background: #ffffff;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-sm);
+    padding: 0.75rem 1rem;
+}
+
+.earthin-faq-question {
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    color: #1e293b;
+}
+
+.earthin-faq-answer {
+    font-size: 0.825rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.5;
+    margin: 0.5rem 0 0;
+}
+
+.earthin-contact-form-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-form-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--earthin-border);
+}
+
+.earthin-form-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0;
+}
+
+.earthin-sla-pill {
+    background: #ecfdf5;
+    color: #059669;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+}
+
+/* 4. About Us / Profile Template */
+.earthin-about-header {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto 3rem;
+}
+
+.earthin-about-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0.75rem 0;
+}
+
+.earthin-about-lead {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-stats-band {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 3.5rem;
+}
+
+.earthin-stat-item {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-stat-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--earthin-primary);
+    line-height: 1.1;
+    margin-bottom: 0.35rem;
+}
+
+.earthin-stat-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-about-story-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    margin-bottom: 4rem;
+}
+
+@media (min-width: 860px) {
+    .earthin-about-story-grid {
+        grid-template-columns: 1fr 1.2fr;
+    }
+}
+
+.earthin-about-img {
+    border-radius: var(--earthin-radius-lg);
+    box-shadow: var(--earthin-shadow-md);
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.earthin-about-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #334155;
+}
+
+.earthin-values-section {
+    background: #f8fafc;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-xl);
+    padding: 3rem 2rem;
+    margin-bottom: 4rem;
+}
+
+.earthin-values-header {
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto 2.5rem;
+}
+
+.earthin-values-heading {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-values-desc {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    margin: 0;
+}
+
+.earthin-values-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.earthin-value-card {
+    background: #ffffff;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.75rem;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-value-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.earthin-value-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-value-text {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-about-cta {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    color: #ffffff;
+    border-radius: var(--earthin-radius-xl);
+    padding: 3.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(5, 150, 105, 0.25);
+}
+
+.earthin-cta-inner {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.earthin-cta-title {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+}
+
+.earthin-cta-desc {
+    color: #d1fae5;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0 0 2rem;
+}
+
+.earthin-cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+}
+
+/* 5. Services & Features Showcase Template */
+.earthin-services-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 3rem;
+}
+
+.earthin-services-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0.75rem 0;
+}
+
+.earthin-services-lead {
+    font-size: 1.1rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-services-intro {
+    max-width: 760px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    font-size: 1.05rem;
+    color: #475569;
+}
+
+.earthin-services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 4rem;
+}
+
+.earthin-service-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-service-icon-box {
+    width: 48px;
+    height: 48px;
+    background: var(--earthin-primary-light);
+    border-radius: var(--earthin-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.earthin-service-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-service-card-desc {
+    font-size: 0.9rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+}
+
+.earthin-service-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.85rem;
+    color: #334155;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.earthin-process-section {
+    background: #f8fafc;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-xl);
+    padding: 3rem 2rem;
+}
+
+.earthin-process-header {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+}
+
+.earthin-process-title {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-process-desc {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    margin: 0;
+}
+
+.earthin-process-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.earthin-step-item {
+    background: #ffffff;
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--earthin-shadow-sm);
+    position: relative;
+}
+
+.earthin-step-badge {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--earthin-primary);
+    background: var(--earthin-primary-light);
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--earthin-radius-sm);
+    margin-bottom: 0.75rem;
+}
+
+.earthin-step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.4rem;
+}
+
+.earthin-step-desc {
+    font-size: 0.85rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* 6. Portfolio & Project Showcase Template */
+.earthin-portfolio-header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto 3rem;
+}
+
+.earthin-portfolio-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0.75rem 0;
+}
+
+.earthin-portfolio-lead {
+    font-size: 1.1rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.earthin-portfolio-intro {
+    max-width: 760px;
+    margin: 0 auto 3rem;
+    text-align: center;
+    font-size: 1.05rem;
+    color: #475569;
+}
+
+.earthin-portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.earthin-project-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--earthin-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-project-thumbnail {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.earthin-project-emoji {
+    font-size: 3rem;
+}
+
+.earthin-project-content {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.earthin-project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-bottom: 0.75rem;
+}
+
+.earthin-project-tag {
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+.earthin-project-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-project-desc {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    flex: 1;
+}
+
+.earthin-project-link {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--earthin-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.earthin-project-link:hover {
+    text-decoration: underline;
+}
+
+
