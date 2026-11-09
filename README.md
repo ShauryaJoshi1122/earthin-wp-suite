@@ -8,7 +8,7 @@ This repository contains an early development build. It is not yet a production 
 
 ### Implemented in the repository
 - Plugin bootstrap, lifecycle hooks (activation/deactivation), and module registry.
-- Administrator dashboard with independent module toggles and status indicators.
+- Administrator dashboard with tabbed navigation: **Modules & Controls**, **Redirects Manager**, **Form Inquiries**, and **System Status**.
 - WordPress Settings API sanitization and administrator capability checks.
 - SEO document title, meta description, robots directives, and canonical tags when no recognized SEO provider is active.
 - Open Graph and X card metadata using featured image, site icon fallback, or a per-post custom image URL.
@@ -16,8 +16,9 @@ This repository contains an early development build. It is not yet a production 
 - Structured data JSON-LD engine with script tag hex-escaping (XSS defense) supporting WebSite, WebPage, and BlogPosting.
 - XML Sitemap module leveraging WordPress core sitemaps with post type visibility filters.
 - Optional security module adding conservative response headers and disabling XML-RPC.
-- Exact-path redirect runtime supporting 404 page recovery, loop prevention, and safe local/external destinations.
-- Safe contact form shortcode (`[earthin_contact_form]`) with honeypot anti-spam, email header injection protection, IP rate limiting, and private post type submission persistence.
+- Exact-path redirect engine with full administrative UI, 404 page recovery, loop prevention, status code selection (301, 302, 307, 308), and hit tracking.
+- Safe contact form shortcode (`[earthin_contact_form]`) with admin inquiry viewer, CSV export (with formula injection defense), honeypot anti-spam, email header injection protection, IP rate limiting, and database persistence.
+- System Diagnostics tab reporting PHP/WP versions, server limits, and third-party SEO plugin conflict status.
 - RSS import of up to five items into **drafts** with strict Server-Side Request Forgery (SSRF) defense against private/loopback IP addresses.
 - Automated unit test suite and CI test runner in `.github/workflows/php-lint.yml`.
 - Non-destructive uninstall behavior.
@@ -26,7 +27,7 @@ This repository contains an early development build. It is not yet a production 
 - SEO/social provider detection is a compatibility guard, not a complete integration with every SEO plugin.
 - RSS imports are draft-only and require editorial review. There is no AI rewriting, automated scheduling, or auto-publishing.
 - Security headers are intentionally conservative; no Content Security Policy or file-editing restrictions are forced.
-- Redirect management UI, media manager, and complete settings backup are not yet implemented (redirects currently loaded from option).
+- Media manager, AI publishing, and complete settings backup/export are not yet implemented.
 - No database migration/rollback engine, analytics, SMTP configuration, Gutenberg block suite, or plugin-update service yet.
 - The plugin has not yet been validated against a live WordPress installation or a broad plugin/theme compatibility matrix.
 

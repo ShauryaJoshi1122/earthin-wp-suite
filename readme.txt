@@ -18,6 +18,10 @@ Earthin WP Suite provides a modular architecture with independent modules for SE
 
 == Changelog ==
 = 0.2.0 =
+* Feature: Tabbed administration dashboard with Modules & Controls, Redirects Manager, Form Inquiries, and System Status views.
+* Feature: Redirects administration interface with rule creation, loop validation, status code selection, and hit tracking.
+* Feature: Form inquiries viewer with submission persistence, deletion controls, and formula-injection-safe CSV export.
+* Feature: System diagnostics screen reporting environment metrics, memory limits, and third-party SEO plugin conflict status.
 * Security: Hardened RSS import against Server-Side Request Forgery (SSRF) and private network requests.
 * Security: Added anti-spam honeypot and email header injection protection to the forms module.
 * Bugfix: Resolved issue where redirects failed to trigger on 404 requests.

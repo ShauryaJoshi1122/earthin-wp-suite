@@ -10,6 +10,11 @@ final class Forms_Module implements Module_Interface {
 	public function boot() {
 		add_shortcode( 'earthin_contact_form', array( $this, 'render' ) );
 		add_action( 'init', array( $this, 'register_post_type' ) );
+
+		if ( is_admin() ) {
+			add_action( 'admin_post_ews_delete_submission', array( $this, 'handle_delete_submission' ) );
+			add_action( 'admin_post_ews_export_submissions', array( $this, 'handle_export_submissions' ) );
+		}
 	}
 
 	/**
@@ -28,6 +33,139 @@ final class Forms_Module implements Module_Interface {
 			'capability_type'     => 'post',
 			'map_meta_cap'        => true,
 		) );
+	}
+
+	/**
+	 * Retrieve saved form submissions from the database.
+	 *
+	 * @param int $limit Maximum number of submissions to retrieve.
+	 * @return array
+	 */
+	public static function get_submissions( int $limit = 50 ): array {
+		$posts = get_posts( array(
+			'post_type'      => 'ews_submission',
+			'post_status'    => array( 'private', 'publish' ),
+			'posts_per_page' => $limit,
+			'orderby'        => 'date',
+			'order'          => 'DESC',
+		) );
+
+		$submissions = array();
+		foreach ( $posts as $p ) {
+			$post_id       = is_object( $p ) ? $p->ID : ( (int) $p );
+			$post_obj      = is_object( $p ) ? $p : get_post( $post_id );
+			$submissions[] = array(
+				'id'         => $post_id,
+				'date'       => get_the_date( 'Y-m-d H:i:s', $post_id ),
+				'name'       => get_post_meta( $post_id, '_ews_sender_name', true ),
+				'email'      => get_post_meta( $post_id, '_ews_sender_email', true ),
+				'ip'         => get_post_meta( $post_id, '_ews_sender_ip', true ),
+				'dispatched' => get_post_meta( $post_id, '_ews_email_dispatched', true ),
+				'message'    => $post_obj ? $post_obj->post_content : '',
+			);
+		}
+
+		return $submissions;
+	}
+
+	/**
+	 * Delete a specific submission post.
+	 *
+	 * @param int $id Post ID.
+	 * @return bool
+	 */
+	public static function delete_submission( int $id ): bool {
+		$post = get_post( $id );
+		if ( ! $post || 'ews_submission' !== $post->post_type ) {
+			return false;
+		}
+
+		return (bool) wp_delete_post( $id, true );
+	}
+
+	/**
+	 * Handle admin action to delete an individual submission.
+	 *
+	 * @return void
+	 */
+	public function handle_delete_submission() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Access denied.', 'earthin-wp-suite' ) );
+		}
+
+		check_admin_referer( 'ews_delete_submission' );
+
+		$id = isset( $_POST['submission_id'] ) ? (int) $_POST['submission_id'] : 0;
+		if ( $id > 0 ) {
+			self::delete_submission( $id );
+		}
+
+		wp_safe_redirect( admin_url( 'admin.php?page=earthin-wp-suite&tab=forms&ews_forms_msg=deleted' ) );
+		exit;
+	}
+
+	/**
+	 * Export submissions to CSV with formula injection protection.
+	 *
+	 * @return void
+	 */
+	public function handle_export_submissions() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Access denied.', 'earthin-wp-suite' ) );
+		}
+
+		check_admin_referer( 'ews_export_submissions' );
+
+		$submissions = self::get_submissions( 1000 );
+
+		if ( ! headers_sent() ) {
+			header( 'Content-Type: text/csv; charset=utf-8' );
+			header( 'Content-Disposition: attachment; filename="earthin-submissions-' . gmdate( 'Y-m-d' ) . '.csv"' );
+			header( 'Pragma: no-cache' );
+			header( 'Expires: 0' );
+		}
+
+		$output = fopen( 'php://output', 'w' );
+		if ( false === $output ) {
+			exit;
+		}
+
+		// CSV Header
+		fputcsv( $output, array( 'ID', 'Date', 'Name', 'Email', 'IP Address', 'Email Sent', 'Message' ) );
+
+		foreach ( $submissions as $sub ) {
+			// Defend against CSV injection (formula injection).
+			$name    = self::sanitize_csv_cell( (string) $sub['name'] );
+			$email   = self::sanitize_csv_cell( (string) $sub['email'] );
+			$message = self::sanitize_csv_cell( (string) $sub['message'] );
+
+			fputcsv( $output, array(
+				$sub['id'],
+				$sub['date'],
+				$name,
+				$email,
+				$sub['ip'],
+				'1' === (string) $sub['dispatched'] ? 'Yes' : 'No',
+				$message,
+			) );
+		}
+
+		fclose( $output );
+		exit;
+	}
+
+	/**
+	 * Neutralize dangerous formula injection characters in CSV fields.
+	 *
+	 * @param string $value Cell value.
+	 * @return string Safe cell value.
+	 */
+	public static function sanitize_csv_cell( string $value ): string {
+		$dangerous_chars = array( '=', '+', '-', '@', "\t", "\r" );
+		if ( ! empty( $value ) && in_array( $value[0], $dangerous_chars, true ) ) {
+			return "'" . $value;
+		}
+		return $value;
 	}
 
 	public function render() {

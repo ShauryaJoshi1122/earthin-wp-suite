@@ -14,12 +14,14 @@ require_once __DIR__ . '/test-rss-ssrf.php';
 require_once __DIR__ . '/test-forms.php';
 require_once __DIR__ . '/test-schema.php';
 require_once __DIR__ . '/test-module-manager.php';
+require_once __DIR__ . '/test-admin.php';
 
 echo "Running Earthin WP Suite Automated Tests...\n";
 echo "===========================================\n";
 
 $tests = array(
 	'test_module_manager',
+	'test_admin_settings',
 	'test_redirects_module',
 	'test_rss_ssrf_protection',
 	'test_forms_module',
