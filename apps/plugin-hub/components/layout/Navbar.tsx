@@ -37,6 +37,7 @@ export function Navbar() {
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Plugins', href: '/plugins' },
+    { label: 'Themes', href: '/themes' },
     { label: 'Categories', href: '/categories' },
     { label: 'Pricing', href: '/pricing' },
     { label: 'Docs', href: '/docs' },

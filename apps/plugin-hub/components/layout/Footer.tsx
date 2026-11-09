@@ -36,6 +36,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/themes" className="hover:text-emerald-600 transition-colors">
+                  WordPress Themes
+                </Link>
+              </li>
+              <li>
                 <Link href="/categories" className="hover:text-emerald-600 transition-colors">
                   Plugin Categories
                 </Link>

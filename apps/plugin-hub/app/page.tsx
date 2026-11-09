@@ -1,14 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import { ArrowRight, ShieldCheck, Zap, Layers, RefreshCw, Download, CheckCircle, BookOpen, ExternalLink } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Layers, RefreshCw, Download, CheckCircle, BookOpen, ExternalLink, LayoutTemplate, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { PluginCard } from '@/components/plugins/PluginCard';
 import { getFeaturedPlugins } from '@/lib/catalog';
+import { getAllThemes } from '@/lib/themes';
 
 export default function HomePage() {
   const featured = getFeaturedPlugins();
+  const themes = getAllThemes();
 
   const benefits = [
     {
@@ -59,8 +61,14 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
+            <Link href="/themes">
+              <Button size="lg" variant="outline" className="w-full sm:w-auto border-emerald-600 text-emerald-800 bg-emerald-50/50 hover:bg-emerald-100/50">
+                <LayoutTemplate className="mr-2 h-4 w-4 text-emerald-600" />
+                Explore Themes (4)
+              </Button>
+            </Link>
             <Link href="/docs">
-              <Button size="lg" variant="outline" className="w-full sm:w-auto">
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto">
                 <BookOpen className="mr-2 h-4 w-4" />
                 Documentation
               </Button>
@@ -100,6 +108,72 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {featured.map((plugin) => (
             <PluginCard key={plugin.id} plugin={plugin} />
+          ))}
+        </div>
+      </section>
+
+      {/* 2.5 Official Earthin WordPress Themes Section */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div>
+            <div className="inline-flex items-center gap-1.5 mb-2">
+              <Badge variant="emerald">THEMES SUITE</Badge>
+              <span className="text-xs font-semibold text-slate-500 font-mono">4 Standalone Themes</span>
+            </div>
+            <h2 className="text-3xl font-bold tracking-tight text-slate-900">Official WordPress Themes</h2>
+            <p className="text-slate-600 mt-1">Lightweight, modern themes engineered with zero-bloat, clean semantic CSS, and instant UPI checkout readiness.</p>
+          </div>
+          <Link href="/themes" className="text-sm font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1">
+            Explore all themes & templates <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {themes.map((t) => (
+            <Card key={t.id} className="flex flex-col border-slate-200 hover:border-emerald-300 transition-all hover:shadow-md bg-white overflow-hidden group">
+              <div className={`p-4 text-white ${
+                t.accentColor === 'emerald' ? 'bg-gradient-to-br from-emerald-800 to-slate-900' :
+                t.accentColor === 'teal' ? 'bg-gradient-to-br from-teal-800 to-slate-900' :
+                t.accentColor === 'blue' ? 'bg-gradient-to-br from-blue-800 to-slate-900' :
+                'bg-gradient-to-br from-purple-900 to-slate-900'
+              }`}>
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded text-white">
+                  {t.badge}
+                </span>
+                <h3 className="text-lg font-bold text-white mt-2 group-hover:text-emerald-300 transition-colors">
+                  {t.name}
+                </h3>
+                <span className="text-xs text-slate-300 block">{t.category}</span>
+              </div>
+
+              <CardContent className="p-4 flex-1 flex flex-col justify-between space-y-4">
+                <p className="text-xs text-slate-600 leading-relaxed line-clamp-3">
+                  {t.tagline}
+                </p>
+
+                <div className="space-y-3 pt-2 border-t border-slate-100">
+                  <div className="flex items-center justify-between text-xs text-slate-500 font-medium">
+                    <span>{t.templatesCount} Templates</span>
+                    <span className="font-mono text-[11px]">PHP {t.phpRequires}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    <Link href="/themes" className="text-xs font-semibold text-emerald-700 hover:underline flex items-center gap-1">
+                      View Details &rarr;
+                    </Link>
+                    <a
+                      href={t.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-slate-500 hover:text-slate-800 transition-colors"
+                      title="Inspect source code"
+                    >
+                      <ExternalLink className="h-3.5 w-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
