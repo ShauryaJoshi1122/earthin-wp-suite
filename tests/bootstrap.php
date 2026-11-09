@@ -46,6 +46,25 @@ $ews_test_posts      = array();
 $ews_test_transients = array();
 $ews_test_headers    = array();
 
+if ( ! class_exists( 'WP_Error' ) ) {
+	class WP_Error {
+		private $code;
+		public function __construct( $code = '', $message = '' ) { $this->code = $code; }
+		public function get_error_code() { return $this->code; }
+	}
+}
+
+global $ews_http_request_args;
+$ews_http_request_args = null;
+function wp_safe_remote_get( $url, $args = array() ) {
+	global $ews_http_request_args;
+	$ews_http_request_args = array( 'url' => $url, 'args' => $args );
+	return array( 'response' => array( 'code' => 200 ), 'body' => '<rss></rss>' );
+}
+function wp_remote_retrieve_response_code( $response ) { return $response['response']['code'] ?? 0; }
+function wp_remote_retrieve_body( $response ) { return $response['body'] ?? ''; }
+function is_wp_error( $thing ) { return $thing instanceof WP_Error; }
+
 function get_option( $name, $default = false ) {
 	global $ews_test_options;
 	return array_key_exists( $name, $ews_test_options ) ? $ews_test_options[ $name ] : $default;
