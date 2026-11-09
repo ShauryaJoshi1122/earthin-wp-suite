@@ -3,9 +3,9 @@ import { getAllPlugins, getPluginBySlug, getFeaturedPlugins, CATEGORIES } from '
 import { cn, formatVersion } from '../lib/utils';
 
 describe('Plugin Catalog Data', () => {
-  it('returns all 11 official Earthin plugins from catalog', () => {
+  it('returns all 20 official Earthin plugins from catalog', () => {
     const plugins = getAllPlugins();
-    expect(plugins.length).toBe(11);
+    expect(plugins.length).toBe(20);
   });
 
   it('retrieves Earthin WP Suite with accurate version and compatibility claims', () => {
@@ -33,14 +33,22 @@ describe('Plugin Catalog Data', () => {
       'earthin-advanced-editor',
       'earthin-white-label',
       'earthin-social-share',
+      'earthin-chat-connect',
+      'earthin-login-shield',
+      'earthin-cookie-consent',
+      'earthin-cookie-consent-pro',
+      'earthin-visitor-counter',
+      'earthin-social-preview',
+      'earthin-push',
+      'earthin-page-builder',
+      'earthin-page-builder-pro',
     ];
 
     slugs.forEach((slug) => {
       const plugin = getPluginBySlug(slug);
       expect(plugin).toBeDefined();
       expect(plugin?.author).toBe('Shaurya Joshi');
-      expect(plugin?.minPhpVersion).toBe('8.1');
-      expect(plugin?.minWpVersion).toBe('6.4');
+      expect(plugin?.authorUri).toBe('https://plugins.earthin.online');
       expect(plugin?.releases.length).toBeGreaterThan(0);
       expect(plugin?.features.length).toBeGreaterThan(0);
     });

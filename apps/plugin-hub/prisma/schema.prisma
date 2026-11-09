@@ -1,0 +1,401 @@
+// apps/plugin-hub/prisma/schema.prisma
+// Official relational data model for Earthin Plugin Hub marketplace
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  OWNER
+  ADMIN
+  SUPPORT
+  CUSTOMER
+}
+
+enum PricingModel {
+  FREE
+  FREEMIUM
+  PREMIUM
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  REFUNDED
+}
+
+enum LicenseStatus {
+  ACTIVE
+  EXPIRED
+  REVOKED
+  SUSPENDED
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  WAITING_CUSTOMER
+  RESOLVED
+  CLOSED
+}
+
+enum TicketPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  role          Role      @default(CUSTOMER)
+  isActive      Boolean   @default(true)
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  customer       Customer?
+  activityLogs   ActivityLog[]
+  supportMessages SupportMessage[]
+
+  @@index([email])
+}
+
+model Customer {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  company   String?
+  website   String?
+  country   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user           User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders         Order[]
+  licenses       License[]
+  supportTickets SupportTicket[]
+  downloadEvents DownloadEvent[]
+  reviews        Review[]
+}
+
+model PluginCategory {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  description String
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  plugins Plugin[]
+}
+
+model Plugin {
+  id                     String       @id @default(uuid())
+  name                   String
+  slug                   String       @unique
+  tagline                String
+  shortDescription       String
+  description            String
+  author                 String       @default("Shaurya Joshi")
+  authorUri              String       @default("https://plugins.earthin.online")
+  categoryId             String
+  pricingModel           PricingModel @default(FREEMIUM)
+  freeVersionAvailable   Boolean      @default(true)
+  premiumVersionAvailable Boolean     @default(false)
+  priceInr               Int          @default(0) // In Indian Rupees (e.g. 1499 = INR 1,499)
+  latestVersion          String       @default("0.1.0")
+  minWpVersion           String       @default("6.4")
+  testedWpVersion        String       @default("6.7")
+  minPhpVersion          String       @default("8.1")
+  featured               Boolean      @default(false)
+  isPublished            Boolean      @default(true)
+  createdAt              DateTime     @default(now())
+  updatedAt              DateTime     @updatedAt
+
+  category       PluginCategory     @relation(fields: [categoryId], references: [id])
+  features       PluginFeature[]
+  screenshots    PluginScreenshot[]
+  releases       PluginRelease[]
+  licenses       License[]
+  orderItems     OrderItem[]
+  supportTickets SupportTicket[]
+  docs           DocumentationPage[]
+  reviews        Review[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([isPublished])
+}
+
+model PluginFeature {
+  id        String   @id @default(uuid())
+  pluginId  String
+  title     String
+  isPremium Boolean  @default(false)
+  sortOrder Int      @default(0)
+
+  plugin Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+
+  @@index([pluginId])
+}
+
+model PluginScreenshot {
+  id        String   @id @default(uuid())
+  pluginId  String
+  url       String
+  caption   String?
+  sortOrder Int      @default(0)
+
+  plugin Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+}
+
+model PluginRelease {
+  id             String   @id @default(uuid())
+  pluginId       String
+  version        String
+  releaseDate    DateTime @default(now())
+  minWpVersion   String   @default("6.4")
+  testedWpVersion String  @default("6.7")
+  minPhpVersion  String   @default("8.1")
+  isStable       Boolean  @default(true)
+  downloadUrl    String?
+  checksumSha256 String?
+  notes          String   // JSON string or Markdown bullet points
+  createdAt      DateTime @default(now())
+
+  plugin         Plugin          @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  downloadEvents DownloadEvent[]
+
+  @@unique([pluginId, version])
+}
+
+model DownloadEvent {
+  id           String   @id @default(uuid())
+  releaseId    String
+  customerId   String?
+  ipHash       String   // SHA-256 hashed IP for anonymous fraud prevention
+  userAgent    String?
+  downloadedAt DateTime @default(now())
+
+  release  PluginRelease @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  customer Customer?     @relation(fields: [customerId], references: [id], onDelete: SetNull)
+
+  @@index([releaseId])
+  @@index([downloadedAt])
+}
+
+model Order {
+  id          String      @id @default(uuid())
+  orderNumber String      @unique
+  customerId  String
+  totalAmount Int         // In smallest currency unit (INR)
+  currency    String      @default("INR")
+  status      OrderStatus @default(PENDING)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  customer Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  items    OrderItem[]
+  payments Payment[]
+  licenses License[]
+
+  @@index([customerId])
+  @@index([orderNumber])
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  pluginId  String
+  planType  String   @default("annual") // annual, lifetime
+  price     Int
+  createdAt DateTime @default(now())
+
+  order  Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  plugin Plugin @relation(fields: [pluginId], references: [id])
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  orderId        String
+  provider       String        @default("UPI") // UPI, MANUAL
+  transactionRef String?       @unique
+  amount         Int
+  currency       String        @default("INR")
+  status         PaymentStatus @default(PENDING)
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  receipt PaymentReceipt?
+
+  @@index([orderId])
+  @@index([status])
+}
+
+model PaymentReceipt {
+  id          String    @id @default(uuid())
+  paymentId   String    @unique
+  receiptUrl  String?
+  utrNumber   String?   @unique
+  payerVpa    String?
+  payerName   String?
+  submittedAt DateTime  @default(now())
+  verifiedAt  DateTime?
+  verifiedBy  String?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model PaymentSettings {
+  id             String   @id @default("default")
+  upiId          String   @default("earthin@upi")
+  upiDisplayName String   @default("Shaurya Joshi (Earthin)")
+  qrCodeUrl      String   @default("/images/upi-qr-placeholder.png")
+  instructions   String   @default("Pay via Google Pay, PhonePe, Paytm, or any UPI app. Enter your UTR / transaction ID after payment to receive instant license activation.")
+  currency       String   @default("INR")
+  isEnabled      Boolean  @default(true)
+  updatedAt      DateTime @updatedAt
+}
+
+model License {
+  id             String        @id @default(uuid())
+  licenseKey     String        @unique
+  pluginId       String
+  customerId     String
+  orderId        String?
+  planType       String        @default("annual")
+  maxActivations Int           @default(1)
+  status         LicenseStatus @default(ACTIVE)
+  expiresAt      DateTime?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  plugin      Plugin              @relation(fields: [pluginId], references: [id])
+  customer    Customer            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  order       Order?              @relation(fields: [orderId], references: [id])
+  activations LicenseActivation[]
+
+  @@index([licenseKey])
+  @@index([customerId])
+}
+
+model LicenseActivation {
+  id            String    @id @default(uuid())
+  licenseId     String
+  domain        String
+  siteUrl       String?
+  ipAddress     String?
+  activatedAt   DateTime  @default(now())
+  lastCheckedAt DateTime  @default(now())
+
+  license License @relation(fields: [licenseId], references: [id], onDelete: Cascade)
+
+  @@unique([licenseId, domain])
+  @@index([domain])
+}
+
+model SupportTicket {
+  id           String         @id @default(uuid())
+  ticketNumber String         @unique
+  customerId   String
+  pluginId     String?
+  subject      String
+  status       TicketStatus   @default(OPEN)
+  priority     TicketPriority @default(MEDIUM)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  customer Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  plugin   Plugin?          @relation(fields: [pluginId], references: [id], onDelete: SetNull)
+  messages SupportMessage[]
+
+  @@index([customerId])
+  @@index([status])
+}
+
+model SupportMessage {
+  id        String   @id @default(uuid())
+  ticketId  String
+  userId    String
+  isStaff   Boolean  @default(false)
+  message   String
+  createdAt DateTime @default(now())
+
+  ticket SupportTicket @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+  user   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DocumentationPage {
+  id          String   @id @default(uuid())
+  pluginId    String
+  slug        String
+  title       String
+  content     String
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  updatedAt   DateTime @updatedAt
+
+  plugin Plugin @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+
+  @@unique([pluginId, slug])
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  pluginId   String
+  customerId String
+  rating     Int      // 1 to 5
+  title      String?
+  comment    String
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  plugin   Plugin   @relation(fields: [pluginId], references: [id], onDelete: Cascade)
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([pluginId])
+  @@index([isApproved])
+}
+
+model WebsiteSetting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String?
+  details    String?  // JSON string
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([action])
+}

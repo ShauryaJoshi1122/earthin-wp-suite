@@ -14,9 +14,9 @@ export function Navbar() {
   const navLinks = [
     { label: 'Home', href: '/' },
     { label: 'Plugins', href: '/plugins' },
+    { label: 'Categories', href: '/categories' },
     { label: 'Pricing', href: '/pricing' },
-    { label: 'Documentation', href: '/docs' },
-    { label: 'Changelog', href: '/changelog' },
+    { label: 'Docs', href: '/docs' },
     { label: 'Support', href: '/support' },
   ];
 
@@ -55,11 +55,20 @@ export function Navbar() {
         </nav>
 
         {/* Action Buttons */}
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-2">
+          <Link href="/account">
+            <Button size="sm" variant="ghost">
+              Account
+            </Button>
+          </Link>
+          <Link href="/admin">
+            <Button size="sm" variant="outline" className="border-slate-300">
+              Admin
+            </Button>
+          </Link>
           <Link href="/plugins">
             <Button size="sm" variant="primary">
               Explore Plugins
-              <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
             </Button>
           </Link>
         </div>

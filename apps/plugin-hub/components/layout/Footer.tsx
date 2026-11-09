@@ -28,21 +28,26 @@ export function Footer() {
 
           {/* Directory Links */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Plugins</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Marketplace</h4>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
-                <Link href="/plugins/earthin-wp-suite" className="hover:text-emerald-600 transition-colors">
-                  Earthin WP Suite
+                <Link href="/plugins" className="hover:text-emerald-600 transition-colors">
+                  All Plugins
                 </Link>
               </li>
               <li>
-                <Link href="/plugins" className="hover:text-emerald-600 transition-colors">
-                  Browse Catalog
+                <Link href="/categories" className="hover:text-emerald-600 transition-colors">
+                  Plugin Categories
                 </Link>
               </li>
               <li>
                 <Link href="/pricing" className="hover:text-emerald-600 transition-colors">
-                  Pricing & Plans
+                  Pricing & Freemium
+                </Link>
+              </li>
+              <li>
+                <Link href="/account" className="hover:text-emerald-600 transition-colors">
+                  Customer Dashboard
                 </Link>
               </li>
             </ul>
@@ -54,7 +59,7 @@ export function Footer() {
             <ul className="mt-3 space-y-2 text-sm">
               <li>
                 <Link href="/docs" className="hover:text-emerald-600 transition-colors">
-                  Documentation
+                  Documentation & Guides
                 </Link>
               </li>
               <li>
@@ -67,27 +72,32 @@ export function Footer() {
                   Support Center
                 </Link>
               </li>
+              <li>
+                <Link href="/admin" className="hover:text-emerald-600 transition-colors">
+                  Admin Portal
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Company & Legal */}
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Earthin</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-900">Studio</h4>
             <ul className="mt-3 space-y-2 text-sm">
               <li>
-                <a href="https://earthin.online" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 transition-colors">
-                  Earthin Home
-                </a>
+                <Link href="/about" className="hover:text-emerald-600 transition-colors">
+                  About Earthin
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-emerald-600 transition-colors">
+                  Contact Us
+                </Link>
               </li>
               <li>
                 <a href="https://github.com/ShauryaJoshi1122/earthin-wp-suite" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 transition-colors">
                   GitHub Repository
                 </a>
-              </li>
-              <li>
-                <Link href="/docs" className="hover:text-emerald-600 transition-colors">
-                  Security Guidelines
-                </Link>
               </li>
             </ul>
           </div>
