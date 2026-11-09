@@ -117,33 +117,6 @@ export default function LoginPage() {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </form>
-
-          {/* Quick Demo Credentials Guide */}
-          <div className="mt-6 pt-5 border-t border-slate-100 bg-slate-50 -mx-6 -mb-8 p-5 rounded-b-2xl border-b space-y-2">
-            <div className="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Quick Sign In Guide:</div>
-            <div className="flex flex-col gap-1.5 text-xs text-slate-600">
-              <div className="flex items-center justify-between">
-                <span>🔑 <strong>Admin Sign In:</strong></span>
-                <button
-                  type="button"
-                  onClick={() => { setEmail('admin@earthin.online'); setPassword('admin123'); }}
-                  className="text-emerald-700 font-semibold underline text-[11px] hover:text-emerald-800"
-                >
-                  Use admin@earthin.online
-                </button>
-              </div>
-              <div className="flex items-center justify-between">
-                <span>👤 <strong>Customer Sign In:</strong></span>
-                <button
-                  type="button"
-                  onClick={() => { setEmail('user@example.com'); setPassword('user123'); }}
-                  className="text-emerald-700 font-semibold underline text-[11px] hover:text-emerald-800"
-                >
-                  Use normal email
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
