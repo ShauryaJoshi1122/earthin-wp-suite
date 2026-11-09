@@ -104,6 +104,12 @@ function earthin_body_classes(array $classes): array {
         'template-about.php',
         'template-services.php',
         'template-portfolio.php',
+        'template-news.php',
+        'template-pricing.php',
+        'template-knowledgebase.php',
+        'template-team.php',
+        'template-changelog.php',
+        'template-testimonials.php',
     ];
 
     foreach ($no_sidebar_templates as $tpl) {

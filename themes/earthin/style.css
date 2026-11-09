@@ -1477,3 +1477,2006 @@ article.post:hover {
 }
 
 
+
+/* ==========================================================================
+   10. EXTENDED TEMPLATES: NEWS, PRICING, KNOWLEDGE BASE, TEAM, CHANGELOG, TESTIMONIALS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   10.1 NEWS & EDITORIAL MAGAZINE TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-news-portal {
+    padding-bottom: 5rem;
+}
+
+.earthin-news-container {
+    max-width: 1260px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Breaking News Ticker */
+.earthin-news-ticker-bar {
+    background: #090d16;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.75rem 0;
+    margin-bottom: 2rem;
+}
+
+.earthin-ticker-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-size: 0.875rem;
+}
+
+.earthin-ticker-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+}
+
+.earthin-ticker-pulse {
+    width: 8px;
+    height: 8px;
+    background: #ef4444;
+    border-radius: 50%;
+    animation: earthinPulse 1.8s infinite;
+}
+
+@keyframes earthinPulse {
+    0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+    100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+}
+
+.earthin-ticker-content {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.earthin-ticker-headline a {
+    color: var(--earthin-text);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s ease;
+}
+
+.earthin-ticker-headline a:hover {
+    color: var(--earthin-primary);
+}
+
+.earthin-ticker-meta {
+    color: var(--earthin-text-muted);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+/* News Hero Grid */
+.earthin-news-hero-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 1.75rem;
+    margin-bottom: 3.5rem;
+}
+
+.earthin-news-lead-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-news-lead-media {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+    background: #0f172a;
+}
+
+.earthin-news-lead-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+.earthin-news-lead-card:hover .earthin-news-lead-img {
+    transform: scale(1.03);
+}
+
+.earthin-news-placeholder-media {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+}
+
+.earthin-news-placeholder-media.lead-gradient {
+    background: linear-gradient(135deg, #064e3b 0%, #0f172a 100%);
+}
+
+.earthin-news-placeholder-media.sub-gradient-1 {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+}
+
+.earthin-news-placeholder-media.sub-gradient-2 {
+    background: linear-gradient(135deg, #581c87 0%, #0f172a 100%);
+}
+
+.earthin-news-cat-badge {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: var(--earthin-primary);
+    color: #ffffff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--earthin-radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.earthin-news-cat-badge.small {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.earthin-news-lead-content {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.earthin-news-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--earthin-text-muted);
+    margin-bottom: 0.85rem;
+}
+
+.earthin-news-lead-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin: 0 0 1rem;
+}
+
+.earthin-news-lead-title a {
+    color: var(--earthin-text);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.earthin-news-lead-title a:hover {
+    color: var(--earthin-primary);
+}
+
+.earthin-news-lead-excerpt {
+    font-size: 1rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.65;
+    margin: 0 0 1.5rem;
+    flex: 1;
+}
+
+.earthin-news-read-btn {
+    align-self: flex-start;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--earthin-primary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.earthin-news-read-btn:hover {
+    text-decoration: underline;
+}
+
+/* Sub-column cards */
+.earthin-news-sub-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.earthin-news-sub-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-sm);
+    flex: 1;
+}
+
+.earthin-news-sub-media {
+    position: relative;
+    height: 160px;
+    overflow: hidden;
+}
+
+.earthin-news-sub-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.earthin-news-sub-body {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.earthin-news-sub-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0;
+}
+
+.earthin-news-sub-title a {
+    color: var(--earthin-text);
+    text-decoration: none;
+}
+
+.earthin-news-sub-title a:hover {
+    color: var(--earthin-primary);
+}
+
+/* Main Layout (Articles Feed + Sidebar) */
+.earthin-news-main-layout {
+    display: grid;
+    grid-template-columns: 2.2fr 1fr;
+    gap: 2.5rem;
+}
+
+.earthin-news-section-header {
+    margin-bottom: 1.75rem;
+}
+
+.earthin-section-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.25rem;
+}
+
+.earthin-section-subtitle {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-news-articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.earthin-news-article-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-news-article-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-article-thumb {
+    position: relative;
+    height: 180px;
+    background: #0f172a;
+    overflow: hidden;
+}
+
+.earthin-article-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.earthin-article-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.earthin-news-cat-pill {
+    position: absolute;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(4px);
+    color: var(--earthin-primary);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.earthin-article-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.earthin-article-meta {
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+    margin-bottom: 0.5rem;
+}
+
+.earthin-article-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 0.6rem;
+}
+
+.earthin-article-title a {
+    color: var(--earthin-text);
+    text-decoration: none;
+}
+
+.earthin-article-title a:hover {
+    color: var(--earthin-primary);
+}
+
+.earthin-article-summary {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+
+/* News Sidebar Widgets */
+.earthin-news-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.earthin-news-widget {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-widget-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.earthin-trending-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.earthin-trending-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.earthin-trending-rank {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--earthin-primary);
+    opacity: 0.7;
+    line-height: 1;
+    min-width: 28px;
+}
+
+.earthin-trending-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.earthin-trending-title {
+    font-size: 0.925rem;
+    font-weight: 600;
+    color: var(--earthin-text);
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+.earthin-trending-title:hover {
+    color: var(--earthin-primary);
+}
+
+.earthin-trending-meta {
+    font-size: 0.75rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-topics-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.earthin-topic-tag {
+    background: var(--earthin-bg);
+    border: 1px solid var(--earthin-border);
+    color: var(--earthin-text);
+    padding: 0.4rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.15s ease;
+}
+
+.earthin-topic-tag span {
+    font-size: 0.7rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-topic-tag:hover {
+    background: var(--earthin-primary);
+    color: #ffffff;
+    border-color: var(--earthin-primary);
+}
+
+.earthin-topic-tag:hover span {
+    color: #ffffff;
+}
+
+.earthin-newsletter-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border-radius: var(--earthin-radius-md);
+    padding: 0.5rem;
+}
+
+.earthin-newsletter-badge {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+}
+
+.earthin-newsletter-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-newsletter-desc {
+    font-size: 0.85rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.5;
+    margin: 0 0 1rem;
+}
+
+.earthin-newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+.earthin-newsletter-input {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--earthin-radius-sm);
+    border: 1px solid var(--earthin-border);
+    background: var(--earthin-bg);
+    color: var(--earthin-text);
+    font-size: 0.875rem;
+}
+
+.earthin-newsletter-submit {
+    background: var(--earthin-primary);
+    color: #ffffff;
+    border: none;
+    padding: 0.65rem 1rem;
+    border-radius: var(--earthin-radius-sm);
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.earthin-newsletter-submit:hover {
+    opacity: 0.9;
+}
+
+.earthin-newsletter-disclaimer {
+    font-size: 0.75rem;
+    color: var(--earthin-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   10.2 PRICING & PLANS TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-pricing-page {
+    padding-bottom: 5rem;
+}
+
+.earthin-pricing-hero {
+    padding: 4rem 1rem 3rem;
+}
+
+.earthin-hero-pill {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
+.earthin-pricing-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--earthin-text);
+    margin: 0 0 1rem;
+}
+
+.earthin-pricing-subtitle {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+}
+
+/* Billing Toggle */
+.earthin-billing-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+}
+
+.earthin-billing-label {
+    font-size: 0.925rem;
+    font-weight: 500;
+    color: var(--earthin-text-muted);
+    transition: color 0.15s ease;
+}
+
+.earthin-billing-label.active {
+    color: var(--earthin-text);
+    font-weight: 700;
+}
+
+.earthin-toggle-switch {
+    width: 48px;
+    height: 26px;
+    background: var(--earthin-border);
+    border-radius: 9999px;
+    border: none;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+    padding: 2px;
+    transition: background 0.2s ease;
+}
+
+.earthin-toggle-switch.active {
+    background: var(--earthin-primary);
+}
+
+.earthin-toggle-slider {
+    display: block;
+    width: 22px;
+    height: 22px;
+    background: #ffffff;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+}
+
+.earthin-toggle-switch.active .earthin-toggle-slider {
+    transform: translateX(22px);
+}
+
+.earthin-discount-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    font-size: 0.725rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 9999px;
+    margin-left: 0.35rem;
+}
+
+/* Pricing Grid */
+.earthin-pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+    align-items: stretch;
+}
+
+.earthin-price-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-sm);
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-price-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--earthin-shadow-lg);
+}
+
+.earthin-price-card.earthin-price-featured {
+    border-color: var(--earthin-primary);
+    box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.3);
+    background: linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0%, var(--earthin-surface) 100%);
+}
+
+.earthin-featured-ribbon {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--earthin-primary);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.85rem;
+    border-radius: 9999px;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.4);
+}
+
+.earthin-price-card-header {
+    margin-bottom: 1.5rem;
+}
+
+.earthin-plan-tier {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--earthin-text-muted);
+    margin-bottom: 0.4rem;
+}
+
+.earthin-plan-tier.pro {
+    color: var(--earthin-primary);
+}
+
+.earthin-plan-name {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-plan-desc {
+    font-size: 0.9rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.earthin-price-amount-box {
+    margin-bottom: 2rem;
+    padding-bottom: 1.75rem;
+    border-bottom: 1px solid var(--earthin-border);
+}
+
+.earthin-price-val {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.earthin-currency {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+}
+
+.earthin-amount {
+    font-size: 3.5rem;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--earthin-text);
+    letter-spacing: -0.03em;
+}
+
+.earthin-billing-cadence {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--earthin-text-muted);
+    margin-top: 0.5rem;
+}
+
+.earthin-plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex: 1;
+}
+
+.earthin-plan-features li {
+    font-size: 0.9rem;
+    color: var(--earthin-text);
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    line-height: 1.4;
+}
+
+.earthin-plan-features li.disabled {
+    color: var(--earthin-text-muted);
+    opacity: 0.6;
+}
+
+.earthin-check-icon {
+    color: #10b981;
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.earthin-check-icon.highlight {
+    color: var(--earthin-primary);
+}
+
+.earthin-cross-icon {
+    color: #94a3b8;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.earthin-btn-block {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+/* Feature Comparison Table */
+.earthin-matrix-section {
+    margin-bottom: 5rem;
+}
+
+.earthin-matrix-header {
+    margin-bottom: 2.5rem;
+}
+
+.earthin-matrix-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0.5rem 0 0;
+}
+
+.earthin-table-responsive {
+    overflow-x: auto;
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.925rem;
+    text-align: left;
+}
+
+.earthin-comparison-table th,
+.earthin-comparison-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--earthin-border);
+}
+
+.earthin-comparison-table th {
+    background: rgba(255, 255, 255, 0.02);
+    font-weight: 700;
+    color: var(--earthin-text);
+}
+
+.earthin-comparison-table th.highlight,
+.earthin-comparison-table td.highlight {
+    background: rgba(16, 185, 129, 0.05);
+    color: var(--earthin-primary);
+}
+
+/* Guarantee Banner */
+.earthin-guarantee-banner {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(15, 23, 42, 0.4) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2.5rem;
+    margin-bottom: 4.5rem;
+}
+
+.earthin-guarantee-inner {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.earthin-guarantee-badge-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+}
+
+.earthin-guarantee-heading {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-guarantee-desc {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Pricing FAQ */
+.earthin-pricing-faq {
+    max-width: 840px;
+    margin: 0 auto 4rem;
+}
+
+.earthin-faq-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0.5rem 0 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   10.3 KNOWLEDGE BASE & DOCS TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-kb-portal {
+    padding-bottom: 5rem;
+}
+
+.earthin-kb-hero {
+    padding: 4rem 1rem 3.5rem;
+    background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+}
+
+.earthin-kb-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--earthin-text);
+    margin: 0 0 1rem;
+}
+
+.earthin-kb-subtitle {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    max-width: 680px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+}
+
+.earthin-kb-search-box {
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.earthin-kb-search-form {
+    display: flex;
+    align-items: center;
+    background: var(--earthin-surface);
+    border: 2px solid var(--earthin-border);
+    border-radius: 9999px;
+    padding: 0.4rem 0.5rem 0.4rem 1.25rem;
+    box-shadow: var(--earthin-shadow-lg);
+    transition: border-color 0.2s ease;
+}
+
+.earthin-kb-search-form:focus-within {
+    border-color: var(--earthin-primary);
+}
+
+.earthin-kb-search-icon {
+    font-size: 1.25rem;
+    margin-right: 0.75rem;
+}
+
+.earthin-kb-search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--earthin-text);
+    font-size: 1rem;
+    outline: none;
+}
+
+.earthin-kb-search-submit {
+    background: var(--earthin-primary);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.earthin-kb-search-submit:hover {
+    opacity: 0.9;
+}
+
+.earthin-kb-quick-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
+.earthin-quick-label {
+    color: var(--earthin-text-muted);
+    font-weight: 600;
+}
+
+.earthin-quick-tag {
+    color: var(--earthin-primary);
+    text-decoration: none;
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.2rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.earthin-quick-tag:hover {
+    text-decoration: underline;
+}
+
+/* KB Categories Grid */
+.earthin-kb-categories-section {
+    margin-bottom: 4.5rem;
+}
+
+.earthin-kb-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.earthin-kb-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-kb-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-kb-card-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.earthin-kb-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--earthin-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.earthin-kb-category-name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0;
+}
+
+.earthin-kb-article-count {
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-kb-card-desc {
+    font-size: 0.9rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+}
+
+.earthin-kb-article-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    flex: 1;
+}
+
+.earthin-kb-article-list a {
+    font-size: 0.875rem;
+    color: var(--earthin-text);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: color 0.15s ease;
+}
+
+.earthin-kb-article-list a:hover {
+    color: var(--earthin-primary);
+}
+
+.earthin-kb-view-all {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--earthin-primary);
+    text-decoration: none;
+    align-self: flex-start;
+}
+
+.earthin-kb-view-all:hover {
+    text-decoration: underline;
+}
+
+/* Trending KB Articles */
+.earthin-kb-trending-section {
+    margin-bottom: 4.5rem;
+}
+
+.earthin-kb-trending-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.earthin-kb-popular-row {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.earthin-kb-popular-row:hover {
+    border-color: var(--earthin-primary);
+    transform: translateX(4px);
+}
+
+.earthin-popular-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.earthin-popular-details {
+    flex: 1;
+}
+
+.earthin-popular-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.3rem;
+}
+
+.earthin-popular-meta {
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-popular-arrow {
+    font-size: 1.2rem;
+    color: var(--earthin-primary);
+}
+
+/* Support Banner */
+.earthin-kb-support-banner {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 3rem;
+}
+
+.earthin-kb-support-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.earthin-kb-support-heading {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-kb-support-desc {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    max-width: 580px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.earthin-kb-support-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   10.4 TEAM & CAREERS TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-team-page {
+    padding-bottom: 5rem;
+}
+
+.earthin-team-hero {
+    padding: 4rem 1rem 3rem;
+}
+
+.earthin-team-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: var(--earthin-text);
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+}
+
+.earthin-team-subtitle {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    max-width: 680px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Team Section */
+.earthin-team-section {
+    margin-bottom: 5rem;
+}
+
+.earthin-team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2rem;
+}
+
+.earthin-member-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-member-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-member-avatar-wrap {
+    position: relative;
+    margin-bottom: 1.25rem;
+}
+
+.earthin-avatar-placeholder {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.earthin-member-status {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    background: #10b981;
+    border: 2px solid var(--earthin-surface);
+    border-radius: 50%;
+}
+
+.earthin-member-name {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.25rem;
+}
+
+.earthin-member-role {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--earthin-primary);
+    margin-bottom: 0.85rem;
+}
+
+.earthin-member-bio {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+    flex: 1;
+}
+
+.earthin-member-socials {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.earthin-social-icon {
+    font-size: 1.15rem;
+    text-decoration: none;
+    opacity: 0.75;
+    transition: opacity 0.15s ease;
+}
+
+.earthin-social-icon:hover {
+    opacity: 1;
+}
+
+/* Culture Perks */
+.earthin-culture-section {
+    margin-bottom: 5rem;
+}
+
+.earthin-perks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.75rem;
+}
+
+.earthin-perk-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.75rem;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-perk-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.earthin-perk-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin: 0 0 0.5rem;
+}
+
+.earthin-perk-desc {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Careers Section */
+.earthin-careers-section {
+    margin-bottom: 4rem;
+}
+
+.earthin-jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 900px;
+    margin: 0 auto 3rem;
+}
+
+.earthin-job-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: all 0.2s ease;
+}
+
+.earthin-job-card:hover {
+    border-color: var(--earthin-primary);
+    transform: translateY(-2px);
+}
+
+.earthin-job-tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.earthin-job-tag {
+    font-size: 0.725rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    background: var(--earthin-bg);
+    color: var(--earthin-text-muted);
+    border: 1px solid var(--earthin-border);
+}
+
+.earthin-job-tag.dept {
+    color: var(--earthin-primary);
+    background: rgba(16, 185, 129, 0.1);
+    border-color: transparent;
+}
+
+.earthin-job-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 0.4rem;
+}
+
+.earthin-job-snippet {
+    font-size: 0.875rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.earthin-link-arrow {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--earthin-primary);
+    text-decoration: none;
+}
+
+.earthin-link-arrow:hover {
+    text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   10.5 CHANGELOG & RELEASE NOTES TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-changelog-page {
+    padding-bottom: 5rem;
+}
+
+.earthin-changelog-hero {
+    padding: 4rem 1rem 3rem;
+}
+
+.earthin-changelog-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: var(--earthin-text);
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem;
+}
+
+.earthin-changelog-subtitle {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+}
+
+.earthin-changelog-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.earthin-timeline-wrapper {
+    max-width: 860px;
+    margin: 0 auto 4rem;
+    position: relative;
+}
+
+.earthin-timeline-release {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+}
+
+.earthin-timeline-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.earthin-marker-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--earthin-border);
+    border: 4px solid var(--earthin-surface);
+    box-shadow: 0 0 0 2px var(--earthin-border);
+    z-index: 2;
+}
+
+.earthin-marker-dot.active {
+    background: var(--earthin-primary);
+    box-shadow: 0 0 0 2px var(--earthin-primary);
+}
+
+.earthin-marker-line {
+    width: 2px;
+    flex: 1;
+    background: var(--earthin-border);
+    margin-top: 0.5rem;
+}
+
+.earthin-release-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2.25rem;
+    box-shadow: var(--earthin-shadow-sm);
+    flex: 1;
+}
+
+.earthin-release-header {
+    margin-bottom: 1.5rem;
+}
+
+.earthin-release-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.earthin-version-badge {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    background: var(--earthin-bg);
+    border: 1px solid var(--earthin-border);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--earthin-radius-sm);
+}
+
+.earthin-version-badge.current {
+    color: var(--earthin-primary);
+    border-color: var(--earthin-primary);
+}
+
+.earthin-status-pill {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+}
+
+.earthin-release-date {
+    font-size: 0.85rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-release-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0;
+}
+
+.earthin-release-summary {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.75rem;
+}
+
+.earthin-change-group {
+    margin-bottom: 1.5rem;
+}
+
+.earthin-change-type {
+    font-size: 0.9rem;
+    font-weight: 800;
+    margin: 0 0 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.earthin-change-type .pill {
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+.earthin-change-type.new .pill { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+.earthin-change-type.improvement .pill { background: rgba(59, 130, 246, 0.2); color: #3b82f6; }
+.earthin-change-type.fix .pill { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+.earthin-change-type.security .pill { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+.earthin-change-items {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--earthin-text);
+    line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   10.6 CASE STUDIES & TESTIMONIALS TEMPLATE
+   -------------------------------------------------------------------------- */
+.earthin-testimonials-page {
+    padding-bottom: 5rem;
+}
+
+.earthin-testimonials-hero {
+    padding: 4rem 1rem 3rem;
+}
+
+.earthin-testimonials-title {
+    font-size: 2.75rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--earthin-text);
+    margin: 0 0 1rem;
+}
+
+.earthin-testimonials-subtitle {
+    font-size: 1.15rem;
+    color: var(--earthin-text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Proof Metrics Bar */
+.earthin-proof-metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2.5rem 2rem;
+    margin-bottom: 5rem;
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-proof-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.earthin-proof-number {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--earthin-primary);
+    line-height: 1;
+    margin-bottom: 0.35rem;
+}
+
+.earthin-proof-stars {
+    color: #f59e0b;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.25rem;
+}
+
+.earthin-proof-label {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--earthin-text);
+    margin-bottom: 0.2rem;
+}
+
+.earthin-proof-desc {
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+}
+
+/* Case Studies */
+.earthin-case-studies-section {
+    margin-bottom: 5rem;
+}
+
+.earthin-case-study-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2.5rem;
+    margin-bottom: 2.5rem;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    box-shadow: var(--earthin-shadow-sm);
+}
+
+.earthin-case-study-card.reversed {
+    grid-template-columns: 1fr 1.6fr;
+}
+
+.earthin-case-study-card.reversed .earthin-cs-content {
+    order: 2;
+}
+
+.earthin-case-study-card.reversed .earthin-cs-quote-box {
+    order: 1;
+}
+
+.earthin-cs-client-badge {
+    display: inline-block;
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    font-size: 0.725rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.25rem 0.65rem;
+    border-radius: 4px;
+    margin-bottom: 0.85rem;
+}
+
+.earthin-cs-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--earthin-text);
+    margin: 0 0 1rem;
+    line-height: 1.35;
+}
+
+.earthin-cs-summary {
+    font-size: 0.95rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.65;
+    margin: 0 0 1.75rem;
+}
+
+.earthin-cs-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+.earthin-cs-stat {
+    background: var(--earthin-bg);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.earthin-cs-stat-val {
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+}
+
+.earthin-cs-stat-lbl {
+    font-size: 0.75rem;
+    color: var(--earthin-text-muted);
+    line-height: 1.35;
+}
+
+.earthin-cs-quote-box {
+    background: var(--earthin-bg);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-md);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.earthin-cs-quote-text {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--earthin-text);
+    line-height: 1.65;
+    margin: 0 0 1.5rem;
+}
+
+.earthin-cs-author {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+}
+
+.earthin-cs-author-name {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--earthin-text);
+}
+
+.earthin-cs-author-title {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--earthin-text-muted);
+}
+
+/* Reviews Grid */
+.earthin-testimonials-grid-section {
+    margin-bottom: 5rem;
+}
+
+.earthin-reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+    gap: 2rem;
+}
+
+.earthin-review-card {
+    background: var(--earthin-surface);
+    border: 1px solid var(--earthin-border);
+    border-radius: var(--earthin-radius-lg);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--earthin-shadow-sm);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.earthin-review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--earthin-shadow-md);
+}
+
+.earthin-review-stars {
+    color: #f59e0b;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+}
+
+.earthin-review-body {
+    font-size: 0.95rem;
+    color: var(--earthin-text);
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    flex: 1;
+}
+
+.earthin-reviewer {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    position: relative;
+}
+
+.earthin-reviewer-info {
+    flex: 1;
+}
+
+.earthin-reviewer-name {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--earthin-text);
+}
+
+.earthin-reviewer-role {
+    display: block;
+    font-size: 0.775rem;
+    color: var(--earthin-text-muted);
+}
+
+.earthin-verified-badge {
+    background: #10b981;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Testimonials CTA */
+.earthin-testimonials-cta-banner {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: var(--earthin-radius-lg);
+    padding: 4rem 2rem;
+}
+
+.earthin-cta-heading {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--earthin-text);
+    margin: 0.75rem 0 0.5rem;
+}
+
+.earthin-cta-subheading {
+    font-size: 1.05rem;
+    color: var(--earthin-text-muted);
+    max-width: 580px;
+    margin: 0 auto 2rem;
+}
+
+.earthin-cta-btns {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   10.7 RESPONSIVE OVERRIDES FOR EXTENDED TEMPLATES
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+    .earthin-news-hero-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .earthin-news-main-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .earthin-case-study-card,
+    .earthin-case-study-card.reversed {
+        grid-template-columns: 1fr;
+    }
+
+    .earthin-case-study-card.reversed .earthin-cs-content {
+        order: 1;
+    }
+
+    .earthin-case-study-card.reversed .earthin-cs-quote-box {
+        order: 2;
+    }
+
+    .earthin-cs-metrics-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .earthin-guarantee-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .earthin-pricing-title,
+    .earthin-kb-title,
+    .earthin-team-title,
+    .earthin-changelog-title,
+    .earthin-testimonials-title {
+        font-size: 2.1rem;
+    }
+
+    .earthin-news-lead-title {
+        font-size: 1.4rem;
+    }
+
+    .earthin-news-lead-media {
+        height: 220px;
+    }
+
+    .earthin-job-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .earthin-timeline-release {
+        gap: 1rem;
+    }
+}
