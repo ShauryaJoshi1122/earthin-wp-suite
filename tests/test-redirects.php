@@ -6,7 +6,7 @@
 function test_redirects_module() {
 	global $ews_test_options;
 
-	$module = new \\Earthin\\WPSuite\\Redirects_Module();
+	$module = new \Earthin\WPSuite\Redirects_Module();
 
 	$ews_test_options['ews_redirect_rules'] = array(
 		array( 'from' => '/old-path', 'to' => '/new-path', 'status' => 301 ),
