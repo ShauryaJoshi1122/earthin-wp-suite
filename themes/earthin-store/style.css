@@ -1,0 +1,465 @@
+/*
+Theme Name: Earthin Store
+Theme URI: https://plugins.earthin.online
+Author: Shaurya Joshi
+Author URI: https://plugins.earthin.online
+Description: High-converting, lightning-fast digital storefront and eCommerce theme for digital products, software downloads, and instant UPI QR payments.
+Version: 1.0.0
+Tested up to: 6.7
+Requires at least: 6.4
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: earthin-store
+Tags: e-commerce, digital-downloads, grid-layout, custom-logo, custom-menu, featured-images, footer-widgets, two-columns, full-width-template, translation-ready
+*/
+
+:root {
+    --es-primary: #2563eb;
+    --es-primary-hover: #1d4ed8;
+    --es-accent: #10b981;
+    --es-accent-hover: #059669;
+    --es-bg: #f8fafc;
+    --es-surface: #ffffff;
+    --es-text: #0f172a;
+    --es-text-muted: #64748b;
+    --es-border: #e2e8f0;
+    --es-radius: 10px;
+    --es-shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --es-shadow-md: 0 4px 16px -2px rgba(0,0,0,0.08);
+    --es-shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.1);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--es-bg);
+    color: var(--es-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.es-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Top Notification Announcement Bar */
+.es-announcement-bar {
+    background: linear-gradient(90deg, #1e3a8a 0%, #2563eb 100%);
+    color: #ffffff;
+    padding: 0.5rem 0;
+    font-size: 0.85rem;
+    text-align: center;
+    font-weight: 600;
+}
+
+.es-announcement-bar span {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+
+/* Store Header */
+.es-header {
+    background: var(--es-surface);
+    border-bottom: 1px solid var(--es-border);
+    padding: 1.25rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.es-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.es-logo-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.es-logo-title a {
+    color: var(--es-text);
+    text-decoration: none;
+}
+
+.es-logo-title span {
+    color: var(--es-primary);
+}
+
+.es-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1.75rem;
+}
+
+.es-nav a {
+    color: var(--es-text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.15s ease;
+}
+
+.es-nav a:hover {
+    color: var(--es-primary);
+}
+
+.es-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.es-upi-badge {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--es-accent);
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.es-cart-btn {
+    background: var(--es-primary);
+    color: #ffffff;
+    border: none;
+    padding: 0.55rem 1.15rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Store Hero Banner */
+.es-store-hero {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 4rem 0;
+    margin-bottom: 3.5rem;
+}
+
+.es-hero-content {
+    max-width: 680px;
+}
+
+.es-hero-pill {
+    display: inline-block;
+    background: rgba(37, 99, 235, 0.3);
+    color: #60a5fa;
+    border: 1px solid rgba(96, 165, 250, 0.3);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.85rem;
+    border-radius: 9999px;
+    margin-bottom: 1rem;
+}
+
+.es-hero-title {
+    font-size: 2.8rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin: 0 0 1rem;
+    letter-spacing: -0.02em;
+}
+
+.es-hero-subtitle {
+    font-size: 1.15rem;
+    color: #cbd5e1;
+    margin: 0 0 2rem;
+    line-height: 1.6;
+}
+
+.es-hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.es-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--es-radius);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+}
+
+.es-btn-primary {
+    background: var(--es-accent);
+    color: #ffffff;
+}
+
+.es-btn-primary:hover {
+    background: var(--es-accent-hover);
+}
+
+.es-btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.es-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Product Catalog Grid */
+.es-section-title-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.es-section-title {
+    font-size: 1.85rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.es-product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.es-product-card {
+    background: var(--es-surface);
+    border: 1px solid var(--es-border);
+    border-radius: var(--es-radius);
+    overflow: hidden;
+    box-shadow: var(--es-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.es-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--es-shadow-md);
+}
+
+.es-product-thumb {
+    position: relative;
+    height: 200px;
+    background: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.es-product-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.es-product-placeholder-icon {
+    font-size: 3rem;
+}
+
+.es-sale-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+}
+
+.es-product-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.es-product-category {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--es-primary);
+    text-transform: uppercase;
+    margin-bottom: 0.35rem;
+}
+
+.es-product-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem;
+    line-height: 1.35;
+}
+
+.es-product-name a {
+    color: var(--es-text);
+    text-decoration: none;
+}
+
+.es-product-name a:hover {
+    color: var(--es-primary);
+}
+
+.es-product-desc {
+    font-size: 0.875rem;
+    color: var(--es-text-muted);
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+    flex: 1;
+}
+
+.es-product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid var(--es-border);
+}
+
+.es-price-box {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.es-price-current {
+    font-size: 1.35rem;
+    font-weight: 900;
+    color: var(--es-text);
+}
+
+.es-price-old {
+    font-size: 0.9rem;
+    color: var(--es-text-muted);
+    text-decoration: line-through;
+}
+
+.es-buy-btn {
+    background: var(--es-primary);
+    color: #ffffff;
+    padding: 0.45rem 1rem;
+    border-radius: var(--es-radius);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.es-buy-btn:hover {
+    background: var(--es-primary-hover);
+}
+
+/* Trust Badges Strip */
+.es-trust-strip {
+    background: var(--es-surface);
+    border: 1px solid var(--es-border);
+    border-radius: var(--es-radius);
+    padding: 2rem;
+    margin-bottom: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.es-trust-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.es-trust-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.es-trust-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.15rem;
+}
+
+.es-trust-desc {
+    font-size: 0.8rem;
+    color: var(--es-text-muted);
+    margin: 0;
+}
+
+/* Store Footer */
+.es-footer {
+    background: #0f172a;
+    color: #94a3b8;
+    padding: 3.5rem 0 2rem;
+    font-size: 0.9rem;
+}
+
+.es-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 3rem;
+}
+
+.es-footer-col h4 {
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 800;
+    margin: 0 0 1rem;
+}
+
+.es-footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.es-footer-col a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.es-footer-col a:hover {
+    color: #ffffff;
+}
+
+.es-footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.85rem;
+}

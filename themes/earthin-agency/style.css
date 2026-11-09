@@ -1,0 +1,451 @@
+/*
+Theme Name: Earthin Agency
+Theme URI: https://plugins.earthin.online
+Author: Shaurya Joshi
+Author URI: https://plugins.earthin.online
+Description: Sleek, high-impact corporate agency and SaaS startup theme featuring dark-mode bento grids, interactive case studies, lead capture forms, and high-conversion landing page layouts.
+Version: 1.0.0
+Tested up to: 6.7
+Requires at least: 6.4
+Requires PHP: 8.1
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: earthin-agency
+Tags: agency, portfolio, business, block-styles, full-width-template, custom-colors, custom-header, custom-logo, custom-menu, featured-images, translation-ready
+*/
+
+:root {
+    --ea-bg: #090d16;
+    --ea-surface: #0f172a;
+    --ea-surface-card: #131c31;
+    --ea-text: #f8fafc;
+    --ea-text-muted: #94a3b8;
+    --ea-border: rgba(255, 255, 255, 0.08);
+    --ea-border-hover: rgba(16, 185, 129, 0.4);
+    --ea-primary: #10b981;
+    --ea-primary-hover: #059669;
+    --ea-secondary: #8b5cf6;
+    --ea-radius: 12px;
+    --ea-shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --ea-shadow-lg: 0 10px 40px -10px rgba(16, 185, 129, 0.2);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--ea-bg);
+    color: var(--ea-text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+.ea-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Header */
+.ea-header {
+    background: rgba(9, 13, 22, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--ea-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 1.25rem 0;
+}
+
+.ea-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.ea-logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+.ea-logo a {
+    color: #ffffff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.ea-logo span {
+    color: var(--ea-primary);
+}
+
+.ea-nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+}
+
+.ea-nav a {
+    color: var(--ea-text-muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: color 0.15s ease;
+}
+
+.ea-nav a:hover,
+.ea-nav .current-menu-item a {
+    color: #ffffff;
+}
+
+.ea-header-cta {
+    background: var(--ea-primary);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 9999px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: opacity 0.2s ease;
+}
+
+.ea-header-cta:hover {
+    opacity: 0.9;
+}
+
+/* Hero Section */
+.ea-hero {
+    position: relative;
+    padding: 6rem 0 5rem;
+    background: radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.15) 0%, transparent 70%);
+    overflow: hidden;
+}
+
+.ea-hero-inner {
+    text-align: center;
+    max-width: 840px;
+    margin: 0 auto;
+}
+
+.ea-hero-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--ea-primary);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    margin-bottom: 1.5rem;
+}
+
+.ea-hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 1.5rem;
+}
+
+.ea-gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #10b981 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ea-hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--ea-text-muted);
+    line-height: 1.65;
+    margin: 0 0 2.5rem;
+}
+
+.ea-hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 3.5rem;
+}
+
+.ea-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--ea-radius);
+    font-weight: 700;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.ea-btn-primary {
+    background: var(--ea-primary);
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+}
+
+.ea-btn-primary:hover {
+    background: var(--ea-primary-hover);
+    transform: translateY(-2px);
+}
+
+.ea-btn-secondary {
+    background: var(--ea-surface);
+    color: #ffffff;
+    border: 1px solid var(--ea-border);
+}
+
+.ea-btn-secondary:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Hero Stats Bar */
+.ea-stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    background: rgba(19, 28, 49, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--ea-border);
+    border-radius: var(--ea-radius);
+    padding: 1.75rem;
+}
+
+.ea-stat-item {
+    text-align: center;
+}
+
+.ea-stat-num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
+.ea-stat-lbl {
+    font-size: 0.8rem;
+    color: var(--ea-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+/* Bento Grid Features */
+.ea-bento-section {
+    padding: 5rem 0;
+}
+
+.ea-section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+}
+
+.ea-section-badge {
+    display: inline-block;
+    color: var(--ea-primary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+}
+
+.ea-section-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    margin: 0;
+}
+
+.ea-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 1.75rem;
+}
+
+.ea-bento-card {
+    background: var(--ea-surface-card);
+    border: 1px solid var(--ea-border);
+    border-radius: var(--ea-radius);
+    padding: 2.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.ea-bento-card:hover {
+    border-color: var(--ea-border-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--ea-shadow-lg);
+}
+
+.ea-bento-col-2 {
+    grid-column: span 2;
+}
+
+.ea-bento-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.ea-bento-heading {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 0.75rem;
+}
+
+.ea-bento-desc {
+    font-size: 0.95rem;
+    color: var(--ea-text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Agency Project Showcase */
+.ea-work-section {
+    padding: 5rem 0;
+    border-top: 1px solid var(--ea-border);
+}
+
+.ea-work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+}
+
+.ea-project-card {
+    background: var(--ea-surface);
+    border: 1px solid var(--ea-border);
+    border-radius: var(--ea-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s ease;
+}
+
+.ea-project-card:hover {
+    border-color: var(--ea-border-hover);
+    transform: translateY(-3px);
+}
+
+.ea-project-media {
+    height: 220px;
+    background: #090d16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.ea-project-body {
+    padding: 1.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.ea-project-tags {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--ea-primary);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+}
+
+.ea-project-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0 0 0.5rem;
+}
+
+.ea-project-title a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.ea-project-desc {
+    font-size: 0.9rem;
+    color: var(--ea-text-muted);
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    flex: 1;
+}
+
+/* Lead Capture Banner */
+.ea-cta-banner {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+    border: 1px solid var(--ea-border);
+    border-radius: var(--ea-radius);
+    padding: 4rem 2rem;
+    margin: 4rem auto;
+    text-align: center;
+}
+
+.ea-cta-heading {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #ffffff;
+    margin: 0 0 1rem;
+}
+
+.ea-cta-desc {
+    font-size: 1.1rem;
+    color: var(--ea-text-muted);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+/* Agency Footer */
+.ea-footer {
+    background: #060910;
+    border-top: 1px solid var(--ea-border);
+    padding: 4rem 0 2rem;
+    font-size: 0.9rem;
+    color: var(--ea-text-muted);
+}
+
+.ea-footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--ea-border);
+    font-size: 0.85rem;
+}
+
+.ea-footer-bottom a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .ea-bento-grid {
+        grid-template-columns: 1fr;
+    }
+    .ea-bento-col-2 {
+        grid-column: span 1;
+    }
+    .ea-hero-title {
+        font-size: 2.75rem;
+    }
+    .ea-stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
